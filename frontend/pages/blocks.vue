@@ -214,14 +214,14 @@ export default {
       block: {
         query: gql`
           subscription blocks(
-            $blockNumber: bigint
+            $where: block_bool_exp
             $perPage: Int!
             $offset: Int!
           ) {
             block(
               limit: $perPage
               offset: $offset
-              where: { block_number: { _eq: $blockNumber } }
+              where: $where
               order_by: { block_number: desc }
             ) {
               block_number
@@ -237,7 +237,10 @@ export default {
         `,
         variables() {
           return {
-            blockNumber: this.filter ? parseInt(this.filter) : undefined,
+            where:
+              this.filter === ''
+                ? {}
+                : { block_number: { _eq: parseInt(this.filter) } },
             perPage: this.perPage,
             offset: (this.currentPage - 1) * this.perPage,
           }
