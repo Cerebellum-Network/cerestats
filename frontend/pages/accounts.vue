@@ -377,11 +377,15 @@ export default {
     $subscribe: {
       accounts: {
         query: gql`
-          query account($accountId: String, $perPage: Int!, $offset: Int!) {
+          query account(
+            $where: account_bool_exp
+            $perPage: Int!
+            $offset: Int!
+          ) {
             account(
               limit: $perPage
               offset: $offset
-              where: { account_id: { _eq: $accountId } }
+              where: $where
               order_by: { free_balance: desc }
             ) {
               account_id
@@ -395,7 +399,8 @@ export default {
         `,
         variables() {
           return {
-            accountId: this.filter ? this.filter : undefined,
+            where:
+              this.filter === null ? {} : { account_id: { _eq: this.filter } },
             perPage: this.perPage,
             offset: (this.currentPage - 1) * this.perPage,
           }
