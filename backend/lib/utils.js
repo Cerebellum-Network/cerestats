@@ -183,12 +183,14 @@ module.exports = {
     const args = JSON.stringify(extrinsic.args);
     const hash = extrinsic.hash.toHex();
 
-    // FIXME: Fetch documentation from extrinsics.
+    // ToDo: Fetch documentation from extrinsics.Current version of pos-network-node doesn't
+    //       support this. Supported by polkadot v5.1.1
     const doc = '';
     const success = module.exports.getExtrinsicSuccess(index, blockEvents);
 
     let feeInfo = '';
-    // FIXME: Fetch fee details for a extrinsics
+    // ToDo: Fetch fee details for a extrinsics.Current version of pos-network-node doesn't
+    //       support this. Supported by polkadot v3.6.1
     const feeDetails = '';
     if (isSigned) {
       feeInfo = await
