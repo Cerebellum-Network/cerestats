@@ -183,14 +183,14 @@ module.exports = {
     const args = JSON.stringify(extrinsic.args);
     const hash = extrinsic.hash.toHex();
 
-    // ToDo: Fetch documentation from extrinsics.Current version of pos-network-node doesn't
-    //       support this. Supported by polkadot v5.1.1
+    // ToDo: Fetch documentation from extrinsics. Current version of @polkadot/api doesn't
+    // support this. Need to update @polkadot/api to recent version to support this.
     const doc = '';
     const success = module.exports.getExtrinsicSuccess(index, blockEvents);
 
     let feeInfo = '';
-    // ToDo: Fetch fee details for a extrinsics.Current version of pos-network-node doesn't
-    //       support this. Supported by polkadot v3.6.1
+    // ToDo: Fetch fee details for a extrinsics. Current version of pos-network-node doesn't
+    // support this. Supported by Polkadot v3.6.1
     const feeDetails = '';
     if (isSigned) {
       feeInfo = await
