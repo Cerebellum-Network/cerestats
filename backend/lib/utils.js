@@ -182,7 +182,8 @@ module.exports = {
     const { method } = extrinsic.toHuman().method;
     const args = JSON.stringify(extrinsic.args);
     const hash = extrinsic.hash.toHex();
-    const doc = extrinsic.meta.docs.toString().replace(/'/g, "''");
+    // const doc = extrinsic.meta.docs.toString().replace(/'/g, "''");
+    const doc = '';
     const success = module.exports.getExtrinsicSuccess(index, blockEvents);
 
     // Fees
@@ -220,17 +221,26 @@ module.exports = {
     //     .catch(() => {}) || '';
     // }
 
+    // let feeInfo = '';
+    // let feeDetails = '';
+    // if (isSigned) {
+    //   [feeInfo, feeDetails] = await Promise.all([
+    //     api.rpc.payment.queryInfo(extrinsic.toHex(), blockHash)
+    //       .then((result) => JSON.stringify(result.toJSON()))
+    //       .catch((error) => logger.debug(loggerOptions, `API Error: ${error}`)) || '',
+    //     api.rpc.payment.queryFeeDetails(extrinsic.toHex(), blockHash)
+    //       .then((result) => JSON.stringify(result.toJSON()))
+    //       .catch((error) => logger.debug(loggerOptions, `API Error: ${error}`)) || '',
+    //   ]);
+    // }
+
     let feeInfo = '';
-    let feeDetails = '';
+    const feeDetails = '';
     if (isSigned) {
-      [feeInfo, feeDetails] = await Promise.all([
-        api.rpc.payment.queryInfo(extrinsic.toHex(), blockHash)
-          .then((result) => JSON.stringify(result.toJSON()))
-          .catch((error) => logger.debug(loggerOptions, `API Error: ${error}`)) || '',
-        api.rpc.payment.queryFeeDetails(extrinsic.toHex(), blockHash)
-          .then((result) => JSON.stringify(result.toJSON()))
-          .catch((error) => logger.debug(loggerOptions, `API Error: ${error}`)) || '',
-      ]);
+      feeInfo = await
+      api.rpc.payment.queryInfo(extrinsic.toHex(), blockHash)
+        .then((result) => JSON.stringify(result.toJSON()))
+        .catch((error) => logger.debug(loggerOptions, `API Error: ${error}`)) || '';
     }
 
     const sql = `INSERT INTO extrinsic (
