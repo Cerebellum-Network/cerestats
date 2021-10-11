@@ -339,13 +339,11 @@ COMMIT;
 START TRANSACTION;
 CREATE FUNCTION transfer_count() RETURNS trigger LANGUAGE plpgsql AS
 $$BEGIN
-  IF TG_OP = 'INSERT' THEN
-    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
+  IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
+    IF TG_OP = 'INSERT' THEN
       UPDATE total SET count = count + 1 WHERE name = 'transfers';
       RETURN NEW;
-    END IF;
-  ELSIF TG_OP = 'DELETE' THEN
-    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
+    ELSIF TG_OP = 'DELETE' THEN
       UPDATE total SET count = count - 1 WHERE name = 'transfers';
       RETURN OLD;
     END IF;
