@@ -346,6 +346,9 @@ $$BEGIN
     ELSIF TG_OP = 'DELETE' THEN
       UPDATE total SET count = count - 1 WHERE name = 'transfers';
       RETURN OLD;
+    ELSE
+      UPDATE total SET count = 0 WHERE name = 'transfers';
+      RETURN NULL;
     END IF;
   END IF;
   RETURN NULL;
