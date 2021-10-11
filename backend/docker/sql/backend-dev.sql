@@ -334,3 +334,31 @@ CREATE TRIGGER event_count_trunc AFTER TRUNCATE ON event
 -- initialize the counter table
 UPDATE total SET count = (SELECT count(*) FROM event) WHERE name = 'events';
 COMMIT;
+
+-- Transfers
+START TRANSACTION;
+CREATE FUNCTION transfer_count() RETURNS trigger LANGUAGE plpgsql AS
+$$BEGIN
+  IF TG_OP = 'INSERT' THEN
+    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
+      UPDATE total SET count = count + 1 WHERE name = 'transfers';
+      RETURN NEW;
+    END IF;
+  ELSIF TG_OP = 'DELETE' THEN
+    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
+      UPDATE total SET count = count - 1 WHERE name = 'transfers';
+      RETURN OLD;
+    END IF;
+  END IF;
+  RETURN NULL;
+END;$$;
+CREATE CONSTRAINT TRIGGER transfer_count_mod
+  AFTER INSERT OR DELETE ON extrinsic
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW EXECUTE PROCEDURE transfer_count();
+-- TRUNCATE triggers must be FOR EACH STATEMENT
+CREATE TRIGGER transfer_count_trunc AFTER TRUNCATE ON extrinsic
+  FOR EACH STATEMENT EXECUTE PROCEDURE transfer_count();
+-- initialize the counter table
+UPDATE total SET count = (SELECT count(*) FROM extrinsic WHERE method IN ('transfer', 'transferKeepAlive')) WHERE name = 'transfers';
+COMMIT;

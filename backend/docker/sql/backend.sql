@@ -340,18 +340,15 @@ START TRANSACTION;
 CREATE FUNCTION transfer_count() RETURNS trigger LANGUAGE plpgsql AS
 $$BEGIN
   IF TG_OP = 'INSERT' THEN
-    IF (NEW.method = 'transfer') OR (NEW.method = 'transferKeepAlive') THEN
+    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
       UPDATE total SET count = count + 1 WHERE name = 'transfers';
       RETURN NEW;
     END IF;
   ELSIF TG_OP = 'DELETE' THEN
-    IF (NEW.method = 'transfer') OR (NEW.method = 'transferKeepAlive') THEN
+    IF NEW.method IN ('transfer', 'transferKeepAlive') THEN
       UPDATE total SET count = count - 1 WHERE name = 'transfers';
       RETURN OLD;
     END IF;
-  ELSE
-    UPDATE total SET count = 0 WHERE name = 'transfers';
-    RETURN NULL;
   END IF;
   RETURN NULL;
 END;$$;
@@ -363,5 +360,5 @@ CREATE CONSTRAINT TRIGGER transfer_count_mod
 CREATE TRIGGER transfer_count_trunc AFTER TRUNCATE ON extrinsic
   FOR EACH STATEMENT EXECUTE PROCEDURE transfer_count();
 -- initialize the counter table
-UPDATE total SET count = (SELECT count(*) FROM extrinsic WHERE method = 'transfer' or method = 'transferKeepAlive') WHERE name = 'transfers';
+UPDATE total SET count = (SELECT count(*) FROM extrinsic WHERE method IN ('transfer', 'transferKeepAlive')) WHERE name = 'transfers';
 COMMIT;
