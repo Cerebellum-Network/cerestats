@@ -5,7 +5,7 @@ services:
   # SQL data base
   #
   postgres:
-    image: postgres
+    image: postgres:12
     restart: always
     shm_size: 1gb
     volumes:
@@ -37,11 +37,11 @@ services:
       - "-c"
       - "max_connections=200"
       - "-c"
-      - "shared_buffers=32GB"
+      - "shared_buffers=2GB"
       - "-c"
-      - "effective_cache_size=96GB"
+      - "effective_cache_size=2GB"
       - "-c"
-      - "maintenance_work_mem=2GB"
+      - "maintenance_work_mem=1GB"
       - "-c"
       - "checkpoint_completion_target=0.9"
       - "-c"
@@ -99,7 +99,7 @@ services:
     environment:
       NODE_ENV: 'production'
       NODE_OPTIONS: '--max-old-space-size=8192'
-      WS_PROVIDER_URL: 'wss://archive.mainnet.cere.network:9945'
+      WS_PROVIDER_URL: 'wss://archive.testnet.cere.network:9945'
       SUBSTRATE_NETWORK: 'cere'
       API_CUSTOM_TYPES: 'cere_custom_types.json'
       # RANKING_DISABLE: 'true'
@@ -118,8 +118,8 @@ services:
       BLOCK_HARVESTER_STATS_PRECISION: '2'
       LOG_LEVEL: 'debug'
       BLOCK_HARVESTER_START_DELAY_MS: '60000' # 1 min
-      RANKING_START_DELAY_MS: '1800000' # 30 min
-      ACTIVE_ACCOUNTS_START_DELAY_MS: '300000' # 5 min
+      RANKING_START_DELAY_MS: '60000' # 30 min
+      ACTIVE_ACCOUNTS_START_DELAY_MS: '600000' # 5 min
       ACTIVE_ACCOUNTS_CHUNK_SIZE: '100'
 
   #
