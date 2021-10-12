@@ -2,6 +2,8 @@
 
 Cerestats is a block explorer for [Cere Network](https://cere.network/).
 
+Check it out live versions at [Cerestats](https://stats.cere.network/)
+
 ## Dependencies
 
 In Ubuntu 20.04 server you can do:
@@ -42,7 +44,7 @@ npm install --global yarn
 Install mono-repo:
 
 ```bash
-git clone git@github.com:Cerebellum-Network/cerestats.git
+git clone https://github.com/Cerebellum-Network/cerestats.git
 cd cerestats
 yarn
 ```
@@ -51,7 +53,7 @@ yarn
 
 Before build dockers be sure to edit `HASURA_GRAPHQL_ADMIN_SECRET` environmment variable in the proper docker-compose file `backend/docker/docker-compose-cere-mainnet.yml`.
 
-Polkadot:
+Cere Network:
 
 ```bash
 yarn workspace backend docker:cere:mainnet
