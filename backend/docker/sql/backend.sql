@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS total (
   PRIMARY KEY ( name )
 );
 
-CREATE TABLE IF NOT EXISTS edp_metric(
+CREATE TABLE IF NOT EXISTS edp(
   id serial NOT NULL,
   key TEXT UNIQUE,
   value json NOT NULL,

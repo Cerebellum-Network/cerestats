@@ -236,14 +236,14 @@ app.get('/api/v1/batsignal/council-events', async (req, res) => {
 
 /**
  * Add EDP data to database
- * @param {key, values} key and values
+ * @param {key, value} key and values
  */
 app.post('/api/v1/edp', validateToken, async (req, res) => {
   try {
-    const { key, values } = req.body;
+    const { key, value } = req.body;
     const client = await getClient();
     const query = `
-    INSERT INTO edp_metric (
+    INSERT INTO edp (
       key,
       value
     )
@@ -255,7 +255,7 @@ app.post('/api/v1/edp', validateToken, async (req, res) => {
     SET value = EXCLUDED.value
     WHERE EXCLUDED.key = $1
     ;`;
-    const dbres = await client.query(query, [key, JSON.stringify(values)]);
+    const dbres = await client.query(query, [key, JSON.stringify(value)]);
     res.status(200).json({
       status: true
     });
@@ -276,12 +276,11 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
   try {
     const { key } = req.params;
     const client = await getClient();
-    const query = `SELECT value FROM edp_metric WHERE key = $1;`;
+    const query = `SELECT value FROM edp WHERE key = $1;`;
     const dbres = await client.query(query, [key]);
     res.status(200).json({
       status: true,
-      data: dbres.rows[0]?.value,
-      count: dbres.rowCount,
+      data: dbres.rows[0]?.value
     });
     await client.end();
   } catch (error) {
