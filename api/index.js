@@ -303,8 +303,10 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
 });
 
 app.use('/', (req, res) => {
-  console.log(req.url);
-  res.send('4040');
+  res.status(404).json({
+    status: false,
+    msg: 'Requested route not found'
+  })
 });
 
 // Start app
