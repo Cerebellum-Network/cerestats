@@ -254,11 +254,10 @@ app.post('/api/v1/edp', validateToken, async (req, res) => {
     ON CONFLICT (key) DO UPDATE
     SET value = EXCLUDED.value
     WHERE EXCLUDED.key = $1
-    `;
+    ;`;
     const dbres = await client.query(query, [key, JSON.stringify(values)]);
     res.status(200).json({
-      status: true,
-      data: dbres,
+      status: true
     });
     await client.end();
   } catch (error) {
@@ -277,7 +276,7 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
   try {
     const { key } = req.params;
     const client = await getClient();
-    const query = `SELECT * FROM edp_metric WHERE key = $1`;
+    const query = `SELECT * FROM edp_metric WHERE key = $1;`;
     const dbres = await client.query(query, [key]);
     res.status(200).json({
       status: true,
