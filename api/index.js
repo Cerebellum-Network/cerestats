@@ -243,17 +243,17 @@ app.post('/api/v1/edp', validateToken, async (req, res) => {
     const { key, value } = req.body;
     const client = await getClient();
     const query = `
-    INSERT INTO edp (
-      key,
-      value
-    )
-    VALUES (
-      $1,
-      $2
-    )
-    ON CONFLICT (key) DO UPDATE
-    SET value = EXCLUDED.value
-    WHERE EXCLUDED.key = $1
+      INSERT INTO edp (
+        key,
+        value
+      )
+      VALUES (
+        $1,
+        $2
+      )
+      ON CONFLICT (key) DO UPDATE
+      SET value = EXCLUDED.value
+      WHERE EXCLUDED.key = $1
     ;`;
     const dbres = await client.query(query, [key, JSON.stringify(value)]);
     res.status(200).json({
@@ -278,6 +278,9 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
     const client = await getClient();
     const query = `SELECT value FROM edp WHERE key = $1;`;
     const dbres = await client.query(query, [key]);
+    if (dbres.rowCount === 0) {
+      return res.status(404).json({});
+    }
     res.status(200).json({
       status: true,
       data: dbres.rows[0]?.value
