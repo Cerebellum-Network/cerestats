@@ -276,11 +276,11 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
   try {
     const { key } = req.params;
     const client = await getClient();
-    const query = `SELECT * FROM edp_metric WHERE key = $1;`;
+    const query = `SELECT value FROM edp_metric WHERE key = $1;`;
     const dbres = await client.query(query, [key]);
     res.status(200).json({
       status: true,
-      data: dbres.rows,
+      data: dbres.rows[0]?.value,
       count: dbres.rowCount,
     });
     await client.end();

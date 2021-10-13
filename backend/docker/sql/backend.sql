@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS total (
 CREATE TABLE IF NOT EXISTS edp_metric(
   id serial NOT NULL,
   key TEXT UNIQUE,
-  value jsonb NOT NULL,
+  value json NOT NULL,
   PRIMARY KEY ( key )
 );
 
