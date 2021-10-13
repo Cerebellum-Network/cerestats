@@ -206,6 +206,13 @@ CREATE TABLE IF NOT EXISTS total (
   PRIMARY KEY ( name )
 );
 
+CREATE TABLE IF NOT EXISTS edp_metric(
+  id serial NOT NULL,
+  key TEXT UNIQUE,
+  value jsonb NOT NULL,
+  PRIMARY KEY ( key )
+);
+
 INSERT INTO total (name, count) VALUES
   ('blocks', 0),
   ('extrinsics', 0),

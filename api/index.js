@@ -48,7 +48,32 @@ const hexToUtf8 = (s) =>
      s.replace(/\s+/g, '') // remove spaces
       .replace(/[0-9a-f]{2}/g, '%$&') // add '%' before each 2 characters
   );
-}
+};
+
+/**
+ * Validate access token
+ * @param {*} req request object
+ * @param {*} res response object
+ * @param {*} next next object
+ * @returns 
+ */
+const validateToken = (req, res, next) => {
+  const token =
+    req.body.token || req.query.token || req.headers['x-api-key'];
+  console.log(token)
+  if (
+    token.length == 0 ||
+    token.toString() === 'null' ||
+    token !== process.env.API_KEY
+  ) {
+    return res.status(403).json({
+      status: false,
+      msg: 'Access Denied',
+    });
+  } else {
+    return next();
+  }
+};
 
 //
 // Example query: /api/v1/block?page[size]=5
@@ -215,6 +240,72 @@ app.get('/api/v1/batsignal/council-events', async (req, res) => {
   }
 });
 
+/**
+ * Add EDP data to database
+ * @param {key, values} key and values
+ */
+app.post('/api/v1/edp', validateToken, async (req, res) => {
+  try {
+    const { key, values } = req.body;
+    const client = await getClient();
+    const query = `
+    INSERT INTO edp_metric (
+      key,
+      value
+    )
+    VALUES (
+      $1,
+      $2
+    )
+    ON CONFLICT (key) DO UPDATE
+    SET value = EXCLUDED.value
+    WHERE EXCLUDED.key = $1
+    `;
+    const dbres = await client.query(query, [key, JSON.stringify(values)]);
+    res.status(200).json({
+      status: true,
+      data: dbres,
+    });
+    await client.end();
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: `There was an error processing your request`,
+    });
+  }
+});
+
+/**
+ * Get EDP data from database
+ * @param key key
+ */
+app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
+  try {
+    const { key } = req.params;
+    console.log(key);
+    console.log(req.query);
+    console.log(req.params);
+    const client = await getClient();
+    const query = `SELECT * FROM edp_metric WHERE key = $1`;
+    const dbres = await client.query(query, [key]);
+    res.status(200).json({
+      status: true,
+      data: dbres.rows,
+      count: dbres.rowCount,
+    });
+    await client.end();
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: `There was an error processing your request`,
+    });
+  }
+});
+
+app.use('/', (req, res) => {
+  console.log(req.url);
+  res.send('4040');
+});
 
 // Start app
 app.listen(port, () => 
