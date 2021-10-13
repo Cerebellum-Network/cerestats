@@ -11,8 +11,8 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "x-api-key",
-						"value": "jP9J5rUCKg7sWJ9y75eT",
+						"key": "X-API-KEY",
+						"value": "{x-api-key-goes-here}",
 						"type": "text"
 					}
 				],
@@ -49,8 +49,8 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "x-api-key",
-						"value": "jP9J5rUCKg7sWJ9y75eT",
+						"key": "X-API-KEY",
+						"value": "{x-api-key-goes-here}",
 						"type": "text"
 					}
 				],
