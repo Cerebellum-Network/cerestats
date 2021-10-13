@@ -58,20 +58,14 @@ const hexToUtf8 = (s) =>
  * @returns 
  */
 const validateToken = (req, res, next) => {
-  const token =
-    req.body.token || req.query.token || req.headers['x-api-key'];
-  console.log(token)
-  if (
-    token.length == 0 ||
-    token.toString() === 'null' ||
-    token !== process.env.API_KEY
-  ) {
+  const token = req.body.token || req.query.token || req.headers['x-api-key'];
+  if (token === process.env.API_KEY) {
+    return next();
+  } else {
     return res.status(403).json({
       status: false,
-      msg: 'Access Denied',
+      msg: `Access Denied`,
     });
-  } else {
-    return next();
   }
 };
 
@@ -282,9 +276,6 @@ app.post('/api/v1/edp', validateToken, async (req, res) => {
 app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
   try {
     const { key } = req.params;
-    console.log(key);
-    console.log(req.query);
-    console.log(req.params);
     const client = await getClient();
     const query = `SELECT * FROM edp_metric WHERE key = $1`;
     const dbres = await client.query(query, [key]);
