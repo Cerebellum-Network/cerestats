@@ -26,12 +26,11 @@
 					}
 				},
 				"url": {
-					"raw": "https://api.stats.prod.cere.network/api/v1/edp",
+					"raw": "https://api.stats.cere.network/api/v1/edp",
 					"protocol": "https",
 					"host": [
 						"api",
 						"stats",
-						"prod",
 						"cere",
 						"network"
 					],
@@ -56,12 +55,11 @@
 					}
 				],
 				"url": {
-					"raw": "https://api.stats.prod.cere.network/api/v1/edp",
+					"raw": "https://api.stats.cere.network/api/v1/edp",
 					"protocol": "https",
 					"host": [
 						"api",
 						"stats",
-						"prod",
 						"cere",
 						"network"
 					],
