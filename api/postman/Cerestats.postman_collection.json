@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "b5772ee7-2479-4ffb-b10e-9f95134778b0",
-		"name": "CereStats",
+		"name": "Cerestats",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,7 +11,7 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "X-API-KEY",
+						"key": "x-api-key",
 						"value": "jP9J5rUCKg7sWJ9y75eT",
 						"type": "text"
 					}
@@ -26,12 +26,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/v1/edp",
-					"protocol": "http",
+					"raw": "https://api.stats.prod.cere.network/api/v1/edp",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"stats",
+						"prod",
+						"cere",
+						"network"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"v1",
@@ -47,23 +50,25 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "X-API-KEY",
+						"key": "x-api-key",
 						"value": "jP9J5rUCKg7sWJ9y75eT",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/v1/edp/test1",
-					"protocol": "http",
+					"raw": "https://api.stats.prod.cere.network/api/v1/edp",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"stats",
+						"prod",
+						"cere",
+						"network"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"v1",
-						"edp",
-						"test1"
+						"edp"
 					]
 				}
 			},
