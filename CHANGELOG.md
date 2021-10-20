@@ -1,7 +1,7 @@
 # Cerestats
 
 ## vNext
-- ...
+- Added faucet page in frontend.
 
 ## v0.1.0
 - Adapted for Cere Network.
