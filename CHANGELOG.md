@@ -1,7 +1,8 @@
 # Cerestats
 
 ## vNext
-- Added faucet page in frontend.
+- Added faucet functionality.
+- Added UI to show EDP banner to homepage.
 
 ## v0.1.0
 - Adapted for Cere Network.
