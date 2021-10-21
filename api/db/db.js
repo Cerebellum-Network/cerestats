@@ -2,7 +2,7 @@ const { Pool, Client } = require('pg');
 
 const postgresConnParams = {
   user: process.env.POSTGRES_USER || 'polkastats',
-  host: process.env.POSTGRES_HOST || '127.0.0.1',
+  host: process.env.POSTGRES_HOST || 'postgres',
   database: process.env.POSTGRES_DATABASE || 'polkastats',
   password: process.env.POSTGRES_PASSWORD || 'polkastats',
   port: process.env.POSTGRES_PORT || 5432,

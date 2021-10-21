@@ -282,6 +282,8 @@ const limiter = rateLimit({
   message: `Test tokens can't be requested more than ${+REQUEST_PER_IP_PER_DAY} times in a day`
 });
 
+app.set('trust proxy', 1);
+
 //  apply to all requests
 app.use(limiter);
 
