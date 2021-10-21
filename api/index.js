@@ -4,34 +4,16 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const crypto = require('crypto');
 const fetch = require('node-fetch');
-const { Pool, Client } = require('pg');
+const getClient = require('./db/db');
 const axios = require('axios');
 const moment = require('moment');
-
-const postgresConnParams = {
-  user: process.env.POSTGRES_USER || 'polkastats',
-  host: process.env.POSTGRES_HOST || 'postgres',
-  database: process.env.POSTGRES_DATABASE || 'polkastats',
-  password: process.env.POSTGRES_PASSWORD || 'polkastats',
-  port: process.env.POSTGRES_PORT || 5432,
-};
+const rateLimit = require("express-rate-limit");
+const router = require('./src/routes/index');
+require('dotenv').config();
+const { REQUEST_PER_IP_PER_DAY } = process.env;
 
 // Http port
 const port = process.env.PORT || 8000;
-
-// Connnect to db
-const getPool = async () => {
-  const pool = new Pool(postgresConnParams);
-  await pool.connect();
-  return pool;
-}
-
-const getClient = async () => {
-  const client = new Client(postgresConnParams);
-  await client.connect();
-  return client;
-}
-
 
 const app = express();
 
@@ -76,7 +58,7 @@ app.get('/api/v1/block', async (req, res) => {
   try {
     const pageSize = req.query.page.size;
     const pageOffset = 0;
-    const client = await getClient();
+    const client = await db.getClient();
     const query = `
       SELECT
         block_number,
@@ -293,6 +275,17 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
     });
   }
 });
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 15 minutes
+  max: +REQUEST_PER_IP_PER_DAY, // limit each IP to 100 requests per windowMs
+  message: `Test tokens can't be requested more than ${+REQUEST_PER_IP_PER_DAY} times in a day`
+});
+
+//  apply to all requests
+app.use(limiter);
+
+app.use('/api/v1', router);
 
 app.use('/', (req, res) => {
   res.status(404).json({
