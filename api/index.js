@@ -58,7 +58,7 @@ app.get('/api/v1/block', async (req, res) => {
   try {
     const pageSize = req.query.page.size;
     const pageOffset = 0;
-    const client = await db.getClient();
+    const client = await getClient();
     const query = `
       SELECT
         block_number,
