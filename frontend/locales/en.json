@@ -283,7 +283,9 @@
       "head_content": "{networkName} Proof Of Stake Validators"
     },
     "faucets": {
-      "faucet": "Faucet"
+      "title": "Faucet",
+      "head_title": "Cere Faucet",
+      "head_content": "Cere Faucet"
     }
   },
   "details": {
