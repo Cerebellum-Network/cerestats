@@ -9,11 +9,8 @@
             </h1>
           </b-col>
         </b-row>
-        <b-form-row class="mt-5 no-flex">
-          <b-col cols="2">
-            <h6>Select Network:</h6>
-          </b-col>
-          <b-col cols="10">
+        <b-form-row class="mt-3 no-flex">
+          <b-col cols="12">
             <select v-model="networkValue" class="custom-select">
               <option value="testnet">Testnet</option>
               <option value="devnet">Devnet</option>
@@ -22,16 +19,16 @@
           </b-col>
         </b-form-row>
         <b-form-row class="mt-3 mb-5 no-flex">
-          <b-col cols="2"> <h6>Account ID:</h6> </b-col>
-          <b-col cols="10">
-            <input
+          <b-col cols="12">
+            <b-form-input
+              id="searchInput"
               v-model="address"
-              class="form-control"
-              placeholder="Enter Account Id"
+              type="search"
+              placeholder="Account ID"
             />
           </b-col>
         </b-form-row>
-        <b-form-row class="flex">
+        <b-row class="button-flex">
           <b-button
             :disabled="disableButton"
             class="button"
@@ -39,7 +36,7 @@
           >
             <span>Send me test CERE</span>
           </b-button>
-        </b-form-row>
+        </b-row>
         <div>
           <b-alert
             :show="dismissCountDown"
@@ -89,7 +86,7 @@ export default {
     requestAsset() {
       this.disableButton = true
       axios
-        .post('http://localhost:8000/api/v1/faucet', {
+        .post(`${network.backendHttp}/faucet`, {
           address: this.address,
           network: this.networkValue,
         })
@@ -112,7 +109,6 @@ export default {
     },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
-      console.log(this.dismissCountDown)
       if (this.dismissCountDown === 0) {
         this.address = null
         this.networkValue = 'testnet'
@@ -147,7 +143,7 @@ input:focus {
   border: 1px solid #495057 !important;
 }
 
-.flex {
+.button-flex {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,5 +151,6 @@ input:focus {
 
 .button {
   border-radius: 10px;
+  max-width: 200px;
 }
 </style>
