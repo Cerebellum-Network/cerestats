@@ -15,8 +15,12 @@ function init() {
   if (NETWORKS === undefined) {
     return true
   }
-  const networks = NETWORKS.split("_");
-  networks.forEach(async (network) => {
+  const networks = NETWORKS.split("},");
+
+  networks.forEach(async (network, index) => {
+    if (index !== networks.length - 1) {
+      network = network + '}'
+    }
     const parsedNetwork = JSON.parse(network);
     const api = await initProvider(parsedNetwork.URL);
     const faucet = await initFaucet(parsedNetwork.MNEMONICS);
