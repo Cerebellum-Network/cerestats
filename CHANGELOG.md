@@ -2,7 +2,9 @@
 
 ## vNext
 - Added faucet functionality.
-- Added UI to show EDP banner to homepage.
+
+## v0.2.0
+- Added UI to show EDP banner on homepage.
 
 ## v0.1.0
 - Adapted for Cere Network.
