@@ -5,7 +5,7 @@
         <b-row>
           <b-col cols="12">
             <h1>
-              {{ $t('pages.faucets.title') }}
+              {{ $t('pages.faucet.title') }}
             </h1>
           </b-col>
         </b-row>
@@ -72,12 +72,12 @@ export default {
   },
   head() {
     return {
-      title: this.$t('pages.faucets.head_title'),
+      title: this.$t('pages.faucet.head_title'),
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.$t('pages.faucets.head_content'),
+          content: this.$t('pages.faucet.head_content'),
         },
       ],
     }

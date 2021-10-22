@@ -12,6 +12,9 @@ const {
 const networkParams = new Map();
 
 function init() {
+  if (NETWORKS === undefined) {
+    return true
+  }
   const networks = NETWORKS.split("_");
   networks.forEach(async (network) => {
     const parsedNetwork = JSON.parse(network);
@@ -21,7 +24,7 @@ function init() {
   });
 }
 
-async function initFaucet(mnemonic) {
+function initFaucet(mnemonic) {
   const keyring = new Keyring({ type: "sr25519" });
   const newPair = keyring.addFromUri(mnemonic);
   return newPair;

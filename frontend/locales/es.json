@@ -282,7 +282,7 @@
       "head_title": "PolkaStats - Validatores proof of stake de {networkName}",
       "head_content": "Validatores proof of stake de {networkName}"
     },
-    "faucets": {
+    "faucet": {
       "title": "Faucet",
       "head_title": "Cere Faucet",
       "head_content": "Cere Faucet"

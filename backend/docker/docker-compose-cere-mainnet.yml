@@ -144,7 +144,7 @@ services:
       - NUMBER_OF_TOKENS_TO_SEND=10
       - REQUEST_PER_DAY=100
       - REQUEST_PER_IP_PER_DAY=3
-      - DECIMAL=7
+      - DECIMAL=10
 
 #
 # Persistent volumes

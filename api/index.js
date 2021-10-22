@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 const getClient = require('./db/db');
 const axios = require('axios');
 const moment = require('moment');
-const rateLimit = require("express-rate-limit");
+const rateLimit = require('express-rate-limit');
 const router = require('./src/routes/index');
 require('dotenv').config();
 const { REQUEST_PER_IP_PER_DAY } = process.env;
@@ -22,12 +22,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.set('trust proxy', 1);
 
 // from https://stackoverflow.com/questions/60504945/javascript-encode-decode-utf8-to-hex-and-hex-to-utf8
-const hexToUtf8 = (s) =>
-{
+const hexToUtf8 = (s) => {
   return decodeURIComponent(
-     s.replace(/\s+/g, '') // remove spaces
+    s
+      .replace(/\s+/g, '') // remove spaces
       .replace(/[0-9a-f]{2}/g, '%$&') // add '%' before each 2 characters
   );
 };
@@ -277,12 +278,14 @@ app.get('/api/v1/edp/:key', validateToken, async (req, res) => {
 });
 
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 15 minutes
-  max: +REQUEST_PER_IP_PER_DAY, // limit each IP to 100 requests per windowMs
-  message: `Test tokens can't be requested more than ${+REQUEST_PER_IP_PER_DAY} times in a day`
+  windowMs: 60 * 60 * 1000, // 60 minutes
+  max: +REQUEST_PER_IP_PER_DAY, // limit each IP to {REQUEST_PER_IP_PER_DAY} requests per windowMs
+  handler: function (req, res /*next*/) {
+    return res.status(429).json({
+      msg: `Test tokens can't be requested more than ${+REQUEST_PER_IP_PER_DAY} times in a day`,
+    });
+  },
 });
-
-app.set('trust proxy', 1);
 
 //  apply to all requests
 app.use(limiter);
