@@ -20,4 +20,5 @@ const config = {
   LookupSource: 'IndicesLookupSource'
 };
 
-module.exports =  config;
+const decimal = 10;
+module.exports = {config, decimal};

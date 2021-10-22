@@ -2,13 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const crypto = require('crypto');
-const fetch = require('node-fetch');
 const getClient = require('./db/db');
-const axios = require('axios');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
-const router = require('./src/routes/index');
+const faucet = require('./src/service/faucet');
 require('dotenv').config();
 const { REQUEST_PER_IP_PER_DAY } = process.env;
 
@@ -287,10 +284,7 @@ const limiter = rateLimit({
   },
 });
 
-//  apply to all requests
-app.use(limiter);
-
-app.use('/api/v1', router);
+app.use("/api/v1/faucet", limiter, faucet.faucet);
 
 app.use('/', (req, res) => {
   res.status(404).json({

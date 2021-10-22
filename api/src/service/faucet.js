@@ -1,11 +1,11 @@
 const { ApiPromise, WsProvider, Keyring } = require("@polkadot/api");
-const networkConfig = require("../constants/config");
+// ToDo: https://cerenetwork.atlassian.net/browse/CBI-1533
+const {config, decimal} = require("../constants/config");
 require("dotenv").config();
 const getClient = require("../../db/db");
 const {
   NETWORKS,
   NUMBER_OF_TOKENS_TO_SEND,
-  DECIMAL,
   MAX_BALANCE,
   REQUEST_PER_DAY,
 } = process.env;
@@ -38,7 +38,7 @@ async function initProvider(url) {
   const provider = new WsProvider(url);
   const api = await ApiPromise.create({
     provider,
-    types: networkConfig,
+    types: config,
   });
   await api.isReady;
   const chain = await api.rpc.system.chain();
@@ -96,8 +96,8 @@ module.exports = {
 
       const { api, faucet } = networkParams.get(network.toUpperCase());
       const balance = await getBalance(address, api);
-      const value = NUMBER_OF_TOKENS_TO_SEND * 10 ** DECIMAL;
-      const maxBalance = MAX_BALANCE * 10 ** DECIMAL;
+      const value = NUMBER_OF_TOKENS_TO_SEND * 10 ** decimal;
+      const maxBalance = MAX_BALANCE * 10 ** decimal;
 
       // Fetch client IP address
       const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
