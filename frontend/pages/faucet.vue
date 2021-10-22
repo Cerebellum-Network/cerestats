@@ -9,17 +9,15 @@
             </h1>
           </b-col>
         </b-row>
-        <b-form-row class="mt-3 no-flex">
-          <b-col cols="12">
+        <b-form-row class="mt-3 mb-5">
+          <b-col cols="2">
             <select v-model="networkValue" class="custom-select">
               <option value="testnet">Testnet</option>
-              <option value="devnet">Devnet</option>
               <option value="qanet">QAnet</option>
+              <option value="devnet">Devnet</option>
             </select>
           </b-col>
-        </b-form-row>
-        <b-form-row class="mt-3 mb-5 no-flex">
-          <b-col cols="12">
+          <b-col cols="10">
             <b-form-input
               id="searchInput"
               v-model="address"
@@ -34,7 +32,7 @@
             class="button"
             @click="requestAsset"
           >
-            <span>Send me test CERE</span>
+            <span>Send me test CERE tokens</span>
           </b-button>
         </b-row>
         <div>
@@ -151,6 +149,6 @@ input:focus {
 
 .button {
   border-radius: 10px;
-  max-width: 200px;
+  max-width: 250px;
 }
 </style>
