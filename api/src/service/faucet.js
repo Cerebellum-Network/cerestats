@@ -90,7 +90,7 @@ module.exports = {
 
       if (todaysTransaction > +REQUEST_PER_DAY) {
         throw new Error(
-          `We exceed our daily limit: ${+REQUEST_PER_DAY}. Kindly try tomorrow`
+          `We exceed our daily limit: ${+REQUEST_PER_DAY}. Try again later.`
         );
       }
 
@@ -115,23 +115,23 @@ module.exports = {
       ).toString();
 
       const insertQuery = `
-      INSERT INTO faucet (
-        sender,
-        value,
-        txnHash,
-        destination,
-        network,
-        address
-      )
-      VALUES (
-        '${faucet.address}',
-        '${value}',
-        '${txnHash}',
-        '${address}',
-        '${network.toUpperCase()}',
-        '${ip}'
-      )
-      ;`;
+        INSERT INTO faucet (
+          sender,
+          value,
+          txnHash,
+          destination,
+          network,
+          address
+        )
+        VALUES (
+          '${faucet.address}',
+          '${value}',
+          '${txnHash}',
+          '${address}',
+          '${network.toUpperCase()}',
+          '${ip}'
+        )
+        ;`;
       await client.query(insertQuery);
       res.status(200).json({ msg: `Your transaction hash is ${txnHash}` });
     } catch (error) {
