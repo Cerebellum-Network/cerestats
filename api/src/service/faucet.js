@@ -12,6 +12,7 @@ const {
 const networkParams = new Map();
 
 function init() {
+  console.log(process.env);
   if (NETWORKS === undefined) {
     return true
   }
