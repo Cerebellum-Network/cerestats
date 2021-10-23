@@ -74,7 +74,7 @@ module.exports = {
   faucet: async (req, res) => {
     try {
       const { address, network } = req.body;
-
+      console.log(networkParams);
       // Validate network type
       const isValidNetwork = networkParams.has(network.toUpperCase());
       if (!isValidNetwork) {
