@@ -76,6 +76,7 @@ module.exports = {
     try {
       const { address, network } = req.body;
       console.log(networkParams);
+      console.log(req.ip);
       // Validate network type
       const isValidNetwork = networkParams.has(network.toUpperCase());
       if (!isValidNetwork) {
