@@ -57,6 +57,7 @@
 import axios from 'axios'
 import { network } from '@/frontend.config.js'
 import commonMixin from '@/mixins/commonMixin.js'
+
 export default {
   mixins: [commonMixin],
   data() {
@@ -74,12 +75,16 @@ export default {
   },
   head() {
     return {
-      title: this.$t('pages.faucet.head_title'),
+      title: this.$t('pages.faucet.head_title', {
+        networkName: network.name,
+      }),
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.$t('pages.faucet.head_content'),
+          content: this.$t('pages.faucet.head_content', {
+            networkName: network.name,
+          }),
         },
       ],
     }
@@ -171,7 +176,7 @@ input:focus {
 }
 
 .faucet-container {
-  min-height: 47vh;
+  min-height: 49vh;
 }
 
 .error {
