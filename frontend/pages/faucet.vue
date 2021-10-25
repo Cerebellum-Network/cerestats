@@ -118,8 +118,7 @@ export default {
           }
         })
         .catch((error) => {
-          // eslint-disable-next-line no-constant-condition
-          if (error.response.status === 400 || 429) {
+          if (error.response.status === 400 || error.response.status === 429) {
             this.alertType = 'danger'
             this.alertMessage = error.response.data.msg
             this.showAlert()
