@@ -10,7 +10,7 @@
               rel="noopener noreferrer"
             >
               <img
-                :src="`/img/cere-logo.png?${Date.now()}`"
+                src="/img/cere-logo.png"
                 alt="Cere Network"
                 style="max-width: 50px"
               />
