@@ -99,7 +99,7 @@ export default {}
   max-width: 50px;
 }
 .cere-title {
-  font-size: 20px;
+  font-size: 16px;
   padding-right: 10px;
 }
 .grant-badge {
