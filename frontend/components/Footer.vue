@@ -10,7 +10,7 @@
               rel="noopener noreferrer"
             >
               <img
-                src="/img/cere-logo.png"
+                src="/img/cere_logo_edp.png"
                 alt="Cere Network"
                 style="max-width: 50px"
               />
@@ -64,7 +64,7 @@
                 <a
                   target="_blank"
                   href="https://cere-network.gitbook.io/cere-network/"
-                  >Cere Network Homepage</a
+                  >DDC Wiki</a
                 >
               </li>
             </ul>
