@@ -186,7 +186,7 @@
       "title": "Blocks",
       "head_title": "{networkName} Blocks",
       "head_content": "{networkName} Blocks",
-      "search_placeholder": "Search by block number"
+      "search_placeholder": "Search by block number or block hash"
     },
     "extrinsics": {
       "title": "Extrinsics",

@@ -186,7 +186,7 @@
       "title": "Bloques",
       "head_title": "PolkaStats - Bloques en {networkName}",
       "head_content": "Bloques en {networkName}",
-      "search_placeholder": "Buscar por número de bloque"
+      "search_placeholder": "Buscar por número de bloque o hash de bloque"
     },
     "extrinsics": {
       "title": "Extrinsics",
