@@ -33,7 +33,7 @@
                 <template #cell(block_number)="data">
                   <p class="mb-0">
                     <nuxt-link
-                      v-b-tooltip.hover
+                      v-b-tooltip.hover.bottom
                       :to="`/block?blockNumber=${data.item.block_number}`"
                       title="Check block information"
                     >
@@ -52,7 +52,7 @@
                   <p class="mb-0">
                     <Identicon :address="data.item.from" :size="20" />
                     <nuxt-link
-                      v-b-tooltip.hover
+                      v-b-tooltip.hover.bottom
                       :to="`/account/${data.item.from}`"
                       :title="$t('pages.accounts.account_details')"
                     >
@@ -65,7 +65,7 @@
                     <p class="mb-0">
                       <Identicon :address="data.item.to" :size="20" />
                       <nuxt-link
-                        v-b-tooltip.hover
+                        v-b-tooltip.hover.bottom
                         :to="`/account/${data.item.to}`"
                         :title="$t('pages.accounts.account_details')"
                       >
