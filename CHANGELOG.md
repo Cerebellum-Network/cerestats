@@ -2,7 +2,7 @@
 
 ## vNext
 - Updated logo and favicon.
-- Added function to filter blocks based on block hash.
+- Added functionality to filter blocks based on block hash.
 
 ## v0.3.1
 - Updated Cere Network Homepage link.
