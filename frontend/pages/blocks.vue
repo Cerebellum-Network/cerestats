@@ -33,7 +33,7 @@
                 <template #cell(block_number)="data">
                   <p class="mb-0">
                     <nuxt-link
-                      v-b-tooltip.hover.bottom
+                      v-b-tooltip.hover
                       :to="`/block?blockNumber=${data.item.block_number}`"
                       title="Check block information"
                     >
