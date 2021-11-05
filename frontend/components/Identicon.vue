@@ -1,6 +1,6 @@
 <template>
   <div
-    v-b-tooltip.hover.left
+    v-b-tooltip.hover
     title="Click to copy address to clipboard"
     class="d-inline-block"
     @click="showToast"
