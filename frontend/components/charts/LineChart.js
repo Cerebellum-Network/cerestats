@@ -3,7 +3,6 @@ export default {
   extends: Line,
   props: ['data', 'options'],
   mounted() {
-    // this.renderChart(this.data, this.options)
     this.renderLineChart()
   },
   methods: {
@@ -13,7 +12,6 @@ export default {
   },
   watch: {
     data() {
-      // this._chart.destroy()
       this.renderLineChart()
     },
   },
