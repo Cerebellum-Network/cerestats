@@ -1,20 +1,22 @@
 <template>
-  <LineChart :data="chartData" :options="chartOptions" :height="200" />
+  <BarChart :data="chartData" :options="chartOptions" :height="200" />
 </template>
 <script>
-import LineChart from '@/components/charts/LineChart.js'
+import BarChart from '@/components/charts/BarChart.js'
+import { network } from '@/frontend.config.js'
 export default {
   components: {
-    LineChart,
+    BarChart,
   },
   props: {
-    extrinsic: {
+    extrinsicCount: {
       type: Array,
       default: () => [],
     },
   },
   data() {
     return {
+      network,
       chartOptions: {
         responsive: true,
         legend: {
@@ -22,13 +24,21 @@ export default {
         },
         title: {
           display: true,
-          text: 'Signed Extrinsics',
+          text: 'extrinsic',
           fontSize: 18,
           fontColor: '#000',
           fontStyle: 'lighter',
         },
         tooltips: {
           backgroundColor: '#000000',
+        },
+        watermark: {
+          image:
+            'https://www.google.com/imgres?imgurl=https%3A%2F%2Fmiro.medium.com%2Fmax%2F3150%2F1*VJqmc-GsBhgzwpACZRf_oQ.png&imgrefurl=https%3A%2F%2Fcere-network.medium.com%2Fabout&tbnid=VcPE-S-a2JFnMM&vet=12ahUKEwiDiuP4s5L0AhXisWMGHZZ4Bz4QMygAegUIARDYAQ..i&docid=Rr7C795-95-ssM&w=298&h=298&itg=1&q=cere%20logo&ved=2ahUKEwiDiuP4s5L0AhXisWMGHZZ4Bz4QMygAegUIARDYAQ',
+          alignX: 'middle',
+          alignY: 'middle',
+          position: 'front',
+          opacity: 6,
         },
         scales: {
           xAxes: [
@@ -44,7 +54,7 @@ export default {
               ticks: {
                 beginAtZero: true,
                 suggestedMin: 0,
-                // suggestedMax: 100,
+                suggestedMax: 1,
               },
               gridLines: {
                 display: true,
@@ -88,56 +98,41 @@ export default {
         ],
         datasets: [
           {
-            labels: 'Extrinsics Count',
+            labels: 'Extrinsic',
             data: [
               '37',
-              '42',
-              '45',
-              '63',
-              '74',
-              '471',
-              '547',
-              '575',
-              '608',
-              '675',
-              '687',
-              '710',
-              '754',
-              '789',
-              '796',
-              '797',
-              '800',
-              '807',
-              '846',
-              '872',
-              '878',
-              '890',
-              '910',
-              '925',
-              '951',
+              '5',
+              '3',
+              '18',
+              '11',
+              '397',
+              '76',
+              '28',
+              '33',
+              '67',
+              '12',
+              '23',
+              '44',
+              '35',
+              '7',
+              '1',
+              '3',
+              '7',
+              '39',
+              '26',
+              '6',
+              '12',
+              '15',
+              '26',
             ],
-            backgroundColor: '#B70F93',
+            backgroundColor: 'rgba(230, 0, 122, 0.8)',
             borderColor: 'rgba(230, 0, 122, 0.8)',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            fill: false,
+            fill: true,
             showLine: true,
           },
         ],
       }
-      // return {
-      //   labels: this.extrinsic.map(({ day }) => day),
-      //   datasets: [
-      //     {
-      //       labels: 'Extrinsic',
-      //       data: this.extrinsic.map(({ count }) => count),
-      //       backgroundColor: 'rgba(255, 255, 255, 0.8)',
-      //       borderColor: 'rgba(230, 0, 122, 0.8)',
-      //       hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-      //       fill: false,
-      //       showLine: true,
-      //     },
-      //   ],
-      // }
     },
   },
 }
