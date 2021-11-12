@@ -22,7 +22,7 @@ export default {
         },
         title: {
           display: true,
-          text: 'Signed esxtrinsics',
+          text: 'Signed extrinsics',
           fontSize: 18,
           fontColor: '#000',
           fontStyle: 'lighter',
