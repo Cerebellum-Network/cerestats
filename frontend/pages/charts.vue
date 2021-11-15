@@ -10,9 +10,9 @@
         <b-col class="mb-5">
           <ExtrinsicChart :extrinsic="dataToShow" />
         </b-col>
-        <b-col class="mb-5">
+        <!-- <b-col class="mb-5">
           <ExtrinsicDayChart />
-        </b-col>
+        </b-col> -->
       </b-container>
     </section>
   </div>
@@ -21,12 +21,12 @@
 <script>
 import { gql } from 'graphql-tag'
 import ExtrinsicChart from '@/components/validator/charts/ExtrinsicChart.vue'
-import ExtrinsicDayChart from '@/components/validator/charts/ExtrinsicDayChart.vue'
+// import ExtrinsicDayChart from '@/components/validator/charts/ExtrinsicDayChart.vue'
 
 export default {
   components: {
     ExtrinsicChart,
-    ExtrinsicDayChart,
+    // ExtrinsicDayChart,
   },
   data() {
     return {
