@@ -63,15 +63,20 @@ export default {
             },
           ],
         },
-        zoom: {
+        plugins: {
           zoom: {
-            wheel: {
+            pan: {
               enabled: true,
+              mode: 'xy',
             },
-            pinch: {
+            zoom: {
               enabled: true,
+              mode: 'xy',
             },
-            mode: 'xy',
+            limits: {
+              x: 'original',
+              y: 'original',
+            },
           },
         },
       },

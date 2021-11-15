@@ -24,9 +24,10 @@ export default {
         title: {
           display: true,
           text: 'Signed extrinsics',
-          fontSize: 18,
+          fontSize: 20,
           fontColor: '#000',
-          fontStyle: 'lighter',
+          fontStyle: 'bold',
+          lineHeight: 2,
         },
         tooltips: {
           backgroundColor: '#000000',
@@ -54,14 +55,17 @@ export default {
             },
           ],
         },
-        zoom: {
-          wheel: {
-            enabled: true,
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+            },
+            zoom: {
+              enabled: true,
+              mode: 'xy',
+            },
           },
-          pinch: {
-            enabled: true,
-          },
-          mode: 'xy',
         },
       },
     }
