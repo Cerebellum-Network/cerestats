@@ -63,6 +63,17 @@ export default {
             },
           ],
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'xy',
+          },
+        },
       },
     }
   },

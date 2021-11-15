@@ -3,6 +3,7 @@
 </template>
 <script>
 import LineChart from '@/components/charts/LineChart.js'
+
 export default {
   components: {
     LineChart,
@@ -52,6 +53,15 @@ export default {
               },
             },
           ],
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: 'xy',
         },
       },
     }
