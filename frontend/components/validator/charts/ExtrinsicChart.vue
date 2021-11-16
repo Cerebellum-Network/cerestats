@@ -92,33 +92,33 @@ export default {
               '181',
               '346',
               '421',
-              '261',
-              '307',
-              '232',
-              '380',
-              '444',
-              '337',
-              '365',
-              '174',
-              '195',
-              '190',
-              '358',
-              '427',
-              '24',
-              '377',
-              '250',
-              '321',
-              '150',
-              '46',
-              '271',
-              '138',
-              '356',
-              '498',
-              '417',
-              '425',
-              '447',
-              '364',
-              '478',
+              '561',
+              '607',
+              '732',
+              '880',
+              '944',
+              '1037',
+              '1165',
+              '1274',
+              '1395',
+              '1490',
+              '1558',
+              '1627',
+              '1724',
+              '1877',
+              '1950',
+              '2021',
+              '2150',
+              '2246',
+              '2371',
+              '2438',
+              '2556',
+              '2698',
+              '2717',
+              '2825',
+              '2947',
+              '3064',
+              '3178',
             ],
             backgroundColor: '#BD32A7',
             borderColor: '#BD32A7',
@@ -156,7 +156,7 @@ export default {
                 padding: 10,
               },
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: 'Date',
                 padding: 10,
                 fontSize: 12,
@@ -311,33 +311,33 @@ export default {
               '181',
               '346',
               '421',
-              '261',
-              '307',
-              '232',
-              '380',
-              '444',
-              '337',
-              '365',
-              '174',
-              '195',
-              '190',
-              '358',
-              '427',
-              '24',
-              '377',
-              '250',
-              '321',
-              '150',
-              '46',
-              '271',
-              '138',
-              '356',
-              '498',
-              '417',
-              '425',
-              '447',
-              '364',
-              '478',
+              '561',
+              '607',
+              '732',
+              '880',
+              '944',
+              '1037',
+              '1165',
+              '1274',
+              '1395',
+              '1490',
+              '1558',
+              '1627',
+              '1724',
+              '1877',
+              '1950',
+              '2021',
+              '2150',
+              '2246',
+              '2371',
+              '2438',
+              '2556',
+              '2698',
+              '2717',
+              '2825',
+              '2947',
+              '3064',
+              '3178',
             ],
             backgroundColor: '#BD32A7',
             borderColor: '#BD32A7',
@@ -346,61 +346,6 @@ export default {
             showLine: true,
           },
         ],
-      }
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                suggestedMin: 0,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Number of extrinsics',
-              },
-            },
-          ],
-        },
       }
     },
     months() {
@@ -601,61 +546,6 @@ export default {
           },
         ],
       }
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                suggestedMin: 0,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
     },
     year() {
       this.activeButton = '1y'
@@ -699,61 +589,6 @@ export default {
           },
         ],
       }
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Month',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                suggestedMin: 0,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
     },
     all() {
       this.activeButton = 'all'
@@ -770,61 +605,6 @@ export default {
             showLine: true,
           },
         ],
-      }
-      // this.chartOptions.scales.xAxes[0].scaleLabel.labelString = 'Year'
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Year',
-                padding: 10,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-                suggestedMin: 0,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Number of extrinsics',
-              },
-            },
-          ],
-        },
       }
     },
   },
