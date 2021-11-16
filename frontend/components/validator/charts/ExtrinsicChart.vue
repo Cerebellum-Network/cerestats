@@ -4,26 +4,34 @@
       <button
         type="button"
         class="btn"
-        :class="{ active: activeButton === 'btn1' }"
-        @click="days"
-      >
-        7 days
-      </button>
-      <button
-        type="button"
-        class="btn"
-        :class="{ active: activeButton === 'btn2' }"
+        :class="{ active: activeButton === '1m' }"
         @click="month"
       >
-        Month
+        1M
       </button>
       <button
         type="button"
         class="btn"
-        :class="{ active: activeButton === 'btn3' }"
+        :class="{ active: activeButton === '3m' }"
+        @click="months"
+      >
+        3M
+      </button>
+      <button
+        type="button"
+        class="btn"
+        :class="{ active: activeButton === '1y' }"
         @click="year"
       >
-        Year
+        1Y
+      </button>
+      <button
+        type="button"
+        class="btn"
+        :class="{ active: activeButton === 'all' }"
+        @click="all"
+      >
+        ALL
       </button>
     </b-button-group>
     <LineChart :chart-data="chartData" :options="chartOptions" :height="200" />
@@ -44,9 +52,30 @@ export default {
   },
   data() {
     return {
-      activeButton: 'btn1',
+      activeButton: '1m',
       chartData: {
         labels: [
+          '2021-10-17',
+          '2021-10-18',
+          '2021-10-19',
+          '2021-10-21',
+          '2021-10-22',
+          '2021-10-23',
+          '2021-10-24',
+          '2021-10-25',
+          '2021-10-26',
+          '2021-10-27',
+          '2021-10-28',
+          '2021-10-29',
+          '2021-10-30',
+          '2021-10-31',
+          '2021-11-01',
+          '2021-11-02',
+          '2021-11-03',
+          '2021-11-04',
+          '2021-11-05',
+          '2021-11-06',
+          '2021-11-07',
           '2021-11-08',
           '2021-11-09',
           '2021-11-10',
@@ -54,13 +83,45 @@ export default {
           '2021-11-12',
           '2021-11-13',
           '2021-11-14',
+          '2021-11-15',
         ],
         datasets: [
           {
             labels: 'Extrinsics Count',
-            data: ['18', '48', '59', '65', '74', '82', '98'],
-            backgroundColor: '#B70F93',
-            borderColor: 'rgba(230, 0, 122, 0.8)',
+            data: [
+              '181',
+              '346',
+              '421',
+              '261',
+              '307',
+              '232',
+              '380',
+              '444',
+              '337',
+              '365',
+              '174',
+              '195',
+              '190',
+              '358',
+              '427',
+              '24',
+              '377',
+              '250',
+              '321',
+              '150',
+              '46',
+              '271',
+              '138',
+              '356',
+              '498',
+              '417',
+              '425',
+              '447',
+              '364',
+              '478',
+            ],
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
             fill: false,
             showLine: true,
@@ -209,10 +270,31 @@ export default {
   //   },
   // },
   methods: {
-    days() {
-      this.activeButton = 'btn1'
+    month() {
+      this.activeButton = '1m'
       this.chartData = {
         labels: [
+          '2021-10-17',
+          '2021-10-18',
+          '2021-10-19',
+          '2021-10-21',
+          '2021-10-22',
+          '2021-10-23',
+          '2021-10-24',
+          '2021-10-25',
+          '2021-10-26',
+          '2021-10-27',
+          '2021-10-28',
+          '2021-10-29',
+          '2021-10-30',
+          '2021-10-31',
+          '2021-11-01',
+          '2021-11-02',
+          '2021-11-03',
+          '2021-11-04',
+          '2021-11-05',
+          '2021-11-06',
+          '2021-11-07',
           '2021-11-08',
           '2021-11-09',
           '2021-11-10',
@@ -220,22 +302,363 @@ export default {
           '2021-11-12',
           '2021-11-13',
           '2021-11-14',
+          '2021-11-15',
         ],
         datasets: [
           {
             labels: 'Extrinsics Count',
-            data: ['18', '48', '59', '65', '74', '82', '98'],
-            backgroundColor: '#B70F93',
-            borderColor: 'rgba(230, 0, 122, 0.8)',
+            data: [
+              '181',
+              '346',
+              '421',
+              '261',
+              '307',
+              '232',
+              '380',
+              '444',
+              '337',
+              '365',
+              '174',
+              '195',
+              '190',
+              '358',
+              '427',
+              '24',
+              '377',
+              '250',
+              '321',
+              '150',
+              '46',
+              '271',
+              '138',
+              '356',
+              '498',
+              '417',
+              '425',
+              '447',
+              '364',
+              '478',
+            ],
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
             fill: false,
             showLine: true,
           },
         ],
       }
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                suggestedMin: 0,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
     },
-    month() {
-      this.activeButton = 'btn2'
+    months() {
+      this.activeButton = '3m'
+      this.chartData = {
+        labels: [
+          '2021-09-18',
+          '2021-09-19',
+          '2021-09-20',
+          '2021-09-21',
+          '2021-09-22',
+          '2021-09-23',
+          '2021-09-24',
+          '2021-09-25',
+          '2021-09-26',
+          '2021-09-27',
+          '2021-09-28',
+          '2021-09-29',
+          '2021-09-30',
+          '2021-10-01',
+          '2021-10-02',
+          '2021-10-03',
+          '2021-10-04',
+          '2021-10-05',
+          '2021-10-06',
+          '2021-10-07',
+          '2021-10-08',
+          '2021-10-09',
+          '2021-10-10',
+          '2021-10-11',
+          '2021-10-12',
+          '2021-10-13',
+          '2021-10-14',
+          '2021-10-15',
+          '2021-10-16',
+          '2021-10-17',
+          '2021-10-18',
+          '2021-10-19',
+          '2021-10-20',
+          '2021-10-21',
+          '2021-10-22',
+          '2021-10-23',
+          '2021-10-24',
+          '2021-10-25',
+          '2021-10-26',
+          '2021-10-27',
+          '2021-10-28',
+          '2021-10-29',
+          '2021-10-30',
+          '2021-10-31',
+          '2021-11-01',
+          '2021-11-02',
+          '2021-11-03',
+          '2021-11-04',
+          '2021-11-05',
+          '2021-11-06',
+          '2021-11-07',
+          '2021-11-08',
+          '2021-11-09',
+          '2021-11-10',
+          '2021-11-11',
+          '2021-11-12',
+          '2021-11-13',
+          '2021-11-14',
+          '2021-11-15',
+          '2021-11-16',
+          '2021-11-17',
+          '2021-11-18',
+          '2021-11-19',
+          '2021-11-20',
+          '2021-11-21',
+          '2021-11-22',
+          '2021-11-23',
+          '2021-11-24',
+          '2021-11-25',
+          '2021-11-26',
+          '2021-11-27',
+          '2021-11-28',
+          '2021-11-29',
+          '2021-11-30',
+          '2021-12-01',
+          '2021-12-02',
+          '2021-12-03',
+          '2021-12-04',
+          '2021-12-05',
+          '2021-12-06',
+          '2021-12-07',
+          '2021-12-08',
+          '2021-12-09',
+          '2021-12-10',
+          '2021-12-11',
+          '2021-12-12',
+          '2021-12-13',
+          '2021-12-14',
+          '2021-12-15',
+          '2021-12-16',
+        ],
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data: [
+              '728',
+              '310',
+              '114',
+              '927',
+              '455',
+              '868',
+              '602',
+              '171',
+              '184',
+              '842',
+              '956',
+              '982',
+              '883',
+              '786',
+              '79',
+              '645',
+              '451',
+              '975',
+              '435',
+              '790',
+              '840',
+              '591',
+              '615',
+              '816',
+              '928',
+              '632',
+              '698',
+              '870',
+              '560',
+              '114',
+              '210',
+              '225',
+              '534',
+              '854',
+              '354',
+              '853',
+              '722',
+              '768',
+              '625',
+              '512',
+              '619',
+              '66',
+              '763',
+              '690',
+              '819',
+              '63',
+              '772',
+              '54',
+              '297',
+              '812',
+              '330',
+              '874',
+              '488',
+              '779',
+              '447',
+              '871',
+              '653',
+              '206',
+              '948',
+              '656',
+              '278',
+              '601',
+              '387',
+              '664',
+              '491',
+              '954',
+              '42',
+              '156',
+              '14',
+              '724',
+              '915',
+              '614',
+              '394',
+              '192',
+              '869',
+              '595',
+              '646',
+              '320',
+              '400',
+              '412',
+              '127',
+              '714',
+              '488',
+              '889',
+              '465',
+              '943',
+              '486',
+              '789',
+              '108',
+              '798',
+            ],
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                suggestedMin: 0,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
+    },
+    year() {
+      this.activeButton = '1y'
       this.chartData = {
         labels: [
           'January',
@@ -268,8 +691,8 @@ export default {
               '980',
               '1090',
             ],
-            backgroundColor: '#B70F93',
-            borderColor: 'rgba(230, 0, 122, 0.8)',
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
             fill: false,
             showLine: true,
@@ -307,6 +730,7 @@ export default {
                 display: true,
                 labelString: 'Month',
                 padding: 10,
+                fontSize: 12,
               },
             },
           ],
@@ -331,22 +755,23 @@ export default {
         },
       }
     },
-    year() {
-      this.activeButton = 'btn3'
+    all() {
+      this.activeButton = 'all'
       this.chartData = {
         labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021'],
         datasets: [
           {
             labels: 'Extrinsics Count',
             data: ['100', '175', '250', '360', '470', '560', '630'],
-            backgroundColor: '#B70F93',
-            borderColor: 'rgba(230, 0, 122, 0.8)',
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
             fill: false,
             showLine: true,
           },
         ],
       }
+      // this.chartOptions.scales.xAxes[0].scaleLabel.labelString = 'Year'
       this.chartOptions = {
         responsive: true,
         legend: {
@@ -412,7 +837,7 @@ export default {
 }
 .active {
   border: none !important;
-  background-color: #b70f93 !important;
+  background-color: #131b32 !important;
   color: white !important;
 }
 </style>
