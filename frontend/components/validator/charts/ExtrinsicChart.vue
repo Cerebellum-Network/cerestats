@@ -661,18 +661,18 @@ export default {
       this.activeButton = '1y'
       this.chartData = {
         labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
           'October',
-          'November',
+          'September',
+          'August',
+          'July',
+          'June',
+          'May',
+          'April',
+          'March',
+          'February',
+          'January',
           'December',
+          'November',
         ],
         datasets: [
           {
