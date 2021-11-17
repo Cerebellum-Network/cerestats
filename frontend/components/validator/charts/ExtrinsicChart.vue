@@ -11,7 +11,7 @@
           :class="{ active: activeButton === '1m' }"
           @click="month"
         >
-          1M
+          30D
         </button>
         <button
           type="button"
@@ -35,7 +35,7 @@
           :class="{ active: activeButton === 'all' }"
           @click="all"
         >
-          ALL
+          Max
         </button>
       </b-button-group>
       <LineChart
@@ -358,7 +358,40 @@ canvas {
 #line {
   background-image: url('../../../static/img/cere-logo-name.png');
   background-repeat: no-repeat;
-  background-position: 85% 85%;
-  background-size: 150px;
+  background-position: 10% 10%;
+  background-size: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+  #line {
+    background-size: 50px;
+    background-position: 20% 30%;
+  }
+}
+@media only screen and (min-width: 600px) {
+  #line {
+    background-size: 80px;
+    background-position: 10% 30%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #line {
+    background-size: 100px;
+    background-position: 14% 20%;
+  }
+}
+@media only screen and (min-width: 992px) {
+  #line {
+    background-size: 150px;
+    background-position: 11% 10%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  #line {
+    background-size: 200px;
+    background-position: 9% 10%;
+  }
 }
 </style>
