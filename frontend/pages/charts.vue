@@ -7,7 +7,7 @@
             <h1>{{ $t('pages.chart.title') }}</h1>
           </b-col>
         </b-row>
-        <b-col class="mb-5">
+        <b-col class="col-xl-12 mb-5">
           <ExtrinsicChart />
         </b-col>
         <!-- <b-col class="mb-5">

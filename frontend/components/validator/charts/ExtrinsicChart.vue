@@ -116,7 +116,6 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                suggestedMin: 0,
                 fontSize: 12,
                 padding: 10,
               },
@@ -293,7 +292,7 @@ export default {
       extrinsicsMonthCount: {
         query: gql`
           query MyQuery($limit: Int!) {
-            signed_extrinsics_per_day(limit: $limit) {
+            signed_extrinsics_per_day(limit: $limit, order_by: { when: desc }) {
               volume
               when
             }
@@ -321,7 +320,7 @@ export default {
             )
           const accumulateCount = accumulate(countArray)
           this.chartData = {
-            labels: labelArray,
+            labels: labelArray.reverse(),
             datasets: [
               {
                 labels: 'Extrinsics Count',
@@ -370,8 +369,8 @@ canvas {
 }
 @media only screen and (min-width: 600px) {
   #line {
-    background-size: 80px;
-    background-position: 10% 30%;
+    background-size: 70px;
+    background-position: 20% 30%;
   }
 }
 
