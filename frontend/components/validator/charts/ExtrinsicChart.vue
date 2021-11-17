@@ -1,130 +1,74 @@
 <template>
   <div>
-    <b-button-group size="sm" class="mt-5">
-      <button
-        type="button"
-        class="btn"
-        :class="{ active: activeButton === '1m' }"
-        @click="month"
-      >
-        1M
-      </button>
-      <button
-        type="button"
-        class="btn"
-        :class="{ active: activeButton === '3m' }"
-        @click="months"
-      >
-        3M
-      </button>
-      <button
-        type="button"
-        class="btn"
-        :class="{ active: activeButton === '1y' }"
-        @click="year"
-      >
-        1Y
-      </button>
-      <button
-        type="button"
-        class="btn"
-        :class="{ active: activeButton === 'all' }"
-        @click="all"
-      >
-        ALL
-      </button>
-    </b-button-group>
-    <LineChart
-      id="line"
-      :chart-data="chartData"
-      :options="chartOptions"
-      :height="200"
-    />
+    <div v-if="loading" class="text-center py-4">
+      <Loading />
+    </div>
+    <div v-else>
+      <b-button-group size="sm" class="mt-5">
+        <button
+          type="button"
+          class="btn"
+          :class="{ active: activeButton === '1m' }"
+          @click="month"
+        >
+          1M
+        </button>
+        <button
+          type="button"
+          class="btn"
+          :class="{ active: activeButton === '3m' }"
+          @click="months"
+        >
+          3M
+        </button>
+        <button
+          type="button"
+          class="btn"
+          :class="{ active: activeButton === '1y' }"
+          @click="year"
+        >
+          1Y
+        </button>
+        <button
+          type="button"
+          class="btn"
+          :class="{ active: activeButton === 'all' }"
+          @click="all"
+        >
+          ALL
+        </button>
+      </b-button-group>
+      <LineChart
+        id="line"
+        :chart-data="chartData"
+        :options="chartOptions"
+        :height="200"
+      />
+    </div>
   </div>
 </template>
 <script>
+import { gql } from 'graphql-tag'
 import LineChart from '@/components/charts/LineChart.js'
+import Loading from '@/components/Loading.vue'
 
 export default {
   components: {
     LineChart,
-  },
-  props: {
-    extrinsic: {
-      type: Array,
-      default: () => [],
-    },
+    Loading,
   },
   data() {
     return {
+      loading: true,
+      extrinsicsData: null,
       activeButton: '1m',
+      limit: 30,
       chartData: {
-        labels: [
-          '2021-10-17',
-          '2021-10-18',
-          '2021-10-19',
-          '2021-10-21',
-          '2021-10-22',
-          '2021-10-23',
-          '2021-10-24',
-          '2021-10-25',
-          '2021-10-26',
-          '2021-10-27',
-          '2021-10-28',
-          '2021-10-29',
-          '2021-10-30',
-          '2021-10-31',
-          '2021-11-01',
-          '2021-11-02',
-          '2021-11-03',
-          '2021-11-04',
-          '2021-11-05',
-          '2021-11-06',
-          '2021-11-07',
-          '2021-11-08',
-          '2021-11-09',
-          '2021-11-10',
-          '2021-11-11',
-          '2021-11-12',
-          '2021-11-13',
-          '2021-11-14',
-          '2021-11-15',
-        ],
+        labels: [],
         datasets: [
           {
             labels: 'Extrinsics Count',
-            data: [
-              '181',
-              '346',
-              '421',
-              '561',
-              '607',
-              '732',
-              '880',
-              '944',
-              '1037',
-              '1165',
-              '1274',
-              '1395',
-              '1490',
-              '1558',
-              '1627',
-              '1724',
-              '1877',
-              '1950',
-              '2021',
-              '2150',
-              '2246',
-              '2371',
-              '2438',
-              '2556',
-              '2698',
-              '2717',
-              '2825',
-              '2947',
-              '3064',
-              '3178',
-            ],
+            data: [],
             backgroundColor: '#BD32A7',
             borderColor: '#BD32A7',
             hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -277,280 +221,11 @@ export default {
   methods: {
     month() {
       this.activeButton = '1m'
-      this.chartData = {
-        labels: [
-          '2021-10-17',
-          '2021-10-18',
-          '2021-10-19',
-          '2021-10-21',
-          '2021-10-22',
-          '2021-10-23',
-          '2021-10-24',
-          '2021-10-25',
-          '2021-10-26',
-          '2021-10-27',
-          '2021-10-28',
-          '2021-10-29',
-          '2021-10-30',
-          '2021-10-31',
-          '2021-11-01',
-          '2021-11-02',
-          '2021-11-03',
-          '2021-11-04',
-          '2021-11-05',
-          '2021-11-06',
-          '2021-11-07',
-          '2021-11-08',
-          '2021-11-09',
-          '2021-11-10',
-          '2021-11-11',
-          '2021-11-12',
-          '2021-11-13',
-          '2021-11-14',
-          '2021-11-15',
-        ],
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: [
-              '181',
-              '346',
-              '421',
-              '561',
-              '607',
-              '732',
-              '880',
-              '944',
-              '1037',
-              '1165',
-              '1274',
-              '1395',
-              '1490',
-              '1558',
-              '1627',
-              '1724',
-              '1877',
-              '1950',
-              '2021',
-              '2150',
-              '2246',
-              '2371',
-              '2438',
-              '2556',
-              '2698',
-              '2717',
-              '2825',
-              '2947',
-              '3064',
-              '3178',
-            ],
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      this.limit = 30
     },
     months() {
       this.activeButton = '3m'
-      this.chartData = {
-        labels: [
-          '2021-09-18',
-          '2021-09-19',
-          '2021-09-20',
-          '2021-09-21',
-          '2021-09-22',
-          '2021-09-23',
-          '2021-09-24',
-          '2021-09-25',
-          '2021-09-26',
-          '2021-09-27',
-          '2021-09-28',
-          '2021-09-29',
-          '2021-09-30',
-          '2021-10-01',
-          '2021-10-02',
-          '2021-10-03',
-          '2021-10-04',
-          '2021-10-05',
-          '2021-10-06',
-          '2021-10-07',
-          '2021-10-08',
-          '2021-10-09',
-          '2021-10-10',
-          '2021-10-11',
-          '2021-10-12',
-          '2021-10-13',
-          '2021-10-14',
-          '2021-10-15',
-          '2021-10-16',
-          '2021-10-17',
-          '2021-10-18',
-          '2021-10-19',
-          '2021-10-20',
-          '2021-10-21',
-          '2021-10-22',
-          '2021-10-23',
-          '2021-10-24',
-          '2021-10-25',
-          '2021-10-26',
-          '2021-10-27',
-          '2021-10-28',
-          '2021-10-29',
-          '2021-10-30',
-          '2021-10-31',
-          '2021-11-01',
-          '2021-11-02',
-          '2021-11-03',
-          '2021-11-04',
-          '2021-11-05',
-          '2021-11-06',
-          '2021-11-07',
-          '2021-11-08',
-          '2021-11-09',
-          '2021-11-10',
-          '2021-11-11',
-          '2021-11-12',
-          '2021-11-13',
-          '2021-11-14',
-          '2021-11-15',
-          '2021-11-16',
-          '2021-11-17',
-          '2021-11-18',
-          '2021-11-19',
-          '2021-11-20',
-          '2021-11-21',
-          '2021-11-22',
-          '2021-11-23',
-          '2021-11-24',
-          '2021-11-25',
-          '2021-11-26',
-          '2021-11-27',
-          '2021-11-28',
-          '2021-11-29',
-          '2021-11-30',
-          '2021-12-01',
-          '2021-12-02',
-          '2021-12-03',
-          '2021-12-04',
-          '2021-12-05',
-          '2021-12-06',
-          '2021-12-07',
-          '2021-12-08',
-          '2021-12-09',
-          '2021-12-10',
-          '2021-12-11',
-          '2021-12-12',
-          '2021-12-13',
-          '2021-12-14',
-          '2021-12-15',
-          '2021-12-16',
-        ],
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: [
-              '728',
-              '310',
-              '114',
-              '927',
-              '455',
-              '868',
-              '602',
-              '171',
-              '184',
-              '842',
-              '956',
-              '982',
-              '883',
-              '786',
-              '79',
-              '645',
-              '451',
-              '975',
-              '435',
-              '790',
-              '840',
-              '591',
-              '615',
-              '816',
-              '928',
-              '632',
-              '698',
-              '870',
-              '560',
-              '114',
-              '210',
-              '225',
-              '534',
-              '854',
-              '354',
-              '853',
-              '722',
-              '768',
-              '625',
-              '512',
-              '619',
-              '66',
-              '763',
-              '690',
-              '819',
-              '63',
-              '772',
-              '54',
-              '297',
-              '812',
-              '330',
-              '874',
-              '488',
-              '779',
-              '447',
-              '871',
-              '653',
-              '206',
-              '948',
-              '656',
-              '278',
-              '601',
-              '387',
-              '664',
-              '491',
-              '954',
-              '42',
-              '156',
-              '14',
-              '724',
-              '915',
-              '614',
-              '394',
-              '192',
-              '869',
-              '595',
-              '646',
-              '320',
-              '400',
-              '412',
-              '127',
-              '714',
-              '488',
-              '889',
-              '465',
-              '943',
-              '486',
-              '789',
-              '108',
-              '798',
-            ],
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      this.limit = 90
     },
     year() {
       this.activeButton = '1y'
@@ -611,6 +286,57 @@ export default {
           },
         ],
       }
+    },
+  },
+  apollo: {
+    $subscribe: {
+      extrinsicsMonthCount: {
+        query: gql`
+          query MyQuery($limit: Int!) {
+            signed_extrinsics_per_day(limit: $limit) {
+              volume
+              when
+            }
+          }
+        `,
+        variables() {
+          return {
+            limit: this.limit,
+          }
+        },
+        result({ data }) {
+          this.extrinsicsData = data.signed_extrinsics_per_day
+          const countArray = []
+          const labelArray = []
+          this.extrinsicsData.forEach((count) => {
+            countArray.push(count.volume)
+            labelArray.push(count.when)
+          })
+          const accumulate = (arr) =>
+            arr.map(
+              (
+                (sum) => (value) =>
+                  (sum += value)
+              )(0)
+            )
+          const accumulateCount = accumulate(countArray)
+          this.chartData = {
+            labels: labelArray,
+            datasets: [
+              {
+                labels: 'Extrinsics Count',
+                data: accumulateCount,
+                backgroundColor: '#BD32A7',
+                borderColor: '#BD32A7',
+                hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+                fill: false,
+                showLine: true,
+              },
+            ],
+          }
+          this.loading = false
+        },
+      },
     },
   },
 }

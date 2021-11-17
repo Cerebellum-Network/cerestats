@@ -8,7 +8,7 @@
           </b-col>
         </b-row>
         <b-col class="mb-5">
-          <ExtrinsicChart :extrinsic="dataToShow" />
+          <ExtrinsicChart />
         </b-col>
         <!-- <b-col class="mb-5">
           <ExtrinsicDayChart />
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { gql } from 'graphql-tag'
 import ExtrinsicChart from '@/components/validator/charts/ExtrinsicChart.vue'
 // import ExtrinsicDayChart from '@/components/validator/charts/ExtrinsicDayChart.vue'
 
@@ -27,11 +26,6 @@ export default {
   components: {
     ExtrinsicChart,
     // ExtrinsicDayChart,
-  },
-  data() {
-    return {
-      dataToShow: [],
-    }
   },
   head() {
     return {
@@ -44,25 +38,6 @@ export default {
         },
       ],
     }
-  },
-  apollo: {
-    $subscribe: {
-      banner: {
-        query: gql`
-          query count {
-            extrinsic_count(limit: 30) {
-              count
-              day
-            }
-          }
-        `,
-        result({ data }) {
-          data.extrinsic_count.forEach((element) => {
-            this.dataToShow.push({ count: element.count, day: element.day })
-          })
-        },
-      },
-    },
   },
 }
 </script>
