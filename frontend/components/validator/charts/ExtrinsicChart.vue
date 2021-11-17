@@ -34,7 +34,12 @@
         ALL
       </button>
     </b-button-group>
-    <LineChart :chart-data="chartData" :options="chartOptions" :height="200" />
+    <LineChart
+      id="line"
+      :chart-data="chartData"
+      :options="chartOptions"
+      :height="200"
+    />
   </div>
 </template>
 <script>
@@ -619,5 +624,15 @@ export default {
   border: none !important;
   background-color: #131b32 !important;
   color: white !important;
+}
+canvas {
+  background-color: black;
+}
+
+#line {
+  background-image: url('../../../static/img/cere-logo-name.png');
+  background-repeat: no-repeat;
+  background-position: 85% 85%;
+  background-size: 150px;
 }
 </style>
