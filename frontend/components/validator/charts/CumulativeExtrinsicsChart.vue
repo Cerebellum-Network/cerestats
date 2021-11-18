@@ -32,8 +32,8 @@
         <button
           type="button"
           class="btn"
-          :class="{ active: activeButton === 'all' }"
-          @click="all"
+          :class="{ active: activeButton === 'max' }"
+          @click="max"
         >
           Max
         </button>
@@ -140,6 +140,9 @@ export default {
               },
             },
           ],
+        },
+        animation: {
+          duration: 300,
         },
       },
     }
@@ -352,8 +355,8 @@ export default {
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsYearCount.refresh()
     },
-    all() {
-      this.activeButton = 'all'
+    max() {
+      this.activeButton = 'max'
       this.yearLimit = 12
       this.chartOptions = {
         responsive: true,
@@ -417,9 +420,6 @@ export default {
           ],
         },
       }
-      // this.chartOptions.scales.xAxes[0].time.displayFormats = {
-      //   month: "MMM' YY",
-      // }
       this.$apollo.subscriptions.extrinsicsYearCount.skip = false
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsYearCount.refresh()

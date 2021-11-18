@@ -8,24 +8,19 @@
           </b-col>
         </b-row>
         <b-col class="col-xl-12 mb-5">
-          <ExtrinsicChart />
+          <CumulativeExtrinsicsChart />
         </b-col>
-        <!-- <b-col class="mb-5">
-          <ExtrinsicDayChart />
-        </b-col> -->
       </b-container>
     </section>
   </div>
 </template>
 
 <script>
-import ExtrinsicChart from '@/components/validator/charts/ExtrinsicChart.vue'
-// import ExtrinsicDayChart from '@/components/validator/charts/ExtrinsicDayChart.vue'
+import CumulativeExtrinsicsChart from '@/components/validator/charts/CumulativeExtrinsicsChart.vue'
 
 export default {
   components: {
-    ExtrinsicChart,
-    // ExtrinsicDayChart,
+    CumulativeExtrinsicsChart,
   },
   head() {
     return {
