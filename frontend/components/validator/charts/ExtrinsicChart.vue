@@ -136,7 +136,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Number of extrinsics',
+                labelString: 'Cumulative number of extrinsics',
               },
             },
           ],
@@ -202,7 +202,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Number of extrinsics',
+                labelString: 'Cumulative number of extrinsics',
               },
             },
           ],
@@ -271,7 +271,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Number of extrinsics',
+                labelString: 'Cumulative number of extrinsics',
               },
             },
           ],
@@ -308,7 +308,7 @@ export default {
               type: 'time',
               time: {
                 displayFormats: {
-                  month: "MMM' YY",
+                  month: "MMM 'YY",
                 },
               },
               distribution: 'series',
@@ -342,7 +342,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Number of extrinsics',
+                labelString: 'Cumulative number of extrinsics',
               },
             },
           ],
@@ -377,7 +377,7 @@ export default {
               type: 'time',
               time: {
                 displayFormats: {
-                  month: "MMM' YY",
+                  month: "MMM 'YY",
                 },
               },
               distribution: 'series',
@@ -411,7 +411,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Number of extrinsics',
+                labelString: 'Cumulative number of extrinsics',
               },
             },
           ],
@@ -546,7 +546,7 @@ canvas {
 }
 
 #line {
-  background-image: url('../../../static/img/cere-logo-name.png');
+  background-image: url('../../../static/img/cere-charts-watermark.png');
   background-repeat: no-repeat;
   background-position: 10% 10%;
   background-size: 200px;
