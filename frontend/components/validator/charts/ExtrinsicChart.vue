@@ -99,10 +99,13 @@ export default {
         scales: {
           xAxes: [
             {
-              // type: 'time',
-              // time: {
-              //   unit: 'day',
-              // },
+              type: 'time',
+              time: {
+                displayFormats: {
+                  day: 'D. MMM',
+                },
+              },
+              distribution: 'series',
               gridLines: {
                 display: true,
                 color: 'rgba(200, 200, 200, 0.4)',
@@ -143,6 +146,68 @@ export default {
   },
   methods: {
     month() {
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  day: 'D. MMM',
+                },
+              },
+              distribution: 'series',
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                steps: 10,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
       this.$apollo.subscriptions.extrinsicsYearCount.skip = true
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
@@ -150,6 +215,68 @@ export default {
       this.limit = 30
     },
     months() {
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  day: 'D. MMM',
+                },
+              },
+              distribution: 'series',
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                steps: 10,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
       this.$apollo.subscriptions.extrinsicsYearCount.skip = true
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
@@ -159,7 +286,68 @@ export default {
     year() {
       this.yearLimit = 12
       this.activeButton = '1y'
-      console.log(this.$apollo.subscriptions.extrinsicsYearCount.skip)
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  month: "MMM' YY",
+                },
+              },
+              distribution: 'series',
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                steps: 10,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
       this.$apollo.subscriptions.extrinsicsYearCount.skip = false
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsYearCount.refresh()
@@ -167,6 +355,71 @@ export default {
     all() {
       this.activeButton = 'all'
       this.yearLimit = 12
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Signed extrinsics',
+          fontSize: 20,
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  month: "MMM' YY",
+                },
+              },
+              distribution: 'series',
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                steps: 10,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of extrinsics',
+              },
+            },
+          ],
+        },
+      }
+      // this.chartOptions.scales.xAxes[0].time.displayFormats = {
+      //   month: "MMM' YY",
+      // }
       this.$apollo.subscriptions.extrinsicsYearCount.skip = false
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsYearCount.refresh()
@@ -238,35 +491,16 @@ export default {
             limit: this.yearLimit,
           }
         },
-        // Disable the query
         skip() {
           return this.skipQuery
         },
         result({ data }) {
-          console.log(data)
           this.extrinsicsData = data.signed_extrinsics_per_month
           const countArray = []
           const labelArray = []
           this.extrinsicsData.forEach((count) => {
-            console.log(count.when)
-            const tempDate = count.when.split(' ')
-            const month = tempDate[0]
-            const monthMap = new Map()
-            monthMap.set('01', 'Jan')
-            monthMap.set('02', 'Feb')
-            monthMap.set('03', 'Mar')
-            monthMap.set('04', 'Apr')
-            monthMap.set('05', 'May')
-            monthMap.set('06', 'Jun')
-            monthMap.set('07', 'Jul')
-            monthMap.set('08', 'Aug')
-            monthMap.set('09', 'Sep')
-            monthMap.set('10', 'Oct')
-            monthMap.set('11', 'Nov')
-            monthMap.set('12', 'Dec')
-
             countArray.push(count.volume)
-            labelArray.push(`${monthMap.get(month)} ${tempDate[1]}`)
+            labelArray.push(count.when)
           })
           const accumulate = (arr) =>
             arr.map(
@@ -276,7 +510,6 @@ export default {
               )(0)
             )
           const accumulateCount = accumulate(countArray)
-          // this.chartOptions.scales.xAxes[0].time.unit = 'month'
           this.chartData = {
             labels: labelArray,
             datasets: [
@@ -291,7 +524,6 @@ export default {
               },
             ],
           }
-          console.log(this.chartData)
           this.loading = false
         },
       },

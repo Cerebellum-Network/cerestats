@@ -4,18 +4,18 @@ const { reactiveProp } = mixins
 export default {
   extends: Line,
   mixins: [reactiveProp],
-  props: ['options'],
+  props: ['options', 'chartData'],
   mounted() {
-    if (this.$data._chart) {
-      this.$data._chart.destroy()
-    }
+    console.log('mounted')
+    console.log(this.chartData)
+    console.log(this.options)
     this.renderChart(this.chartData, this.options)
   },
   watch: {
     options() {
-      this.$data._chart.options = this.options
-      this.$data._chart.update()
-      // this.renderChart(this.chartData, this.options)
+      console.log(this.chartData)
+      console.log(this.options)
+      this.renderChart(this.chartData, this.options)
     },
   },
 }
