@@ -62,10 +62,10 @@ export default {
       loading: true,
       extrinsicsData: null,
       activeButton: '1m',
-      limit: 30,
-      yearLimit: 12,
-      skipMonthQuery: false,
-      skipQuery: true,
+      dayExtrinsiclimit: 30,
+      monthExtrinsicLimit: 12,
+      skipDayQuery: false,
+      skipMonthQuery: true,
       chartData: {
         labels: [],
         datasets: [
@@ -211,11 +211,11 @@ export default {
           ],
         },
       }
-      this.$apollo.subscriptions.extrinsicsYearCount.skip = true
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
-      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
+      this.$apollo.subscriptions.extrinsicsDayCount.skip = false
+      this.$apollo.subscriptions.extrinsicsDayCount.refresh()
       this.activeButton = '1m'
-      this.limit = 30
+      this.dayExtrinsiclimit = 30
     },
     months() {
       this.chartOptions = {
@@ -280,11 +280,11 @@ export default {
           ],
         },
       }
-      this.$apollo.subscriptions.extrinsicsYearCount.skip = true
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
-      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
+      this.$apollo.subscriptions.extrinsicsDayCount.skip = false
+      this.$apollo.subscriptions.extrinsicsDayCount.refresh()
       this.activeButton = '3m'
-      this.limit = 90
+      this.dayExtrinsiclimit = 90
     },
     year() {
       this.yearLimit = 12
@@ -351,13 +351,13 @@ export default {
           ],
         },
       }
-      this.$apollo.subscriptions.extrinsicsYearCount.skip = false
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
-      this.$apollo.subscriptions.extrinsicsYearCount.refresh()
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
+      this.$apollo.subscriptions.extrinsicsDayCount.skip = true
+      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
     },
     max() {
       this.activeButton = 'max'
-      this.yearLimit = 12
+      this.monthExtrinsicLimit = 12
       this.chartOptions = {
         responsive: true,
         legend: {
@@ -420,16 +420,16 @@ export default {
           ],
         },
       }
-      this.$apollo.subscriptions.extrinsicsYearCount.skip = false
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
-      this.$apollo.subscriptions.extrinsicsYearCount.refresh()
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
+      this.$apollo.subscriptions.extrinsicsDayCount.skip = true
+      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
     },
   },
   apollo: {
     $subscribe: {
-      extrinsicsMonthCount: {
+      extrinsicsDayCount: {
         query: gql`
-          query MyQuery($limit: Int!) {
+          query extrinsicsDayCount($limit: Int!) {
             signed_extrinsics_per_day(limit: $limit, order_by: { when: desc }) {
               volume
               when
@@ -438,11 +438,11 @@ export default {
         `,
         variables() {
           return {
-            limit: this.limit,
+            limit: this.dayExtrinsiclimit,
           }
         },
         skip() {
-          return this.skipMonthQuery
+          return this.skipDayQuery
         },
         result({ data }) {
           this.extrinsicsData = data.signed_extrinsics_per_day
@@ -464,7 +464,6 @@ export default {
             labels: labelArray.reverse(),
             datasets: [
               {
-                labels: 'Extrinsics Count',
                 data: accumulateCount,
                 backgroundColor: '#BD32A7',
                 borderColor: '#BD32A7',
@@ -477,9 +476,9 @@ export default {
           this.loading = false
         },
       },
-      extrinsicsYearCount: {
+      extrinsicsMonthCount: {
         query: gql`
-          query MyQuery($limit: Int!) {
+          query extrinsicsMonthCount($limit: Int!) {
             signed_extrinsics_per_month(limit: $limit) {
               volume
               when
@@ -488,11 +487,11 @@ export default {
         `,
         variables() {
           return {
-            limit: this.yearLimit,
+            limit: this.monthExtrinsicLimit,
           }
         },
         skip() {
-          return this.skipQuery
+          return this.skipMonthQuery
         },
         result({ data }) {
           this.extrinsicsData = data.signed_extrinsics_per_month
@@ -514,7 +513,6 @@ export default {
             labels: labelArray,
             datasets: [
               {
-                labels: 'Extrinsics Count',
                 data: accumulateCount,
                 backgroundColor: '#BD32A7',
                 borderColor: '#BD32A7',
