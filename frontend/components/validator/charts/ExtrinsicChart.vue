@@ -63,6 +63,9 @@ export default {
       extrinsicsData: null,
       activeButton: '1m',
       limit: 30,
+      yearLimit: 12,
+      skipMonthQuery: false,
+      skipQuery: true,
       chartData: {
         labels: [],
         datasets: [
@@ -96,6 +99,10 @@ export default {
         scales: {
           xAxes: [
             {
+              // type: 'time',
+              // time: {
+              //   unit: 'day',
+              // },
               gridLines: {
                 display: true,
                 color: 'rgba(200, 200, 200, 0.4)',
@@ -115,7 +122,8 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true,
+                suggestedMin: 0,
+                steps: 10,
                 fontSize: 12,
                 padding: 10,
               },
@@ -133,158 +141,35 @@ export default {
       },
     }
   },
-  // computed: {
-  //   chartData() {
-  //     return {
-  //       labels: [
-  //         '2021-08-25',
-  //         '2021-08-26',
-  //         '2021-08-27',
-  //         '2021-08-28',
-  //         '2021-08-29',
-  //         '2021-08-30',
-  //         '2021-08-31',
-  //         '2021-09-01',
-  //         '2021-09-02',
-  //         '2021-09-03',
-  //         '2021-09-04',
-  //         '2021-09-05',
-  //         '2021-09-06',
-  //         '2021-09-07',
-  //         '2021-09-08',
-  //         '2021-09-09',
-  //         '2021-09-11',
-  //         '2021-09-12',
-  //         '2021-09-13',
-  //         '2021-09-14',
-  //         '2021-09-15',
-  //         '2021-09-17',
-  //         '2021-09-18',
-  //         '2021-09-19',
-  //         '2021-09-20',
-  //       ],
-  //       datasets: [
-  //         {
-  //           labels: 'Extrinsics Count',
-  //           data: [
-  //             '37',
-  //             '42',
-  //             '45',
-  //             '63',
-  //             '74',
-  //             '471',
-  //             '547',
-  //             '575',
-  //             '608',
-  //             '675',
-  //             '687',
-  //             '710',
-  //             '754',
-  //             '789',
-  //             '796',
-  //             '797',
-  //             '800',
-  //             '807',
-  //             '846',
-  //             '872',
-  //             '878',
-  //             '890',
-  //             '910',
-  //             '925',
-  //             '951',
-  //           ],
-  //           backgroundColor: '#B70F93',
-  //           borderColor: 'rgba(230, 0, 122, 0.8)',
-  //           hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-  //           fill: false,
-  //           showLine: true,
-  //         },
-  //       ],
-  //     }
-  //     // return {
-  //     //   labels: this.extrinsic.map(({ day }) => day),
-  //     //   datasets: [
-  //     //     {
-  //     //       labels: 'Extrinsic',
-  //     //       data: this.extrinsic.map(({ count }) => count),
-  //     //       backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  //     //       borderColor: 'rgba(230, 0, 122, 0.8)',
-  //     //       hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-  //     //       fill: false,
-  //     //       showLine: true,
-  //     //     },
-  //     //   ],
-  //     // }
-  //   },
-  // },
   methods: {
     month() {
+      this.$apollo.subscriptions.extrinsicsYearCount.skip = true
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
+      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
       this.activeButton = '1m'
       this.limit = 30
     },
     months() {
+      this.$apollo.subscriptions.extrinsicsYearCount.skip = true
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
+      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
       this.activeButton = '3m'
       this.limit = 90
     },
     year() {
+      this.yearLimit = 12
       this.activeButton = '1y'
-      this.chartData = {
-        labels: [
-          'October',
-          'September',
-          'August',
-          'July',
-          'June',
-          'May',
-          'April',
-          'March',
-          'February',
-          'January',
-          'December',
-          'November',
-        ],
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: [
-              '100',
-              '175',
-              '250',
-              '360',
-              '470',
-              '560',
-              '630',
-              '700',
-              '780',
-              '890',
-              '980',
-              '1090',
-            ],
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      console.log(this.$apollo.subscriptions.extrinsicsYearCount.skip)
+      this.$apollo.subscriptions.extrinsicsYearCount.skip = false
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
+      this.$apollo.subscriptions.extrinsicsYearCount.refresh()
     },
     all() {
       this.activeButton = 'all'
-      this.chartData = {
-        labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021'],
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: ['100', '175', '250', '360', '470', '560', '630'],
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      this.yearLimit = 12
+      this.$apollo.subscriptions.extrinsicsYearCount.skip = false
+      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
+      this.$apollo.subscriptions.extrinsicsYearCount.refresh()
     },
   },
   apollo: {
@@ -302,6 +187,9 @@ export default {
           return {
             limit: this.limit,
           }
+        },
+        skip() {
+          return this.skipMonthQuery
         },
         result({ data }) {
           this.extrinsicsData = data.signed_extrinsics_per_day
@@ -333,6 +221,77 @@ export default {
               },
             ],
           }
+          this.loading = false
+        },
+      },
+      extrinsicsYearCount: {
+        query: gql`
+          query MyQuery($limit: Int!) {
+            signed_extrinsics_per_month(limit: $limit) {
+              volume
+              when
+            }
+          }
+        `,
+        variables() {
+          return {
+            limit: this.yearLimit,
+          }
+        },
+        // Disable the query
+        skip() {
+          return this.skipQuery
+        },
+        result({ data }) {
+          console.log(data)
+          this.extrinsicsData = data.signed_extrinsics_per_month
+          const countArray = []
+          const labelArray = []
+          this.extrinsicsData.forEach((count) => {
+            console.log(count.when)
+            const tempDate = count.when.split(' ')
+            const month = tempDate[0]
+            const monthMap = new Map()
+            monthMap.set('01', 'Jan')
+            monthMap.set('02', 'Feb')
+            monthMap.set('03', 'Mar')
+            monthMap.set('04', 'Apr')
+            monthMap.set('05', 'May')
+            monthMap.set('06', 'Jun')
+            monthMap.set('07', 'Jul')
+            monthMap.set('08', 'Aug')
+            monthMap.set('09', 'Sep')
+            monthMap.set('10', 'Oct')
+            monthMap.set('11', 'Nov')
+            monthMap.set('12', 'Dec')
+
+            countArray.push(count.volume)
+            labelArray.push(`${monthMap.get(month)} ${tempDate[1]}`)
+          })
+          const accumulate = (arr) =>
+            arr.map(
+              (
+                (sum) => (value) =>
+                  (sum += value)
+              )(0)
+            )
+          const accumulateCount = accumulate(countArray)
+          // this.chartOptions.scales.xAxes[0].time.unit = 'month'
+          this.chartData = {
+            labels: labelArray,
+            datasets: [
+              {
+                labels: 'Extrinsics Count',
+                data: accumulateCount,
+                backgroundColor: '#BD32A7',
+                borderColor: '#BD32A7',
+                hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+                fill: false,
+                showLine: true,
+              },
+            ],
+          }
+          console.log(this.chartData)
           this.loading = false
         },
       },
