@@ -87,8 +87,9 @@ export default {
         },
         title: {
           display: true,
-          text: 'Signed extrinsics',
+          text: 'Cere Signed Extrinsics Cumulative Chart',
           fontSize: 20,
+          position: 'top',
           fontColor: '#000',
           fontStyle: 'bold',
           lineHeight: 2,
@@ -138,7 +139,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Cumulative number of extrinsics',
+                labelString: 'Extrinsics by Period',
               },
             },
           ],
