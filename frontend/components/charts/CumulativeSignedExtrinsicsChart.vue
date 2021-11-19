@@ -216,7 +216,7 @@ export default {
                   (sum += value)
               )(0)
             )
-          const accumulateCount = accumulate(countArray)
+          const accumulateCount = accumulate(countArray.reverse())
           this.chartData = {
             labels: labelArray.reverse(),
             datasets: [
