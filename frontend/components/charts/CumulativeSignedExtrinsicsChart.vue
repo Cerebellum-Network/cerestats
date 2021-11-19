@@ -534,17 +534,19 @@ export default {
   background: none;
   border: solid 1px black;
 }
+
 .active {
   border: none !important;
   background-color: #131b32 !important;
   color: white !important;
 }
+
 canvas {
   background-color: black;
 }
 
 #line {
-  background-image: url('../../../static/img/cere-charts-watermark.png');
+  background-image: url('../../static/img/cere-charts-watermark.png');
   background-repeat: no-repeat;
   background-position: 22% 30%;
   background-size: 200px;
@@ -555,6 +557,7 @@ canvas {
     background-size: 50px;
   }
 }
+
 @media only screen and (min-width: 600px) {
   #line {
     background-size: 70px;
@@ -568,6 +571,7 @@ canvas {
     background-position: 14% 25%;
   }
 }
+
 @media only screen and (min-width: 992px) {
   #line {
     background-size: 150px;
