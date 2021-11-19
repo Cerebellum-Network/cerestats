@@ -184,7 +184,10 @@ export default {
       extrinsicsDayCount: {
         query: gql`
           query extrinsicsDayCount($limit: Int!) {
-            signed_extrinsics_per_day(limit: $limit, order_by: { when: desc }) {
+            signed_extrinsics_per_day_view(
+              limit: $limit
+              order_by: { when: desc }
+            ) {
               volume
               when
             }
@@ -199,7 +202,7 @@ export default {
           return this.skipDayQuery
         },
         result({ data }) {
-          this.extrinsicsData = data.signed_extrinsics_per_day
+          this.extrinsicsData = data.signed_extrinsics_per_day_view
           const countArray = []
           const labelArray = []
           this.extrinsicsData.forEach((count) => {
@@ -233,7 +236,7 @@ export default {
       extrinsicsMonthCount: {
         query: gql`
           query extrinsicsMonthCount($limit: Int!) {
-            signed_extrinsics_per_month(limit: $limit) {
+            signed_extrinsics_per_month_view(limit: $limit) {
               volume
               when
             }
@@ -248,7 +251,7 @@ export default {
           return this.skipMonthQuery
         },
         result({ data }) {
-          this.extrinsicsData = data.signed_extrinsics_per_month
+          this.extrinsicsData = data.signed_extrinsics_per_month_view
           const countArray = []
           const labelArray = []
           this.extrinsicsData.forEach((count) => {
