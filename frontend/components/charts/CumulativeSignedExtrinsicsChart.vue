@@ -102,7 +102,9 @@ export default {
               type: 'time',
               time: {
                 displayFormats: {
+                  week: 'D. MMM',
                   day: 'D. MMM',
+                  month: "MMM 'YY",
                 },
               },
               distribution: 'series',
@@ -149,68 +151,6 @@ export default {
   },
   methods: {
     month() {
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                displayFormats: {
-                  day: 'D. MMM',
-                },
-              },
-              distribution: 'series',
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                suggestedMin: 0,
-                steps: 10,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Cumulative number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsDayCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.refresh()
@@ -218,68 +158,6 @@ export default {
       this.dayExtrinsiclimit = 30
     },
     months() {
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                displayFormats: {
-                  day: 'D. MMM',
-                },
-              },
-              distribution: 'series',
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                suggestedMin: 0,
-                steps: 10,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Cumulative number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsDayCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.refresh()
@@ -289,68 +167,6 @@ export default {
     year() {
       this.yearLimit = 12
       this.activeButton = '1y'
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                displayFormats: {
-                  month: "MMM 'YY",
-                },
-              },
-              distribution: 'series',
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                suggestedMin: 0,
-                steps: 10,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Cumulative number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.skip = true
       this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
@@ -358,68 +174,6 @@ export default {
     max() {
       this.activeButton = 'max'
       this.monthExtrinsicLimit = 12
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Signed extrinsics',
-          fontSize: 20,
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                displayFormats: {
-                  month: "MMM 'YY",
-                },
-              },
-              distribution: 'series',
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                suggestedMin: 0,
-                steps: 10,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Cumulative number of extrinsics',
-              },
-            },
-          ],
-        },
-      }
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.skip = true
       this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
