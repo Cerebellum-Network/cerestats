@@ -66,7 +66,7 @@
       "nominators": "Nominadores",
       "accounts": "Cuentas",
       "faucet": "Faucet",
-      "chart": "Gráfico",
+      "charts": "Gráfico",
       "get_in_contact": "Contacta",
       "about_us": "Sobre nosotros",
       "support_polkastats": "Apoya Polkastats",
@@ -289,7 +289,7 @@
       "head_title": "Cere Faucet",
       "head_content": "Cere Faucet"
     },
-    "chart": {
+    "charts": {
       "title": "Charts",
       "head_title": "Cere Stats - Chart",
       "head_content": "Cere Stats - Chart"
