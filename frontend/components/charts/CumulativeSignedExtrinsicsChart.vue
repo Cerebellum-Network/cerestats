@@ -4,40 +4,7 @@
       <Loading />
     </div>
     <div v-else>
-      <b-button-group size="sm" class="mt-5">
-        <button
-          type="button"
-          class="btn"
-          :class="{ active: activeButton === '1m' }"
-          @click="month"
-        >
-          30D
-        </button>
-        <button
-          type="button"
-          class="btn"
-          :class="{ active: activeButton === '3m' }"
-          @click="months"
-        >
-          3M
-        </button>
-        <button
-          type="button"
-          class="btn"
-          :class="{ active: activeButton === '1y' }"
-          @click="year"
-        >
-          1Y
-        </button>
-        <button
-          type="button"
-          class="btn"
-          :class="{ active: activeButton === 'max' }"
-          @click="max"
-        >
-          Max
-        </button>
-      </b-button-group>
+      <ChartFilter :buttons="filterButtons" :active-button="activeButton" />
       <LineChart
         id="line"
         :chart-data="chartData"
@@ -51,17 +18,37 @@
 import { gql } from 'graphql-tag'
 import LineChart from '@/components/charts/LineChart.js'
 import Loading from '@/components/Loading.vue'
+import ChartFilter from '@/components/ChartFilter.vue'
 
 export default {
   components: {
     LineChart,
     Loading,
+    ChartFilter,
   },
   data() {
     return {
+      filterButtons: [
+        {
+          name: '30D',
+          method: this.month,
+        },
+        {
+          name: '3M',
+          method: this.months,
+        },
+        {
+          name: '1Y',
+          method: this.year,
+        },
+        {
+          name: 'Max',
+          method: this.max,
+        },
+      ],
       loading: true,
       extrinsicsData: null,
-      activeButton: '1m',
+      activeButton: '30D',
       dayExtrinsiclimit: 30,
       monthExtrinsicLimit: 12,
       skipDayQuery: false,
@@ -155,25 +142,25 @@ export default {
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsDayCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.refresh()
-      this.activeButton = '1m'
+      this.activeButton = '30D'
       this.dayExtrinsiclimit = 30
     },
     months() {
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
       this.$apollo.subscriptions.extrinsicsDayCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.refresh()
-      this.activeButton = '3m'
+      this.activeButton = '3M'
       this.dayExtrinsiclimit = 90
     },
     year() {
       this.yearLimit = 12
-      this.activeButton = '1y'
+      this.activeButton = '1Y'
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.skip = true
       this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
     },
     max() {
-      this.activeButton = 'max'
+      this.activeButton = 'Max'
       this.monthExtrinsicLimit = 12
       this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
       this.$apollo.subscriptions.extrinsicsDayCount.skip = true
@@ -288,17 +275,6 @@ export default {
 }
 </script>
 <style scoped>
-.btn {
-  background: none;
-  border: solid 1px black;
-}
-
-.active {
-  border: none !important;
-  background-color: #131b32 !important;
-  color: white !important;
-}
-
 canvas {
   background-color: black;
 }
