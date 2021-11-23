@@ -3,6 +3,7 @@
 ## vNext
 
 - Show CERE-USD conversion rate in header
+- Updated crawlers log levels.
 
 ## v0.5.0
 
