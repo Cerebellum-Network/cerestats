@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <ChartFilter :buttons="filterButtons" :active-button="activeButton" />
-      <ReactiveLineChart
+      <BarChart
         id="line"
         :chart-data="chartData"
         :options="chartOptions"
@@ -16,13 +16,13 @@
 </template>
 <script>
 import { gql } from 'graphql-tag'
-import ReactiveLineChart from '@/components/charts/ReactiveLineChart.js'
+import BarChart from '@/components/charts/BarChart.js'
 import Loading from '@/components/Loading.vue'
 import ChartFilter from '@/components/ChartFilter.vue'
 
 export default {
   components: {
-    ReactiveLineChart,
+    BarChart,
     Loading,
     ChartFilter,
   },
@@ -74,7 +74,7 @@ export default {
         },
         title: {
           display: true,
-          text: 'Cere Signed Extrinsics Cumulative Chart',
+          text: 'Cere Signed Extrinsics Chart ',
           fontSize: 20,
           position: 'top',
           fontColor: '#000',
@@ -126,7 +126,7 @@ export default {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Extrinsics by Period',
+                labelString: 'Extrinsics per Period',
               },
             },
           ],
@@ -197,19 +197,11 @@ export default {
             countArray.push(count.volume)
             labelArray.push(count.when)
           })
-          const accumulate = (arr) =>
-            arr.map(
-              (
-                (sum) => (value) =>
-                  (sum += value)
-              )(0)
-            )
-          const accumulateCount = accumulate(countArray.reverse())
           this.chartData = {
             labels: labelArray.reverse(),
             datasets: [
               {
-                data: accumulateCount,
+                data: countArray.reverse(),
                 backgroundColor: '#BD32A7',
                 borderColor: '#BD32A7',
                 hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -246,19 +238,11 @@ export default {
             countArray.push(count.volume)
             labelArray.push(count.when)
           })
-          const accumulate = (arr) =>
-            arr.map(
-              (
-                (sum) => (value) =>
-                  (sum += value)
-              )(0)
-            )
-          const accumulateCount = accumulate(countArray)
           this.chartData = {
             labels: labelArray,
             datasets: [
               {
-                data: accumulateCount,
+                data: countArray.reverse(),
                 backgroundColor: '#BD32A7',
                 borderColor: '#BD32A7',
                 hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',

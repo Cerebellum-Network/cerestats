@@ -1,15 +1,16 @@
 import { Bar, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins
+
 export default {
   extends: Bar,
   mixins: [reactiveProp],
-  props: ['data', 'options'],
+  props: ['options', 'chartData'],
   mounted() {
-    this.renderChart(this.data, this.options)
+    this.renderChart(this.chartData, this.options)
   },
   watch: {
-    chartData() {
-      this.$data._chart.update()
+    options() {
+      this.renderChart(this.chartData, this.options)
     },
   },
 }
