@@ -14,15 +14,7 @@
 </template>
 <script>
 export default {
-  props: {
-    buttons: [
-      {
-        name: String,
-        method: Function,
-      },
-    ],
-    activeButton: String,
-  },
+  props: ['buttons', 'activeButton'],
 }
 </script>
 <style>

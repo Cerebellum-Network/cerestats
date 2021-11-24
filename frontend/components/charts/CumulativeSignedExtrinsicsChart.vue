@@ -15,10 +15,10 @@
   </div>
 </template>
 <script>
-import { gql } from 'graphql-tag'
 import ReactiveLineChart from '@/components/charts/ReactiveLineChart.js'
 import Loading from '@/components/Loading.vue'
 import ChartFilter from '@/components/ChartFilter.vue'
+import signedExtrinsic from '@/mixins/signedExtrinsic.js'
 
 export default {
   components: {
@@ -26,6 +26,7 @@ export default {
     Loading,
     ChartFilter,
   },
+  mixins: [signedExtrinsic],
   data() {
     return {
       filterButtons: [
@@ -47,12 +48,7 @@ export default {
         },
       ],
       loading: true,
-      extrinsicsData: null,
       activeButton: '30D',
-      dayExtrinsiclimit: 30,
-      monthExtrinsicLimit: 12,
-      skipDayQuery: false,
-      skipMonthQuery: true,
       chartData: {
         labels: [],
         datasets: [
@@ -137,139 +133,89 @@ export default {
       },
     }
   },
-  methods: {
-    month() {
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
-      this.$apollo.subscriptions.extrinsicsDayCount.skip = false
-      this.$apollo.subscriptions.extrinsicsDayCount.refresh()
-      this.activeButton = '30D'
-      this.dayExtrinsiclimit = 30
-    },
-    months() {
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = true
-      this.$apollo.subscriptions.extrinsicsDayCount.skip = false
-      this.$apollo.subscriptions.extrinsicsDayCount.refresh()
-      this.activeButton = '3M'
-      this.dayExtrinsiclimit = 90
-    },
-    year() {
-      this.yearLimit = 12
-      this.activeButton = '1Y'
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
-      this.$apollo.subscriptions.extrinsicsDayCount.skip = true
-      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
-    },
-    max() {
-      this.activeButton = 'Max'
-      this.monthExtrinsicLimit = 12
-      this.$apollo.subscriptions.extrinsicsMonthCount.skip = false
-      this.$apollo.subscriptions.extrinsicsDayCount.skip = true
-      this.$apollo.subscriptions.extrinsicsMonthCount.refresh()
-    },
+  mounted() {
+    this.month()
   },
-  apollo: {
-    $subscribe: {
-      extrinsicsDayCount: {
-        query: gql`
-          query extrinsicsDayCount($limit: Int!) {
-            signed_extrinsics_per_day_view(
-              limit: $limit
-              order_by: { when: desc }
-            ) {
-              volume
-              when
-            }
-          }
-        `,
-        variables() {
-          return {
-            limit: this.dayExtrinsiclimit,
-          }
-        },
-        skip() {
-          return this.skipDayQuery
-        },
-        result({ data }) {
-          this.extrinsicsData = data.signed_extrinsics_per_day_view
-          const countArray = []
-          const labelArray = []
-          this.extrinsicsData.forEach((count) => {
-            countArray.push(count.volume)
-            labelArray.push(count.when)
-          })
-          const accumulate = (arr) =>
-            arr.map(
-              (
-                (sum) => (value) =>
-                  (sum += value)
-              )(0)
-            )
-          const accumulateCount = accumulate(countArray.reverse())
-          this.chartData = {
-            labels: labelArray.reverse(),
-            datasets: [
-              {
-                data: accumulateCount,
-                backgroundColor: '#BD32A7',
-                borderColor: '#BD32A7',
-                hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-                fill: false,
-                showLine: true,
-              },
-            ],
-          }
-          this.loading = false
-        },
-      },
-      extrinsicsMonthCount: {
-        query: gql`
-          query extrinsicsMonthCount($limit: Int!) {
-            signed_extrinsics_per_month_view(limit: $limit) {
-              volume
-              when
-            }
-          }
-        `,
-        variables() {
-          return {
-            limit: this.monthExtrinsicLimit,
-          }
-        },
-        skip() {
-          return this.skipMonthQuery
-        },
-        result({ data }) {
-          this.extrinsicsData = data.signed_extrinsics_per_month_view
-          const countArray = []
-          const labelArray = []
-          this.extrinsicsData.forEach((count) => {
-            countArray.push(count.volume)
-            labelArray.push(count.when)
-          })
-          const accumulate = (arr) =>
-            arr.map(
-              (
-                (sum) => (value) =>
-                  (sum += value)
-              )(0)
-            )
-          const accumulateCount = accumulate(countArray)
-          this.chartData = {
-            labels: labelArray,
-            datasets: [
-              {
-                data: accumulateCount,
-                backgroundColor: '#BD32A7',
-                borderColor: '#BD32A7',
-                hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-                fill: false,
-                showLine: true,
-              },
-            ],
-          }
-          this.loading = false
-        },
-      },
+  methods: {
+    async month() {
+      this.activeButton = '30D'
+      const { count, label } = await this.extrinsicsDayCount(30)
+      const cumulativeCount = await this.cumulativeValue(count)
+      this.chartData = {
+        labels: label,
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data: cumulativeCount,
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+      this.loading = false
+    },
+    async months() {
+      this.activeButton = '3M'
+      const { count, label } = await this.extrinsicsDayCount(90)
+      const cumulativeCount = await this.cumulativeValue(count)
+      this.chartData = {
+        labels: label,
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data: cumulativeCount,
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+      this.loading = false
+    },
+    async year() {
+      this.activeButton = '1Y'
+      const { count, label } = await this.extrinsicsMonthCount(12)
+      const cumulativeCount = await this.cumulativeValue(count)
+      this.chartData = {
+        labels: label,
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data: cumulativeCount,
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+      this.loading = false
+    },
+    async max() {
+      this.activeButton = 'Max'
+      const { count, label } = await this.extrinsicsMonthCount(12)
+      const cumulativeCount = await this.cumulativeValue(count)
+      this.chartData = {
+        labels: label,
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data: cumulativeCount,
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+      this.loading = false
     },
   },
 }
