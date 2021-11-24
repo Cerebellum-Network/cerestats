@@ -56,5 +56,111 @@ export default {
         )(0)
       )
     },
+    getChartData(label, data) {
+      return {
+        labels: label,
+        datasets: [
+          {
+            labels: 'Extrinsics Count',
+            data,
+            backgroundColor: '#BD32A7',
+            borderColor: '#BD32A7',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            fill: false,
+            showLine: true,
+          },
+        ],
+      }
+    },
+    getChartOptions(title, yAxesLabel) {
+      return {
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: title,
+          fontSize: 20,
+          position: 'top',
+          fontColor: '#000',
+          fontStyle: 'bold',
+          lineHeight: 2,
+        },
+        tooltips: {
+          backgroundColor: '#000000',
+        },
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  week: 'D. MMM',
+                  day: 'D. MMM',
+                  month: "MMM 'YY",
+                },
+              },
+              distribution: 'series',
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              ticks: {
+                fontSize: 12,
+                padding: 10,
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'Date',
+                padding: 10,
+                fontSize: 12,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                steps: 10,
+                fontSize: 12,
+                padding: 10,
+              },
+              gridLines: {
+                display: true,
+                color: 'rgba(200, 200, 200, 0.4)',
+              },
+              scaleLabel: {
+                display: true,
+                labelString: yAxesLabel,
+              },
+            },
+          ],
+        },
+        animation: {
+          duration: 300,
+        },
+      }
+    },
+    getFilterButtons() {
+      return [
+        {
+          name: '30D',
+          method: this.month,
+        },
+        {
+          name: '3M',
+          method: this.months,
+        },
+        {
+          name: '1Y',
+          method: this.year,
+        },
+        {
+          name: 'Max',
+          method: this.max,
+        },
+      ]
+    },
   },
 }

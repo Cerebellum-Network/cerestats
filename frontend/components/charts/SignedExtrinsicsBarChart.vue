@@ -29,108 +29,14 @@ export default {
   mixins: [signedExtrinsic],
   data() {
     return {
-      filterButtons: [
-        {
-          name: '30D',
-          method: this.month,
-        },
-        {
-          name: '3M',
-          method: this.months,
-        },
-        {
-          name: '1Y',
-          method: this.year,
-        },
-        {
-          name: 'Max',
-          method: this.max,
-        },
-      ],
+      filterButtons: this.getFilterButtons(),
       loading: true,
       activeButton: '30D',
-      chartData: {
-        labels: [],
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: [],
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: '#BD32A7',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      },
-      chartOptions: {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: 'Cere Signed Extrinsics Chart ',
-          fontSize: 20,
-          position: 'top',
-          fontColor: '#000',
-          fontStyle: 'bold',
-          lineHeight: 2,
-        },
-        tooltips: {
-          backgroundColor: '#000000',
-        },
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                displayFormats: {
-                  week: 'D. MMM',
-                  day: 'D. MMM',
-                  month: "MMM 'YY",
-                },
-              },
-              distribution: 'series',
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              ticks: {
-                fontSize: 12,
-                padding: 10,
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Date',
-                padding: 10,
-                fontSize: 12,
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                suggestedMin: 0,
-                steps: 10,
-                fontSize: 12,
-                padding: 10,
-              },
-              gridLines: {
-                display: true,
-                color: 'rgba(200, 200, 200, 0.4)',
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Extrinsics per Period',
-              },
-            },
-          ],
-        },
-        animation: {
-          duration: 300,
-        },
-      },
+      chartData: {},
+      chartOptions: this.getChartOptions(
+        'Cere Signed Extrinsics Chart ',
+        'Extrinsics per Period'
+      ),
     }
   },
   mounted() {
@@ -141,80 +47,32 @@ export default {
       this.activeButton = '30D'
       const queryLimit = 30
       const { count, label } = await this.extrinsicsDayCount(queryLimit)
-      this.chartData = {
-        labels: label,
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: count,
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: '#BD32A7',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      const chartData = this.getChartData(label, count)
+      this.chartData = chartData
       this.loading = false
     },
     async months() {
       this.activeButton = '3M'
       const queryLimit = 90
       const { count, label } = await this.extrinsicsDayCount(queryLimit)
-      this.chartData = {
-        labels: label,
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: count,
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: '#BD32A7',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      const chartData = this.getChartData(label, count)
+      this.chartData = chartData
       this.loading = false
     },
     async year() {
       this.activeButton = '1Y'
       const queryLimit = 12
       const { count, label } = await this.extrinsicsMonthCount(queryLimit)
-      this.chartData = {
-        labels: label,
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: count,
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: '#BD32A7',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      const chartData = this.getChartData(label, count)
+      this.chartData = chartData
       this.loading = false
     },
     async max() {
       this.activeButton = 'Max'
       const queryLimit = 12
       const { count, label } = await this.extrinsicsMonthCount(queryLimit)
-      this.chartData = {
-        labels: label,
-        datasets: [
-          {
-            labels: 'Extrinsics Count',
-            data: count,
-            backgroundColor: '#BD32A7',
-            borderColor: '#BD32A7',
-            hoverBackgroundColor: '#BD32A7',
-            fill: false,
-            showLine: true,
-          },
-        ],
-      }
+      const chartData = this.getChartData(label, count)
+      this.chartData = chartData
       this.loading = false
     },
   },
