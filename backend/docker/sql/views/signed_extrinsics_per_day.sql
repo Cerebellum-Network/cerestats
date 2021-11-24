@@ -1,4 +1,4 @@
-CREATE VIEW signed_extrinsics_per_day AS
+CREATE VIEW signed_extrinsics_per_day_view AS
 SELECT *
 FROM (SELECT "when"::date FROM generate_series((select to_timestamp(timestamp)::date from extrinsic where block_number='1'), now(), interval  '1 day') "when") d
 LEFT JOIN (
