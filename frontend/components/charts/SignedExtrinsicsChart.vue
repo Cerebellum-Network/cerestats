@@ -139,7 +139,8 @@ export default {
   methods: {
     async month() {
       this.activeButton = '30D'
-      const { count, label } = await this.extrinsicsDayCount(30)
+      const queryLimit = 30
+      const { count, label } = await this.extrinsicsDayCount(queryLimit)
       this.chartData = {
         labels: label,
         datasets: [
@@ -158,7 +159,8 @@ export default {
     },
     async months() {
       this.activeButton = '3M'
-      const { count, label } = await this.extrinsicsDayCount(90)
+      const queryLimit = 90
+      const { count, label } = await this.extrinsicsDayCount(queryLimit)
       this.chartData = {
         labels: label,
         datasets: [
@@ -177,7 +179,8 @@ export default {
     },
     async year() {
       this.activeButton = '1Y'
-      const { count, label } = await this.extrinsicsMonthCount(12)
+      const queryLimit = 12
+      const { count, label } = await this.extrinsicsMonthCount(queryLimit)
       this.chartData = {
         labels: label,
         datasets: [
@@ -196,7 +199,8 @@ export default {
     },
     async max() {
       this.activeButton = 'Max'
-      const { count, label } = await this.extrinsicsMonthCount(12)
+      const queryLimit = 12
+      const { count, label } = await this.extrinsicsMonthCount(queryLimit)
       this.chartData = {
         labels: label,
         datasets: [
