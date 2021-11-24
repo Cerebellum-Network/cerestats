@@ -8,10 +8,10 @@
           </b-col>
         </b-row>
         <b-col class="col-xl-12 mb-5">
-          <CumulativeSignedExtrinsicsChart />
+          <SignedExtrinsicsCumulativeChart />
         </b-col>
         <b-col class="col-xl-12 mb-5">
-          <SignedExtrinsicsChart />
+          <SignedExtrinsicsBarChart />
         </b-col>
       </b-container>
     </section>
@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import CumulativeSignedExtrinsicsChart from '@/components/charts/CumulativeSignedExtrinsicsChart.vue'
-import SignedExtrinsicsChart from '@/components/charts/SignedExtrinsicsChart.vue'
+import SignedExtrinsicsCumulativeChart from '@/components/charts/SignedExtrinsicsCumulativeChart.vue'
+import SignedExtrinsicsBarChart from '@/components/charts/SignedExtrinsicsBarChart.vue'
 
 export default {
   components: {
-    CumulativeSignedExtrinsicsChart,
-    SignedExtrinsicsChart,
+    SignedExtrinsicsCumulativeChart,
+    SignedExtrinsicsBarChart,
   },
   head() {
     return {
