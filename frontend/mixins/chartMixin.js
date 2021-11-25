@@ -1,7 +1,7 @@
 import { gql } from 'graphql-tag'
 export default {
   methods: {
-    async extrinsicsDayCount(queryLimit) {
+    async signedExtrinsicDayCount(queryLimit) {
       const client = this.$apollo.provider.defaultClient
       const query = gql`
         query extrinsicsDayCount {
@@ -26,7 +26,7 @@ export default {
         label: labelArray.reverse(),
       }
     },
-    async extrinsicsMonthCount(queryLimit) {
+    async signedExtrinsicMonthCount(queryLimit) {
       const client = this.$apollo.provider.defaultClient
       const query = gql`
         query extrinsicsMonthCount {

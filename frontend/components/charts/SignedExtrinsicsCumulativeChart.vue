@@ -18,7 +18,7 @@
 import ReactiveLineChart from '@/components/charts/ReactiveLineChart.js'
 import Loading from '@/components/Loading.vue'
 import ChartFilter from '@/components/ChartFilter.vue'
-import signedExtrinsic from '@/mixins/signedExtrinsic.js'
+import chartMixin from '@/mixins/chartMixin'
 
 export default {
   components: {
@@ -26,7 +26,7 @@ export default {
     Loading,
     ChartFilter,
   },
-  mixins: [signedExtrinsic],
+  mixins: [chartMixin],
   data() {
     return {
       filterButtons: this.getFilterButtons(),
@@ -46,7 +46,7 @@ export default {
     async month() {
       this.activeButton = '30D'
       const queryLimit = 30
-      const { count, label } = await this.extrinsicsDayCount(queryLimit)
+      const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
       const chartData = this.getChartData(label, cumulativeCount)
       this.chartData = chartData
@@ -55,7 +55,7 @@ export default {
     async months() {
       this.activeButton = '3M'
       const queryLimit = 90
-      const { count, label } = await this.extrinsicsDayCount(queryLimit)
+      const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
       const chartData = this.getChartData(label, cumulativeCount)
       this.chartData = chartData
@@ -64,7 +64,7 @@ export default {
     async year() {
       this.activeButton = '1Y'
       const queryLimit = 12
-      const { count, label } = await this.extrinsicsMonthCount(queryLimit)
+      const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
       const chartData = this.getChartData(label, cumulativeCount)
       this.chartData = chartData
@@ -73,7 +73,7 @@ export default {
     async max() {
       this.activeButton = 'Max'
       const queryLimit = 12
-      const { count, label } = await this.extrinsicsMonthCount(queryLimit)
+      const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
       const chartData = this.getChartData(label, cumulativeCount)
       this.chartData = chartData
