@@ -6,7 +6,7 @@
     <div v-else>
       <ChartFilter :buttons="filterButtons" :active-button="activeButton" />
       <ReactiveLineChart
-        id="line"
+        class="canvas-chart"
         :chart-data="chartData"
         :options="chartOptions"
         :height="200"
@@ -82,49 +82,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-canvas {
-  background-color: black;
-}
-
-#line {
-  background-image: url('../../static/img/cere-charts-watermark.png');
-  background-repeat: no-repeat;
-  background-position: 22% 30%;
-  background-size: 200px;
-}
-
-@media only screen and (max-width: 600px) {
-  #line {
-    background-size: 50px;
-  }
-}
-
-@media only screen and (min-width: 600px) {
-  #line {
-    background-size: 70px;
-    background-position: 22% 30%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  #line {
-    background-size: 100px;
-    background-position: 14% 25%;
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  #line {
-    background-size: 150px;
-    background-position: 12% 20%;
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  #line {
-    background-size: 200px;
-    background-position: 10% 20%;
-  }
-}
-</style>
