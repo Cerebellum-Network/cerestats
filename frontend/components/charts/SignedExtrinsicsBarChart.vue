@@ -19,6 +19,7 @@ import BarChart from '@/components/charts/BarChart.js'
 import Loading from '@/components/Loading.vue'
 import ChartFilter from '@/components/ChartFilter.vue'
 import chartsMixin from '@/mixins/chartsMixin.js'
+import Constants from '@/constants/charts.js'
 
 export default {
   components: {
@@ -31,7 +32,7 @@ export default {
     return {
       filterButtons: this.getDefaultFilterButtons(),
       loading: true,
-      activeButton: '30D',
+      activeButton: Constants.oneMonth,
       chartData: {},
       chartOptions: this.getChartOptions(
         'Cere Signed Extrinsics Chart ',
@@ -44,33 +45,37 @@ export default {
   },
   methods: {
     async month() {
-      this.activeButton = '30D'
-      const queryLimit = 30
-      const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
+      this.activeButton = Constants.oneMonth
+      const { count, label } = await this.signedExtrinsicDayCount(
+        Constants.oneMonthQueryLimit
+      )
       const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
     async months() {
-      this.activeButton = '3M'
-      const queryLimit = 90
-      const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
+      this.activeButton = Constants.threeMonth
+      const { count, label } = await this.signedExtrinsicDayCount(
+        Constants.threeMonthQueryLimit
+      )
       const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
     async year() {
-      this.activeButton = '1Y'
-      const queryLimit = 12
-      const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
+      this.activeButton = Constants.oneYear
+      const { count, label } = await this.signedExtrinsicMonthCount(
+        Constants.oneYearQueryLimit
+      )
       const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
     async max() {
-      this.activeButton = 'Max'
-      const queryLimit = 12
-      const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
+      this.activeButton = Constants.max
+      const { count, label } = await this.signedExtrinsicMonthCount(
+        Constants.maxQueryLimit
+      )
       const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false

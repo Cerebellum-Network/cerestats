@@ -1,4 +1,5 @@
 import { gql } from 'graphql-tag'
+import Constants from '@/constants/charts.js'
 export default {
   methods: {
     async signedExtrinsicDayCount(queryLimit) {
@@ -145,19 +146,19 @@ export default {
     getDefaultFilterButtons() {
       return [
         {
-          name: '30D',
+          name: Constants.oneMonth,
           method: this.month,
         },
         {
-          name: '3M',
+          name: Constants.threeMonth,
           method: this.months,
         },
         {
-          name: '1Y',
+          name: Constants.oneYear,
           method: this.year,
         },
         {
-          name: 'Max',
+          name: Constants.max,
           method: this.max,
         },
       ]
