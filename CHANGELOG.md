@@ -2,8 +2,8 @@
 ## vNext
 
 - Removed auto-payout and participation in governance filters
-- Added signed extrinsic cumulative and bar charts
-
+- Implemented charts framework for cumulative line and bar types
+- Implemented Signed Extrinsic charts
 
 ## v0.6.0
 
