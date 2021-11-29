@@ -142,7 +142,7 @@ export default {
         },
       }
     },
-    getFilterButtons() {
+    getDefaultFilterButtons() {
       return [
         {
           name: '30D',

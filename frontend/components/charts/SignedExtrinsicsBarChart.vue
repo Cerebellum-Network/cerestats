@@ -18,7 +18,7 @@
 import BarChart from '@/components/charts/BarChart.js'
 import Loading from '@/components/Loading.vue'
 import ChartFilter from '@/components/ChartFilter.vue'
-import chartMixin from '@/mixins/chartMixin.js'
+import chartsMixin from '@/mixins/chartsMixin.js'
 
 export default {
   components: {
@@ -26,10 +26,10 @@ export default {
     Loading,
     ChartFilter,
   },
-  mixins: [chartMixin],
+  mixins: [chartsMixin],
   data() {
     return {
-      filterButtons: this.getFilterButtons(),
+      filterButtons: this.getDefaultFilterButtons(),
       loading: true,
       activeButton: '30D',
       chartData: {},
