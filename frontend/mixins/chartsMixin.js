@@ -56,7 +56,7 @@ export default {
         )(0)
       )
     },
-    getChartData(label, data) {
+    getExtrinsicsChartData(label, data) {
       return {
         labels: label,
         datasets: [

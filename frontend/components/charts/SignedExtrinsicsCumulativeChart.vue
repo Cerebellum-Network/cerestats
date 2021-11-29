@@ -48,7 +48,7 @@ export default {
       const queryLimit = 30
       const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
-      const chartData = this.getChartData(label, cumulativeCount)
+      const chartData = this.getExtrinsicsChartData(label, cumulativeCount)
       this.chartData = chartData
       this.loading = false
     },
@@ -57,7 +57,7 @@ export default {
       const queryLimit = 90
       const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
-      const chartData = this.getChartData(label, cumulativeCount)
+      const chartData = this.getExtrinsicsChartData(label, cumulativeCount)
       this.chartData = chartData
       this.loading = false
     },
@@ -66,7 +66,7 @@ export default {
       const queryLimit = 12
       const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
-      const chartData = this.getChartData(label, cumulativeCount)
+      const chartData = this.getExtrinsicsChartData(label, cumulativeCount)
       this.chartData = chartData
       this.loading = false
     },
@@ -75,7 +75,7 @@ export default {
       const queryLimit = 12
       const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
       const cumulativeCount = await this.cumulativeValue(count)
-      const chartData = this.getChartData(label, cumulativeCount)
+      const chartData = this.getExtrinsicsChartData(label, cumulativeCount)
       this.chartData = chartData
       this.loading = false
     },

@@ -47,7 +47,7 @@ export default {
       this.activeButton = '30D'
       const queryLimit = 30
       const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
-      const chartData = this.getChartData(label, count)
+      const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
@@ -55,7 +55,7 @@ export default {
       this.activeButton = '3M'
       const queryLimit = 90
       const { count, label } = await this.signedExtrinsicDayCount(queryLimit)
-      const chartData = this.getChartData(label, count)
+      const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
@@ -63,7 +63,7 @@ export default {
       this.activeButton = '1Y'
       const queryLimit = 12
       const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
-      const chartData = this.getChartData(label, count)
+      const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
@@ -71,7 +71,7 @@ export default {
       this.activeButton = 'Max'
       const queryLimit = 12
       const { count, label } = await this.signedExtrinsicMonthCount(queryLimit)
-      const chartData = this.getChartData(label, count)
+      const chartData = this.getExtrinsicsChartData(label, count)
       this.chartData = chartData
       this.loading = false
     },
