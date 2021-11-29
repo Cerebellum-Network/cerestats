@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     async month() {
-      console.log(Constants.oneMonth)
       this.activeButton = Constants.oneMonth
       const { count, label } = await this.signedExtrinsicDayCount(
         Constants.oneMonthQueryLimit
