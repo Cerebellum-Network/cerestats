@@ -17,7 +17,7 @@ export default {
   props: ['buttons', 'activeButton'],
 }
 </script>
-<style>
+<style scoped>
 .btn {
   background: none;
   border: solid 1px black;
