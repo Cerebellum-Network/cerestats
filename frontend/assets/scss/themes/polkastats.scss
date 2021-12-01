@@ -530,6 +530,12 @@ section .section-title {
 .select {
   cursor: pointer;
 }
+.selected {
+  color: #bd32a7;
+}
+.unselected {
+  color: #001c70 !important;
+}
 .ranking .select .selected,
 .ranking .select .unselected {
   font-size: 1.2rem;
