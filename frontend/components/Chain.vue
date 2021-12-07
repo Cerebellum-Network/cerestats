@@ -155,7 +155,7 @@
             </h4>
             <h6 class="d-inline-block">
               {{ formatNumber(totalValidators) }} /
-              {{ formatNumber(totalWaiting) }}
+              {{ formatNumber(totalWaiting + totalValidators) }}
             </h6>
           </div>
         </div>
