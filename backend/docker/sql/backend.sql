@@ -1,6 +1,6 @@
 GRANT ALL PRIVILEGES ON DATABASE polkastats TO polkastats;
 
-CREATE TABLE IF NOT EXISTS block (
+CREATE TABLE IF NOT EXISTS block (  
   block_number BIGINT NOT NULL,
   finalized BOOLEAN NOT NULL,
   block_author TEXT NOT NULL,
@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS block (
   PRIMARY KEY ( block_number )
 );
 
-CREATE TABLE IF NOT EXISTS harvest_error (
+CREATE TABLE IF NOT EXISTS harvest_error (  
   block_number BIGINT NOT NULL,
   error TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
   PRIMARY KEY ( block_number )
 );
 
-CREATE TABLE IF NOT EXISTS event (
+CREATE TABLE IF NOT EXISTS event (  
   block_number BIGINT NOT NULL,
   event_index INT NOT NULL,
   section TEXT NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS event (
   phase TEXT NOT NULL,
   data TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, event_index )
+  PRIMARY KEY ( block_number, event_index ) 
 );
 
-CREATE TABLE IF NOT EXISTS extrinsic (
+CREATE TABLE IF NOT EXISTS extrinsic (  
   block_number BIGINT NOT NULL,
   extrinsic_index INT NOT NULL,
   is_signed BOOLEAN NOT NULL,
@@ -53,17 +53,17 @@ CREATE TABLE IF NOT EXISTS extrinsic (
   fee_details TEXT NOT NULL,
   success BOOLEAN NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, extrinsic_index )
+  PRIMARY KEY ( block_number, extrinsic_index ) 
 );
 
-CREATE TABLE IF NOT EXISTS log  (
+CREATE TABLE IF NOT EXISTS log  (  
   block_number BIGINT NOT NULL,
   log_index INT NOT NULL,
   type TEXT,
   engine TEXT NOT NULL,
   data TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, log_index )
+  PRIMARY KEY ( block_number, log_index ) 
 );
 
 CREATE TABLE IF NOT EXISTS ranking (
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS ranking (
   PRIMARY KEY ( block_height, stash_address )
 );
 
-CREATE TABLE IF NOT EXISTS era_vrc_score (
+CREATE TABLE IF NOT EXISTS era_vrc_score (  
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   vrc_score INT NOT NULL,
@@ -133,26 +133,26 @@ CREATE TABLE IF NOT EXISTS era_commission (
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_commission_avg (
+CREATE TABLE IF NOT EXISTS era_commission_avg (  
   era INT NOT NULL,
   commission_avg FLOAT NOT NULL,
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_self_stake (
+CREATE TABLE IF NOT EXISTS era_self_stake (  
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   self_stake BIGINT NOT NULL,
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_self_stake_avg (
+CREATE TABLE IF NOT EXISTS era_self_stake_avg (  
   era INT NOT NULL,
   self_stake_avg BIGINT NOT NULL,
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_relative_performance (
+CREATE TABLE IF NOT EXISTS era_relative_performance (  
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   relative_performance FLOAT NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS era_relative_performance_avg (
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_points (
+CREATE TABLE IF NOT EXISTS era_points (  
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   points INT NOT NULL,
@@ -178,14 +178,14 @@ CREATE TABLE IF NOT EXISTS era_points_avg (
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS featured (
+CREATE TABLE IF NOT EXISTS featured (  
   stash_address TEXT NOT NULL,
   name TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
   PRIMARY KEY ( stash_address )
 );
 
-CREATE TABLE IF NOT EXISTS account  (
+CREATE TABLE IF NOT EXISTS account  (  
   account_id TEXT NOT NULL,
   identity TEXT NOT NULL,
   identity_display TEXT NOT NULL,
@@ -197,10 +197,10 @@ CREATE TABLE IF NOT EXISTS account  (
   nonce BIGINT NOT NULL,
   timestamp BIGINT NOT NULL,
   block_height BIGINT NOT NULL,
-  PRIMARY KEY ( account_id )
+  PRIMARY KEY ( account_id ) 
 );
 
-CREATE TABLE IF NOT EXISTS total (
+CREATE TABLE IF NOT EXISTS total (  
   name TEXT,
   count BIGINT NOT NULL,
   PRIMARY KEY ( name )
