@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS era_vrc_score (
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_commission (
+CREATE TABLE IF NOT EXISTS era_commission (  
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   commission FLOAT NOT NULL,
