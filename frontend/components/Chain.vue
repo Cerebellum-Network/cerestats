@@ -179,7 +179,7 @@
               {{ $t('components.network.transactionFees') }}
             </h4>
             <h6 class="d-inline-block">
-              {{ formatAmount(totalTransactionFees) }}
+              {{ formatAmount(totalTransactionsFees) }}
             </h6>
           </div>
         </div>
@@ -213,7 +213,7 @@ export default {
       totalWaiting: 0,
       totalNominators: 0,
       minStake: 0,
-      totalTransactionFees: 0,
+      totalTransactionsFees: 0,
     }
   },
   computed: {
@@ -272,8 +272,9 @@ export default {
           }
         `,
         result({ data }) {
-          this.totalTransactionFees =
-            data.total.find((row) => row.name === 'transaction_fees').count || 0
+          this.totalTransactionsFees =
+            data.total.find((row) => row.name === 'transactions_fees').count ||
+            0
           this.totalExtrinsics =
             data.total.find((row) => row.name === 'extrinsics').count || 0
           this.totalSignedExtrinsics =
