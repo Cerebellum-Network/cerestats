@@ -1,6 +1,6 @@
 GRANT ALL PRIVILEGES ON DATABASE polkastats TO polkastats;
 
-CREATE TABLE IF NOT EXISTS block (  
+CREATE TABLE IF NOT EXISTS block (
   block_number BIGINT NOT NULL,
   finalized BOOLEAN NOT NULL,
   block_author TEXT NOT NULL,
@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS block (
   PRIMARY KEY ( block_number )
 );
 
-CREATE TABLE IF NOT EXISTS harvest_error (  
+CREATE TABLE IF NOT EXISTS harvest_error (
   block_number BIGINT NOT NULL,
   error TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
   PRIMARY KEY ( block_number )
 );
 
-CREATE TABLE IF NOT EXISTS event (  
+CREATE TABLE IF NOT EXISTS event (
   block_number BIGINT NOT NULL,
   event_index INT NOT NULL,
   section TEXT NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS event (
   phase TEXT NOT NULL,
   data TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, event_index ) 
+  PRIMARY KEY ( block_number, event_index )
 );
 
-CREATE TABLE IF NOT EXISTS extrinsic (  
+CREATE TABLE IF NOT EXISTS extrinsic (
   block_number BIGINT NOT NULL,
   extrinsic_index INT NOT NULL,
   is_signed BOOLEAN NOT NULL,
@@ -53,17 +53,17 @@ CREATE TABLE IF NOT EXISTS extrinsic (
   fee_details TEXT NOT NULL,
   success BOOLEAN NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, extrinsic_index ) 
+  PRIMARY KEY ( block_number, extrinsic_index )
 );
 
-CREATE TABLE IF NOT EXISTS log  (  
+CREATE TABLE IF NOT EXISTS log  (
   block_number BIGINT NOT NULL,
   log_index INT NOT NULL,
   type TEXT,
   engine TEXT NOT NULL,
   data TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
-  PRIMARY KEY ( block_number, log_index ) 
+  PRIMARY KEY ( block_number, log_index )
 );
 
 CREATE TABLE IF NOT EXISTS ranking (
@@ -119,40 +119,40 @@ CREATE TABLE IF NOT EXISTS ranking (
   PRIMARY KEY ( block_height, stash_address )
 );
 
-CREATE TABLE IF NOT EXISTS era_vrc_score (  
+CREATE TABLE IF NOT EXISTS era_vrc_score (
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   vrc_score INT NOT NULL,
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_commission (  
+CREATE TABLE IF NOT EXISTS era_commission (
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   commission FLOAT NOT NULL,
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_commission_avg (  
+CREATE TABLE IF NOT EXISTS era_commission_avg (
   era INT NOT NULL,
   commission_avg FLOAT NOT NULL,
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_self_stake (  
+CREATE TABLE IF NOT EXISTS era_self_stake (
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   self_stake BIGINT NOT NULL,
   PRIMARY KEY ( stash_address, era )
 );
 
-CREATE TABLE IF NOT EXISTS era_self_stake_avg (  
+CREATE TABLE IF NOT EXISTS era_self_stake_avg (
   era INT NOT NULL,
   self_stake_avg BIGINT NOT NULL,
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_relative_performance (  
+CREATE TABLE IF NOT EXISTS era_relative_performance (
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   relative_performance FLOAT NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS era_relative_performance_avg (
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS era_points (  
+CREATE TABLE IF NOT EXISTS era_points (
   stash_address TEXT NOT NULL,
   era INT NOT NULL,
   points INT NOT NULL,
@@ -178,14 +178,14 @@ CREATE TABLE IF NOT EXISTS era_points_avg (
   PRIMARY KEY ( era )
 );
 
-CREATE TABLE IF NOT EXISTS featured (  
+CREATE TABLE IF NOT EXISTS featured (
   stash_address TEXT NOT NULL,
   name TEXT NOT NULL,
   timestamp BIGINT NOT NULL,
   PRIMARY KEY ( stash_address )
 );
 
-CREATE TABLE IF NOT EXISTS account  (  
+CREATE TABLE IF NOT EXISTS account  (
   account_id TEXT NOT NULL,
   identity TEXT NOT NULL,
   identity_display TEXT NOT NULL,
@@ -197,10 +197,10 @@ CREATE TABLE IF NOT EXISTS account  (
   nonce BIGINT NOT NULL,
   timestamp BIGINT NOT NULL,
   block_height BIGINT NOT NULL,
-  PRIMARY KEY ( account_id )  
+  PRIMARY KEY ( account_id )
 );
 
-CREATE TABLE IF NOT EXISTS total (  
+CREATE TABLE IF NOT EXISTS total (
   name TEXT,
   count BIGINT NOT NULL,
   PRIMARY KEY ( name )
@@ -235,7 +235,8 @@ INSERT INTO total (name, count) VALUES
   ('nominator_count', 0),
   ('current_era', 0),
   ('active_era', 0),
-  ('minimum_stake', 0);
+  ('minimum_stake', 0),
+  ('transaction_fees', 0);
 
 CREATE INDEX IF NOT EXISTS block_finalized_idx ON block (finalized);
 CREATE INDEX IF NOT EXISTS block_block_number_idx ON block (block_number);
@@ -383,4 +384,32 @@ CREATE TRIGGER transfer_count_trunc AFTER TRUNCATE ON extrinsic
   FOR EACH STATEMENT EXECUTE PROCEDURE transfer_count();
 -- initialize the counter table
 UPDATE total SET count = (SELECT count(*) FROM extrinsic WHERE method IN ('transfer', 'transferKeepAlive')) WHERE name = 'transfers';
+COMMIT;
+
+-- Transaction Fees
+START TRANSACTION;
+CREATE FUNCTION transaction_fee() RETURNS trigger LANGUAGE plpgsql AS
+$$BEGIN
+  IF NEW.is_signed = 'true' THEN
+    IF TG_OP = 'INSERT' THEN
+      UPDATE total SET count = count + CAST(NEW.fee_info::json->>'partialFee' AS INTEGER) WHERE name = 'transaction_fees';
+      RETURN NEW;
+    ELSIF TG_OP = 'DELETE' THEN
+      UPDATE total SET count = count - CAST(NEW.fee_info::json->>'partialFee' AS INTEGER) WHERE name = 'transaction_fees';
+      RETURN OLD;
+    ELSE
+      RETURN NULL;
+    END IF;
+  END IF;
+  RETURN NULL;
+END;$$;
+CREATE CONSTRAINT TRIGGER transaction_fee_mod
+  AFTER INSERT OR DELETE ON extrinsic
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW EXECUTE PROCEDURE transaction_fee();
+-- TRUNCATE triggers must be FOR EACH STATEMENT
+CREATE TRIGGER transaction_fee_trunc AFTER TRUNCATE ON extrinsic
+  FOR EACH STATEMENT EXECUTE PROCEDURE transaction_fee();
+-- initialize the counter table
+UPDATE total SET count = 0 WHERE name = 'transaction_fees';
 COMMIT;

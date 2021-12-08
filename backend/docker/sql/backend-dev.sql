@@ -235,7 +235,8 @@ INSERT INTO total (name, count) VALUES
   ('nominator_count', 0),
   ('current_era', 0),
   ('active_era', 0),
-  ('minimum_stake', 0);
+  ('minimum_stake', 0),
+  ('transaction_fees', 0);
 
 CREATE INDEX IF NOT EXISTS block_finalized_idx ON block (finalized);
 CREATE INDEX IF NOT EXISTS block_block_number_idx ON block (block_number);
@@ -383,4 +384,32 @@ CREATE TRIGGER transfer_count_trunc AFTER TRUNCATE ON extrinsic
   FOR EACH STATEMENT EXECUTE PROCEDURE transfer_count();
 -- initialize the counter table
 UPDATE total SET count = (SELECT count(*) FROM extrinsic WHERE method IN ('transfer', 'transferKeepAlive')) WHERE name = 'transfers';
+COMMIT;
+
+-- Transaction Fees
+START TRANSACTION;
+CREATE FUNCTION transaction_fee() RETURNS trigger LANGUAGE plpgsql AS
+$$BEGIN
+  IF NEW.is_signed = 'true' THEN
+    IF TG_OP = 'INSERT' THEN
+      UPDATE total SET count = count + CAST(NEW.fee_info::json->>'partialFee' AS INTEGER) WHERE name = 'transaction_fees';
+      RETURN NEW;
+    ELSIF TG_OP = 'DELETE' THEN
+      UPDATE total SET count = count - CAST(NEW.fee_info::json->>'partialFee' AS INTEGER) WHERE name = 'transaction_fees';
+      RETURN OLD;
+    ELSE
+      RETURN NULL;
+    END IF;
+  END IF;
+  RETURN NULL;
+END;$$;
+CREATE CONSTRAINT TRIGGER transaction_fee_mod
+  AFTER INSERT OR DELETE ON extrinsic
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW EXECUTE PROCEDURE transaction_fee();
+-- TRUNCATE triggers must be FOR EACH STATEMENT
+CREATE TRIGGER transaction_fee_trunc AFTER TRUNCATE ON extrinsic
+  FOR EACH STATEMENT EXECUTE PROCEDURE transaction_fee();
+-- initialize the counter table
+UPDATE total SET count = 0 WHERE name = 'transaction_fees';
 COMMIT;
