@@ -243,9 +243,27 @@ module.exports = {
   ) => {
     const startTime = new Date().getTime();
     await Promise.all(
-      blockEvents.map((record, index) => module.exports.processEvent(
-        client, blockNumber, record, index, timestamp, loggerOptions,
-      )),
+      blockEvents.map((record, index) => {
+        const {event} = record;
+        if (
+          event.section === "chainBridge" &&
+          event.method === "ProposalApproved"
+        ) {
+          module.exports.UpdateEthCereTransfersAmount(
+            client,
+            blockEvents,
+            loggerOptions
+          );
+        }
+        module.exports.processEvent(
+          client,
+          blockNumber,
+          record,
+          index,
+          timestamp,
+          loggerOptions
+        );
+      })
     );
     // Log execution time
     const endTime = new Date().getTime();
@@ -282,6 +300,34 @@ module.exports = {
     } catch (error) {
       logger.error(loggerOptions, `Error adding event #${blockNumber}-${index}: ${error}, sql: ${sql}`);
     }
+  },
+  UpdateEthCereTransfersAmount: async (client, events, loggerOptions) => {
+  events.map(async(record, index) => {
+    const { event } = record;
+    if (
+      event.section === "balances" &&
+      (event.method === "transfer" || "transferKeepAlive")
+    ){
+      const value = event.data[2];
+      const sql = `UPDATE total SET count = count + '${parseInt(
+        value
+      )}' WHERE name = 'eth_cere_token_amounts'`;
+      try {
+        const res = await client.query(sql);
+        logger.debug(
+          loggerOptions,
+          `Updated ETH CERE Transfer token amounts ${res}`
+        );
+      } catch (error) {
+        logger.error(
+          loggerOptions,
+          `Error Updated ETH CERE Transfer token amounts: ${JSON.stringify(
+            error
+          )}`
+        );
+      }
+    } 
+  });
   },
   processLogs: async (client, blockNumber, logs, timestamp, loggerOptions) => {
     const startTime = new Date().getTime();
