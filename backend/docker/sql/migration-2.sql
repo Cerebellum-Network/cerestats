@@ -25,5 +25,5 @@ CREATE CONSTRAINT TRIGGER transactions_fees_mod
 CREATE TRIGGER transactions_fees_trunc AFTER TRUNCATE ON extrinsic
   FOR EACH STATEMENT EXECUTE PROCEDURE transactions_fees();
 -- initialize the counter table
-UPDATE total SET count = COALESCE((SELECT SUM(CAST(fee_info::json->>'partialFee' AS BIGINT)) FROM extrinsic WHERE is_signed = 'true' AND fee_info <> ''),0) WHERE name = 'transactions_fees';
+UPDATE total SET count = COALESCE((SELECT SUM(CAST(fee_info::json->>'partialFee' AS BIGINT)) FROM extrinsic WHERE is_signed = 'true' AND fee_info <> ''), 0) WHERE name = 'transactions_fees';
 COMMIT;
