@@ -22,7 +22,7 @@
       "nominators": "Nominators",
       "validators": "Validators",
       "signedTransactions": "Total transactions",
-      "transactionFees": "Total transactions fees"
+      "transactionsFees": "Total transactions fees"
     },
     "chain": {
       "last_block": "Last block",

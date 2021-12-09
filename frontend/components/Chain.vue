@@ -176,7 +176,7 @@
         <div class="card h-100">
           <div class="card-body">
             <h4 class="mb-3 title">
-              {{ $t('components.network.transactionFees') }}
+              {{ $t('components.network.transactionsFees') }}
             </h4>
             <h6 class="d-inline-block">
               {{ formatAmount(totalTransactionsFees) }}
