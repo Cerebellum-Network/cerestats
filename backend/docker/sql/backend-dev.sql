@@ -235,8 +235,7 @@ INSERT INTO total (name, count) VALUES
   ('nominator_count', 0),
   ('current_era', 0),
   ('active_era', 0),
-  ('minimum_stake', 0),
-  ('transactions_fees', 0);
+  ('minimum_stake', 0);
 
 CREATE INDEX IF NOT EXISTS block_finalized_idx ON block (finalized);
 CREATE INDEX IF NOT EXISTS block_block_number_idx ON block (block_number);
