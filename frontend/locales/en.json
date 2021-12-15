@@ -22,7 +22,8 @@
       "nominators": "Nominators",
       "validators": "Validators",
       "signedTransactions": "Total transactions",
-      "transactionsFees": "Total transactions fees"
+      "transactionsFees": "Total transactions fees",
+      "ethCereTransfersAmounts": "ETH-CERE Transfers Amounts"
     },
     "chain": {
       "last_block": "Last block",
