@@ -1248,18 +1248,18 @@ const crawler = async (delayedStart) => {
     );
 
     // featured validator
-    const sql = 'SELECT stash_address, timestamp FROM featured ORDER BY timestamp DESC LIMIT 1';
-    const res = await dbQuery(client, sql, loggerOptions);
-    if (res.rows.length === 0) {
-      await addNewFeaturedValidator(client, ranking);
-    } else {
-      const currentFeatured = res.rows[0];
-      const currentTimestamp = new Date().getTime();
-      if (currentTimestamp - currentFeatured.timestamp > config.featuredTimespan) {
-        // timespan passed, let's add a new featured validator
-        await addNewFeaturedValidator(client, ranking);
-      }
-    }
+    // const sql = 'SELECT stash_address, timestamp FROM featured ORDER BY timestamp DESC LIMIT 1';
+    // const res = await dbQuery(client, sql, loggerOptions);
+    // if (res.rows.length === 0) {
+    //   await addNewFeaturedValidator(client, ranking);
+    // } else {
+    //   const currentFeatured = res.rows[0];
+    //   const currentTimestamp = new Date().getTime();
+    //   if (currentTimestamp - currentFeatured.timestamp > config.featuredTimespan) {
+    //     // timespan passed, let's add a new featured validator
+    //     await addNewFeaturedValidator(client, ranking);
+    //   }
+    // }
 
     logger.info(loggerOptions, 'Disconnecting from API');
     await api.disconnect().catch((error) => logger.error(loggerOptions, `API disconnect error: ${JSON.stringify(error)}`));
