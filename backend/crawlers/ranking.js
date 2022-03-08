@@ -216,7 +216,7 @@ const addNewFeaturedValidator = async (client, ranking) => {
     `INSERT INTO featured (stash_address, name, timestamp) VALUES ('${featured.stashAddress}', '${featured.name}', '${new Date().getTime()}')`,
     loggerOptions,
   );
-  logger.debug(loggerOptions, `New featured validator added: ${featured.name} ${featured.stashAddress}`);
+  logger.info(loggerOptions, `New featured validator added: ${featured.name} ${featured.stashAddress}`);
 };
 
 const insertRankingValidator = async (client, validator, blockHeight, startTime) => {
@@ -597,18 +597,18 @@ const crawler = async (delayedStart) => {
 
   try {
     const lastEraInDb = await getLastEraInDb(client);
-    logger.debug(loggerOptions, `Last era in DB is ${lastEraInDb}`);
+    logger.info(loggerOptions, `Last era in DB is ${lastEraInDb}`);
 
     // thousand validators program data
-    logger.debug(loggerOptions, 'Fetching thousand validator program validators ...');
+    logger.info(loggerOptions, 'Fetching thousand validator program validators ...');
     const thousandValidators = await getThousandValidators();
-    logger.debug(loggerOptions, `Got info of ${thousandValidators.length} validators from Thousand Validators program API`);
+    logger.info(loggerOptions, `Got info of ${thousandValidators.length} validators from Thousand Validators program API`);
 
     // chain data
-    logger.debug(loggerOptions, 'Fetching chain data ...');
+    logger.info(loggerOptions, 'Fetching chain data ...');
     const withActive = false;
 
-    logger.debug(loggerOptions, 'Step #1');
+    logger.info(loggerOptions, 'Step #1');
     const [erasHistoric, chainCurrentEra, chainActiveEra] = await Promise.all([
       api.derive.staking.erasHistoric(withActive),
       api.query.staking.currentEra(),
@@ -619,7 +619,7 @@ const crawler = async (delayedStart) => {
     );
     const { maxNominatorRewardedPerValidator } = api.consts.staking;
 
-    logger.debug(loggerOptions, 'Step #2');
+    logger.info(loggerOptions, 'Step #2');
     const [
       { block },
       validatorAddresses,
@@ -638,11 +638,11 @@ const crawler = async (delayedStart) => {
       api.derive.democracy.referendums(),
     ]);
 
-    logger.debug(loggerOptions, 'Step #3');
+    logger.info(loggerOptions, 'Step #3');
     // eslint-disable-next-line no-underscore-dangle
     const erasPoints = await api.derive.staking._erasPoints(eraIndexes, withActive);
 
-    logger.debug(loggerOptions, 'Step #4');
+    logger.info(loggerOptions, 'Step #4');
     let erasPreferences = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const eraIndex of eraIndexes) {
@@ -651,7 +651,7 @@ const crawler = async (delayedStart) => {
       erasPreferences = erasPreferences.concat(eraPrefs);
     }
 
-    logger.debug(loggerOptions, 'Step #5');
+    logger.info(loggerOptions, 'Step #5');
     let erasSlashes = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const eraIndex of eraIndexes) {
@@ -660,7 +660,7 @@ const crawler = async (delayedStart) => {
       erasSlashes = erasSlashes.concat(eraSlashes);
     }
 
-    logger.debug(loggerOptions, 'Step #6');
+    logger.info(loggerOptions, 'Step #6');
     let erasExposure = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const eraIndex of eraIndexes) {
@@ -669,14 +669,14 @@ const crawler = async (delayedStart) => {
       erasExposure = erasExposure.concat(eraExposure);
     }
 
-    logger.debug(loggerOptions, 'Step #7');
+    logger.info(loggerOptions, 'Step #7');
     validators = await Promise.all(
       validatorAddresses.map(
         (authorityId) => api.derive.staking.query(authorityId, stakingQueryFlags),
       ),
     );
 
-    logger.debug(loggerOptions, 'Step #8');
+    logger.info(loggerOptions, 'Step #8');
     validators = await Promise.all(
       validators.map(
         (validator) => api.derive.accounts.info(validator.accountId).then(({ identity }) => ({
@@ -687,7 +687,7 @@ const crawler = async (delayedStart) => {
       ),
     );
 
-    logger.debug(loggerOptions, 'Step #9');
+    logger.info(loggerOptions, 'Step #9');
     intentions = await Promise.all(
       waitingInfo.info.map(
         (intention) => api.derive.accounts.info(intention.accountId).then(({ identity }) => ({
@@ -699,12 +699,12 @@ const crawler = async (delayedStart) => {
     );
     const dataCollectionEndTime = new Date().getTime();
     const dataCollectionTime = dataCollectionEndTime - startTime;
-    logger.debug(loggerOptions, 'Done!');
+    logger.info(loggerOptions, 'Done!');
 
     //
     // data processing
     //
-    logger.debug(loggerOptions, 'Processing data ...');
+    logger.info(loggerOptions, 'Processing data ...');
     const blockHeight = parseInt(block.header.number.toString(), 10);
     const numActiveValidators = validatorAddresses.length;
     const eraPointsHistoryTotals = [];
@@ -725,7 +725,7 @@ const crawler = async (delayedStart) => {
     const activeEra = JSON.parse(JSON.stringify(chainActiveEra)).index;
 
     // minimun stake
-    logger.debug(loggerOptions, 'Finding minimum stake');
+    logger.info(loggerOptions, 'Finding minimum stake');
     const nominatorStakes = [];
     // eslint-disable-next-line
     for (const validator of validators){
@@ -737,12 +737,12 @@ const crawler = async (delayedStart) => {
     nominatorStakes.sort((a, b) => ((a.unwrap().lt(b.unwrap())) ? -1 : 1));
     const minimumStake = nominatorStakes[0];
 
-    logger.debug(loggerOptions, `${activeValidatorCount} active validators`);
-    logger.debug(loggerOptions, `${waitingValidatorCount} waiting validators`);
-    logger.debug(loggerOptions, `${nominatorCount} nominators`);
-    logger.debug(loggerOptions, `Current era is ${currentEra}`);
-    logger.debug(loggerOptions, `Active era is ${activeEra}`);
-    logger.debug(loggerOptions, `Minimum amount to stake is ${minimumStake}`);
+    logger.info(loggerOptions, `${activeValidatorCount} active validators`);
+    logger.info(loggerOptions, `${waitingValidatorCount} waiting validators`);
+    logger.info(loggerOptions, `${nominatorCount} nominators`);
+    logger.info(loggerOptions, `Current era is ${currentEra}`);
+    logger.info(loggerOptions, `Active era is ${activeEra}`);
+    logger.info(loggerOptions, `Minimum amount to stake is ${minimumStake}`);
 
     await Promise.all([
       dbQuery(
@@ -1130,12 +1130,12 @@ const crawler = async (delayedStart) => {
 
     // find largest cluster size
     const largestCluster = Math.max(...Array.from(ranking, (o) => o.clusterMembers));
-    logger.debug(loggerOptions, `LARGEST cluster size is ${largestCluster}`);
-    logger.debug(loggerOptions, `SMALL cluster size is between 2 and ${Math.round(largestCluster / 3)}`);
-    logger.debug(loggerOptions, `MEDIUM cluster size is between ${Math.round(largestCluster / 3)} and ${(Math.round(largestCluster / 3) * 2)}`);
-    logger.debug(loggerOptions, `LARGE cluster size is between ${Math.round((largestCluster / 3) * 2)} and ${largestCluster}`);
+    logger.info(loggerOptions, `LARGEST cluster size is ${largestCluster}`);
+    logger.info(loggerOptions, `SMALL cluster size is between 2 and ${Math.round(largestCluster / 3)}`);
+    logger.info(loggerOptions, `MEDIUM cluster size is between ${Math.round(largestCluster / 3)} and ${(Math.round(largestCluster / 3) * 2)}`);
+    logger.info(loggerOptions, `LARGE cluster size is between ${Math.round((largestCluster / 3) * 2)} and ${largestCluster}`);
     // find Pareto-dominated validators
-    logger.debug(loggerOptions, 'Finding dominated validators');
+    logger.info(loggerOptions, 'Finding dominated validators');
     const dominatedStart = new Date().getTime();
     ranking = ranking
       .map((validator) => {
@@ -1180,10 +1180,10 @@ const crawler = async (delayedStart) => {
         };
       });
     const dominatedEnd = new Date().getTime();
-    logger.debug(loggerOptions, `Found ${ranking.filter(({ dominated }) => dominated).length} dominated validators in ${((dominatedEnd - dominatedStart) / 1000).toFixed(3)}s`);
+    logger.info(loggerOptions, `Found ${ranking.filter(({ dominated }) => dominated).length} dominated validators in ${((dominatedEnd - dominatedStart) / 1000).toFixed(3)}s`);
 
     // cluster categorization
-    logger.debug(loggerOptions, 'Random selection of validators based on cluster size');
+    logger.info(loggerOptions, 'Random selection of validators based on cluster size');
     let validatorsToHide = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const cluster of clusters) {
@@ -1218,28 +1218,28 @@ const crawler = async (delayedStart) => {
         }
         return modValidator;
       });
-    logger.debug(loggerOptions, `Finished, ${validatorsToHide.length} validators hided!`);
+    logger.info(loggerOptions, `Finished, ${validatorsToHide.length} validators hided!`);
 
     // We want to store era stats only when there's a new consolidated era in chain history
     if (parseInt(activeEra, 10) - 1 > parseInt(lastEraInDb, 10)) {
-      logger.debug(loggerOptions, 'Storing era stats in db...');
+      logger.info(loggerOptions, 'Storing era stats in db...');
       await Promise.all(
         ranking.map((validator) => insertEraValidatorStats(client, validator, activeEra)),
       );
-      logger.debug(loggerOptions, 'Storing era stats averages in db...');
+      logger.info(loggerOptions, 'Storing era stats averages in db...');
       await Promise.all(
         eraIndexes.map((eraIndex) => insertEraValidatorStatsAvg(client, eraIndex)),
       );
     } else {
-      logger.debug(loggerOptions, 'Updating era averages is not needed!');
+      logger.info(loggerOptions, 'Updating era averages is not needed!');
     }
 
-    logger.debug(loggerOptions, `Storing ${ranking.length} validators in db...`);
+    logger.info(loggerOptions, `Storing ${ranking.length} validators in db...`);
     await Promise.all(
       ranking.map((validator) => insertRankingValidator(client, validator, blockHeight, startTime)),
     );
 
-    logger.debug(loggerOptions, 'Cleaning old data');
+    logger.info(loggerOptions, 'Cleaning old data');
     await dbQuery(
       client,
       `DELETE FROM ranking WHERE block_height != '${blockHeight}';`,
@@ -1260,10 +1260,10 @@ const crawler = async (delayedStart) => {
       }
     }
 
-    logger.debug(loggerOptions, 'Disconnecting from API');
+    logger.info(loggerOptions, 'Disconnecting from API');
     await api.disconnect().catch((error) => logger.error(loggerOptions, `API disconnect error: ${JSON.stringify(error)}`));
 
-    logger.debug(loggerOptions, 'Disconnecting from DB');
+    logger.info(loggerOptions, 'Disconnecting from DB');
     await client.end().catch((error) => logger.error(loggerOptions, `DB disconnect error: ${JSON.stringify(error)}`));
 
     const endTime = new Date().getTime();
