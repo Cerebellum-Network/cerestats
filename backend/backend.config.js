@@ -37,10 +37,8 @@ module.exports = {
       enabled: !process.env.RANKING_DISABLE,
       crawler: './crawlers/ranking.js',
       apiCustomTypes: process.env.API_CUSTOM_TYPES || '',
-      startDelay: parseInt(process.env.RANKING_START_DELAY_MS, 10) || 15 * 60 * 1000,
-      pollingTime:
-        parseInt(process.env.RANKING_POLLING_TIME_MS, 10)
-        || 5 * 60 * 1000,
+      startDelay: 10 * 60 * 1000,
+      pollingTime: 5 * 60 * 1000,
       historySize: 84,
       erasPerDay: 1,
       tokenDecimals: 10,
