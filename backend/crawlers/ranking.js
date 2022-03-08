@@ -374,6 +374,7 @@ const insertRankingValidator = async (client, validator, blockHeight, startTime)
     `${validator.dominated}`,
     `${startTime}`,
   ];
+  logger.info(loggerOptions, `Validator data ${data.toString()}`);
   await dbParamQuery(client, sql, data, loggerOptions);
 };
 
@@ -1271,6 +1272,7 @@ const crawler = async (delayedStart) => {
     logger.info(loggerOptions, `Added ${ranking.length} validators in ${((dataCollectionTime + dataProcessingTime) / 1000).toFixed(3)}s`);
     logger.info(loggerOptions, `Next execution in ${(config.pollingTime / 60000).toFixed(0)}m...`);
   } catch (error) {
+    logger.error(loggerOptions, `Ranking error ${error}`);
     logger.error(loggerOptions, `General error in ranking crawler: ${JSON.stringify(error)}`);
   }
   setTimeout(
