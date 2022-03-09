@@ -14,6 +14,8 @@ module.exports = {
     try {
       const { address, network } = req.body;
 
+      console.log(`sending tokens to ${address} in ${network}`);
+
       // Validate network type
       if (!cereNetworkService.supportsNetwork(network)) {
         throw new Error("Invalid Network Type.");

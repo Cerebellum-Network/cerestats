@@ -26,6 +26,7 @@ async function init() {
 async function initNetwork(url, mnemonic) {
   const api = await initProvider(url);
   if (mnemonic) {
+    console.log(`initing faucet for ${url}`);
     const faucet = await initFaucet(mnemonic);
     return {api, faucet};
   }
@@ -58,11 +59,13 @@ module.exports = {
   },
   getBalance: async (network, address) => {
     const { api, _ } = networkParams.get(network.toUpperCase());
+    console.log(`get balance for ${network} and ${address}`);
     const { nonce, data: balance } = await api.query.system.account(address);
     return balance.free;
   },
   transferFromFaucet: async (network, address, value) => {
     const { api, faucet } = networkParams.get(network.toUpperCase());
+    console.log(`transferFromFaucet ${network} and ${JSON.stringify(faucet)}`);
     const { nonce } = await api.query.system.account(faucet.address);
     return new Promise((resolve, reject) => {
       api.tx.balances
