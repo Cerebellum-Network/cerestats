@@ -49,9 +49,7 @@ module.exports = {
       }
 
       // Transfer CERE tokens
-      const txnHash = (
-        await cereNetworkService.transferFromFaucet(network, address, value)
-      ).toString();
+      const result = await cereNetworkService.transferFromFaucet(network, address, value);
 
       const insertQuery = `
         INSERT INTO faucet (
@@ -63,16 +61,16 @@ module.exports = {
           address
         )
         VALUES (
-          '${faucet.address}',
+          '${result.sender}',
           '${value}',
-          '${txnHash}',
+          '${result.trxHash}',
           '${address}',
           '${network.toUpperCase()}',
           '${ip}'
         )
         ;`;
       await client.query(insertQuery);
-      res.status(200).json({ msg: `Your transaction hash is ${txnHash}` });
+      res.status(200).json({ msg: `Your transaction hash is ${result.trxHash}` });
     } catch (error) {
       console.log(error.message);
       res.status(400).json({
