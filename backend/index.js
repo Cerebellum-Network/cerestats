@@ -6,18 +6,19 @@ const { spawn } = require('child_process');
 const { StatusCodes } = require('http-status-codes');
 const { wait, getEnabledCrawlerNames, getEnabledCrawlers } = require('./lib/utils');
 const config = require('./backend.config');
-const Status = require('./lib/status');
+const { Status, statuses } = require('./lib/status');
 
 const app = express();
 const logger = pino();
 
 const enabledCrawlersNames = getEnabledCrawlerNames(config.crawlers);
+const status = new Status(enabledCrawlersNames);
 
 const runCrawler = async ({ crawler, name }) => {
   const child = spawn('node', [`${crawler}`]);
   child.stdout.pipe(process.stdout);
   child.stderr.pipe(process.stderr);
-  const status = new Status(enabledCrawlersNames);
+  status.set(name, statuses.HEALTHY);
 
   // always triggered after "exit", "error" events
   child.on('close', (exitCode) => {

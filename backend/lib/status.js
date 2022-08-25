@@ -26,4 +26,4 @@ class Status {
   }
 }
 
-module.exports = Status;
+module.exports = { statuses, Status };
