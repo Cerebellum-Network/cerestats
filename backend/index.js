@@ -12,12 +12,13 @@ const app = express();
 const logger = pino();
 
 const enabledCrawlersNames = getEnabledCrawlerNames(config.crawlers);
-const status = new Status(enabledCrawlersNames);
 
 const runCrawler = async ({ crawler, name }) => {
   const child = spawn('node', [`${crawler}`]);
   child.stdout.pipe(process.stdout);
   child.stderr.pipe(process.stderr);
+  const status = new Status(enabledCrawlersNames);
+
   // always triggered after "exit", "error" events
   child.on('close', (exitCode) => {
     logger.warn(`Crawler ${crawler} exit with code: ${exitCode}`);
