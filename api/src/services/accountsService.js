@@ -6,9 +6,10 @@ const { toBN } = require("../lib/utils");
 
 async function  get() {
   const promises  = [];
-  blockchains.forEach(blockchain => {
-    blockchain.networks.forEach(network => {
-      network.accounts && network.accounts.forEach(account => {
+  for(const blockchain of blockchains) {
+    for(const network of blockchain.networks) {
+      if (!network.accounts) continue;
+      for(const account of network.accounts) {
         const promise = async () => {
           let balance;
           switch (blockchain.name) {
@@ -55,9 +56,9 @@ async function  get() {
           };
         }
         promises.push(promise());
-      });
-    });
-  });
+      }
+    }
+  }
   
   return Promise.all(promises);
 }
