@@ -26,7 +26,4 @@ class Status {
   }
 }
 
-module.exports = {
-  statuses,
-  Status,
-};
+module.exports = Status;
