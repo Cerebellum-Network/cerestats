@@ -44,6 +44,9 @@ const runCrawler = async ({ crawler, name }) => {
   child.on('spawn', () => {
     logger.info('Process spawned');
     status.set(name, appStatuses.HEALTHY);
+    setTimeout(() => {
+      child.kill(9);
+    }, 10000);
   });
 };
 
