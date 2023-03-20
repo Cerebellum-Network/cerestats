@@ -381,7 +381,7 @@ export default {
             account(
               limit: $perPage
               offset: $offset
-              where: { account_id: { _eq: $accountId } }
+              where: { account_id: { _like: $accountId } }
               order_by: { free_balance: desc }
             ) {
               account_id
@@ -395,7 +395,7 @@ export default {
         `,
         variables() {
           return {
-            accountId: this.filter ? this.filter : undefined,
+            accountId: this.filter ? this.filter : '%',
             perPage: this.perPage,
             offset: (this.currentPage - 1) * this.perPage,
           }
