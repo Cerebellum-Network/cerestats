@@ -3,6 +3,11 @@
 ## vNext
 - ...
 
+## v0.26.0
+- [BE] Add ss58 prefix migration for first priority data
+- [BE] Add package.json and yarn.lock to Dockerfile
+- [BE] Handle addresses in address20 format in Transfer Page
+
 ## v0.25.0
 - [BE] Fix crawlers status restore after fail
 
