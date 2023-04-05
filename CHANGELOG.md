@@ -1,7 +1,10 @@
 # Cere Stats
 
 ## vNext
-- ...
+...
+
+## v0.27.0
+- [BE] Add ss58 prefix migration for second priority data
 
 ## v0.26.0
 - [BE] Add ss58 prefix migration for first priority data
