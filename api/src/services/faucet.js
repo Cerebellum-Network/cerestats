@@ -34,6 +34,8 @@ module.exports = {
       // Check for superuser request
       const isSuperUser = req.headers["x-api-token"] === SUPERUSER_API_TOKEN;
 
+      console.log(`Faucet request: isSuperUser value equals to ${isSuperUser}`);
+
       // Handle invalid SUPER_USER_TOKEN
       if (req.headers["x-api-token"] && !isSuperUser) {
         return res.status(401).json({
