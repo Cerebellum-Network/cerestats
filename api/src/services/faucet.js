@@ -26,6 +26,8 @@ module.exports = {
 
       const client = await getClient();
 
+      console.log('Current ENV variable is', SUPERUSER_API_TOKEN);
+
       // Check if SUPERUSER_API_TOKEN is not defined or not a string
       if (typeof SUPERUSER_API_TOKEN !== 'string') {
         console.log('Warning: SUPERUSER_API_TOKEN env is not defined or has incorrect format');
