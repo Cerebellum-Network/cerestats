@@ -3,6 +3,9 @@
 ## vNext
 ...
 
+## v0.29.0
+- [BE] Add superuser token allocation to faucet controller
+
 ## v0.28.0
 - [BE] Add ss58 prefix migration for block table
 
