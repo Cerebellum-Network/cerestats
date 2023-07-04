@@ -3,6 +3,9 @@
 ## vNext
 ...
 
+## v0.30.0
+- [FE] Set up GTAG GA4 Analytics, replace the `@nuxtjs/google-analytics` package with `@nuxtjs/gtm`.
+
 ## v0.29.0
 - [BE] Add superuser token allocation to faucet controller
 
