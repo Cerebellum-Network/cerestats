@@ -3,6 +3,9 @@
 ## vNext
 ...
 
+## v0.34.0
+- [FE] Update Twitter and Telegram links
+
 ## v0.33.0
 - [FE] Token Metrics Enhancements:
     - Express both the "Total Supply" and "Total Staked" values in USD.
