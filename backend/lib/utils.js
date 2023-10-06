@@ -238,6 +238,63 @@ module.exports = {
       logger.error(loggerOptions, `Error adding extrinsic ${blockNumber}-${index}: ${JSON.stringify(error)}`);
     }
   },
+  processMetadata: async (
+    client,
+    api,
+    blockNumber,
+    blockHash,
+    specName,
+    specVersion,
+    timestamp,
+    loggerOptions,
+  ) => {
+    let metadata;
+    try {
+      metadata = await api.rpc.state.getMetadata(blockHash);
+      logger.debug(loggerOptions, `Got runtime metadata at ${blockHash}!`);
+    } catch (error) {
+      logger.error(
+        loggerOptions,
+        `Error fetching runtime metadata at ${blockHash}: ${JSON.stringify(
+          error,
+        )}`,
+      );
+    }
+
+    const data = [
+      blockNumber,
+      specName,
+      specVersion,
+      Object.keys(metadata.toJSON().metadata)[0],
+      metadata.magicNumber,
+      metadata.toJSON().metadata,
+      timestamp,
+    ];
+    const query = `
+    INSERT INTO runtime (
+      block_number,
+      spec_name,
+      spec_version,
+      metadata_version,
+      metadata_magic_number,
+      metadata,
+      timestamp
+    ) VALUES (
+      $1,
+      $2,
+      $3,
+      $4,
+      $5,
+      $6,
+      $7
+    )
+    ON CONFLICT (spec_version)
+    DO UPDATE SET
+      block_number = EXCLUDED.block_number
+    WHERE EXCLUDED.block_number < runtime.block_number;`;
+
+    await module.exports.dbParamQuery(client, query, data, loggerOptions);
+  },
   processEvents: async (
     client, blockNumber, blockEvents, timestamp, loggerOptions,
   ) => {
