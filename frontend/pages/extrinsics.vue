@@ -6,36 +6,85 @@
           <b-col cols="12">
             <h1>
               {{ $t('pages.extrinsics.title') }}
-              <small v-if="totalRows !== 1" class="ml-1" style="font-size: 1rem"
-                >[{{ formatNumber(totalRows) }}]</small
-              >
+              <small class="ml-1" style="font-size: 1rem">
+                [{{ formatNumber(totalRows) }}]
+                <font-awesome-icon
+                  icon="sync"
+                  class="reload text-primary2"
+                  @click="reloadQueries()"
+                />
+              </small>
             </h1>
           </b-col>
         </b-row>
         <div class="last-extrinsics">
-          <div v-if="loading" class="text-center py-4">
-            <Loading />
-          </div>
-          <template v-else>
-            <!-- Filter -->
-            <b-row style="margin-bottom: 1rem">
-              <b-col cols="12">
+          <!-- Filter -->
+          <b-row style="margin-bottom: 1rem">
+            <b-col cols="12">
+              <b-input-group size="xl" class="mb-2">
+                <b-input-group-prepend is-text>
+                  <font-awesome-icon icon="search" />
+                </b-input-group-prepend>
                 <b-form-input
                   id="filterInput"
                   v-model="filter"
                   type="search"
                   :placeholder="$t('pages.blocks.search_placeholder')"
                 />
-              </b-col>
-            </b-row>
+              </b-input-group>
+            </b-col>
+          </b-row>
+          <b-row style="margin-bottom: 1rem">
+            <b-col cols="4">
+              <p class="mb-0">
+                <small><strong>runtime</strong></small>
+              </p>
+              <b-form-select
+                v-model="selectedRuntimeVersion"
+                :options="runtimeSpecVersionOptions"
+                @change="selectedPalletName = null"
+              ></b-form-select>
+            </b-col>
+            <b-col cols="4">
+              <p class="mb-0">
+                <small><strong>pallet</strong></small>
+              </p>
+              <b-form-select
+                v-model="selectedPalletName"
+                :options="palletNameOptions"
+                @change="selectedPalletExtrinsic = null"
+              ></b-form-select>
+            </b-col>
+            <b-col cols="4">
+              <p class="mb-0">
+                <small><strong>extrinsic</strong></small>
+              </p>
+              <b-form-select
+                v-model="selectedPalletExtrinsic"
+                :options="palletExtrinsicsOptions"
+              ></b-form-select>
+            </b-col>
+          </b-row>
+          <!-- <p>
+            runtime: {{ selectedRuntimeVersion }} / module:
+            {{ selectedPalletName }} / extrinsic: {{ selectedPalletExtrinsic }}
+          </p> -->
+          <div v-if="$apollo.loading" class="text-center py-4">
+            <Loading />
+          </div>
+          <template v-else>
             <div class="table-responsive">
               <b-table striped hover :fields="fields" :items="extrinsics">
                 <template #cell(block_number)="data">
                   <p class="mb-0">
                     <nuxt-link
                       v-b-tooltip.hover
-                      :to="`/extrinsic/${data.item.block_number}/${data.item.extrinsic_index}`"
-                      title="Check extrinsic information"
+                      :to="
+                        localePath(
+                          `/extrinsic/${data.item.block_number}/${data.item.extrinsic_index}`
+                        )
+                      "
+                      :title="$t('common.extrinsic_details')"
                     >
                       {{ data.item.block_number }}-{{
                         data.item.extrinsic_index
@@ -45,6 +94,11 @@
                 </template>
                 <template #cell(hash)="data">
                   <p class="mb-0">{{ shortHash(data.item.hash) }}</p>
+                </template>
+                <template #cell(timestamp)="data">
+                  <p class="mb-0">
+                    {{ fromNow(data.item.timestamp) }}
+                  </p>
                 </template>
                 <template #cell(section)="data">
                   <p class="mb-0">
@@ -95,7 +149,7 @@
                     <b-dropdown-item
                       v-for="(option, index) in paginationOptions"
                       :key="index"
-                      @click="setPageSize(10)"
+                      @click="setPageSize(option)"
                     >
                       {{ option }}
                     </b-dropdown-item>
@@ -133,7 +187,6 @@ export default {
   mixins: [commonMixin],
   data() {
     return {
-      loading: true,
       filter: '',
       extrinsics: [],
       paginationOptions,
@@ -145,25 +198,35 @@ export default {
       fields: [
         {
           key: 'block_number',
-          label: 'Extrinsic',
-          sortable: true,
+          label: this.$t('pages.extrinsics.id'),
+          sortable: false,
+        },
+        {
+          key: 'timestamp',
+          label: this.$t('pages.extrinsics.timestamp'),
+          sortable: false,
         },
         {
           key: 'hash',
-          label: 'Hash',
-          sortable: true,
+          label: this.$t('pages.extrinsics.hash'),
+          sortable: false,
         },
         {
           key: 'section',
-          label: 'Extrinsic',
-          sortable: true,
+          label: this.$t('pages.extrinsics.extrinsic'),
+          sortable: false,
         },
         {
           key: 'success',
-          label: 'Success',
-          sortable: true,
+          label: this.$t('pages.extrinsics.success'),
+          sortable: false,
         },
       ],
+      runtimeVersions: [],
+      palletsAndExtrinsics: [],
+      selectedRuntimeVersion: null,
+      selectedPalletName: null,
+      selectedPalletExtrinsic: null,
     }
   },
   head() {
@@ -182,66 +245,256 @@ export default {
       ],
     }
   },
+  computed: {
+    runtimeSpecVersionOptions() {
+      const runtimeSpecVersionOptions = this.runtimeVersions.map(
+        (specVersion) => ({
+          value: specVersion.spec_version,
+          text: specVersion.spec_version,
+        })
+      )
+      return runtimeSpecVersionOptions
+    },
+    palletNameOptions() {
+      const palletNames = this.palletsAndExtrinsics
+        .filter(({ calls }) => calls.length !== 0)
+        .map(({ name }) => name)
+        .sort()
+        .map((palletName) => ({
+          value: this.uncapitalize(palletName),
+          text: palletName,
+        }))
+      // console.log('modules:', palletNames)
+      return [{ value: null, text: 'All' }].concat(palletNames)
+    },
+    palletExtrinsicsOptions() {
+      const vm = this
+      let palletExtrinsics = []
+      if (this.selectedPalletName) {
+        const selectedPallet = this.palletsAndExtrinsics.find(
+          ({ name }) => name === vm.capitalize(vm.selectedPalletName)
+        )
+        palletExtrinsics = selectedPallet.calls
+          .sort()
+          .map((moduleExtrinsic) => ({
+            value: this.snakeToCamel(moduleExtrinsic),
+            text: this.snakeToCamel(moduleExtrinsic),
+          }))
+      }
+      // console.log('extrinsics:', palletExtrinsics)
+      return [{ value: null, text: 'All' }].concat(palletExtrinsics)
+    },
+  },
   methods: {
     setPageSize(num) {
       localStorage.paginationOptions = num
       this.perPage = parseInt(num)
     },
+    reloadQueries() {
+      this.$apollo.queries.extrinsic.refetch()
+      this.$apollo.queries.total.refetch()
+      this.$apollo.queries.extrinsic_aggregate.refetch()
+      this.$apollo.queries.spec_version.refetch()
+      this.$apollo.queries.runtime.refetch()
+    },
   },
   apollo: {
-    $subscribe: {
-      extrinsic: {
-        query: gql`
-          subscription extrinsics(
-            $blockNumber: bigint
-            $perPage: Int!
-            $offset: Int!
-          ) {
-            extrinsic(
-              limit: $perPage
-              offset: $offset
-              where: { block_number: { _eq: $blockNumber } }
-              order_by: { block_number: desc, extrinsic_index: desc }
-            ) {
-              block_number
-              extrinsic_index
-              is_signed
-              signer
-              section
-              method
-              hash
-              success
+    extrinsic: {
+      query: gql`
+        query extrinsics(
+          $blockNumber: bigint
+          $section: String
+          $method: String
+          $perPage: Int!
+          $offset: Int!
+        ) {
+          extrinsic(
+            limit: $perPage
+            offset: $offset
+            where: {
+              block_number: { _eq: $blockNumber }
+              section: { _eq: $section }
+              method: { _eq: $method }
             }
+            order_by: { block_number: desc, extrinsic_index: desc }
+          ) {
+            block_number
+            extrinsic_index
+            is_signed
+            signer
+            section
+            method
+            hash
+            success
+            timestamp
           }
-        `,
-        variables() {
-          return {
-            blockNumber: this.filter ? parseInt(this.filter) : undefined,
-            perPage: this.perPage,
-            offset: (this.currentPage - 1) * this.perPage,
-          }
-        },
-        result({ data }) {
-          this.extrinsics = data.extrinsic
-          if (this.filter) {
-            this.totalRows = this.extrinsics.length
-          }
-          this.loading = false
-        },
+        }
+      `,
+      variables() {
+        return {
+          blockNumber: this.filter ? parseInt(this.filter) : undefined,
+          section: this.selectedPalletName
+            ? this.selectedPalletName
+            : undefined,
+          method: this.selectedPalletExtrinsic
+            ? this.selectedPalletExtrinsic
+            : undefined,
+          perPage: this.perPage,
+          offset: (this.currentPage - 1) * this.perPage,
+        }
       },
-      totalExtrinsics: {
-        query: gql`
-          subscription total {
-            total(where: { name: { _eq: "extrinsics" } }, limit: 1) {
+      result({ data }) {
+        this.extrinsics = data.extrinsic
+        if (this.filter) {
+          this.totalRows = this.extrinsics.length
+        }
+      },
+    },
+    total: {
+      query: gql`
+        query total {
+          total(where: { name: { _eq: "extrinsics" } }, limit: 1) {
+            count
+          }
+        }
+      `,
+      variables() {
+        return {
+          blockNumber: this.filter ? parseInt(this.filter) : undefined,
+          section: this.selectedPalletName
+            ? this.selectedPalletName
+            : undefined,
+          method: this.selectedPalletExtrinsic
+            ? this.selectedPalletExtrinsic
+            : undefined,
+        }
+      },
+      result({ data }) {
+        if (
+          this.filter === '' &&
+          this.selectedPalletName === null &&
+          this.selectedPalletExtrinsic === null
+        ) {
+          this.totalRows = data.total[0].count
+        }
+      },
+    },
+    extrinsic_aggregate: {
+      query: gql`
+        query extrinsics(
+          $blockNumber: bigint
+          $section: String
+          $method: String
+        ) {
+          extrinsic_aggregate(
+            where: {
+              block_number: { _eq: $blockNumber }
+              section: { _eq: $section }
+              method: { _eq: $method }
+            }
+          ) {
+            aggregate {
               count
             }
           }
-        `,
-        result({ data }) {
-          if (!this.filter) {
-            this.totalRows = data.total[0].count
+        }
+      `,
+      variables() {
+        return {
+          blockNumber: this.filter ? parseInt(this.filter) : undefined,
+          section: this.selectedPalletName
+            ? this.selectedPalletName
+            : undefined,
+          method: this.selectedPalletExtrinsic
+            ? this.selectedPalletExtrinsic
+            : undefined,
+        }
+      },
+      result({ data }) {
+        if (
+          this.filter !== '' ||
+          this.selectedPalletName !== null ||
+          this.selectedPalletExtrinsic !== null
+        ) {
+          this.totalRows = data.extrinsic_aggregate.aggregate.count
+        }
+      },
+    },
+    spec_version: {
+      query: gql`
+        query runtime {
+          spec_version: runtime(order_by: { block_number: desc }) {
+            spec_version
           }
-        },
+        }
+      `,
+      result({ data }) {
+        this.runtimeVersions = data.spec_version
+        this.selectedRuntimeVersion = data.spec_version[0].spec_version
+        // console.log('runtime specs:', this.runtimeVersions)
+      },
+    },
+    runtime: {
+      query: gql`
+        query runtime($specVersion: Int!) {
+          runtime(where: { spec_version: { _eq: $specVersion } }, limit: 1) {
+            metadata_version
+            metadata
+          }
+        }
+      `,
+      skip() {
+        return this.runtimeVersions.length === 0
+      },
+      variables() {
+        return {
+          specVersion: this.selectedRuntimeVersion,
+        }
+      },
+      result({ data }) {
+        // get pallets and extrinsics from runtime metadata
+        const metadataVersion = data.runtime[0].metadata_version
+        this.metadata = data.runtime[0].metadata[metadataVersion]
+        const palletsAndExtrinsics = []
+        if (metadataVersion !== 'v14') {
+          this.metadata.modules.forEach((module) => {
+            const palletAndExtrinsics = {
+              name: module.name,
+              calls:
+                module.calls !== null
+                  ? module.calls.map((call) => call.name)
+                  : [],
+            }
+            palletsAndExtrinsics.push(palletAndExtrinsics)
+          })
+        } else {
+          this.metadata.pallets.forEach((pallet) => {
+            const callsId = pallet.calls?.type || null
+            const calls = []
+            const palletAndExtrinsics = {
+              name: pallet.name,
+              callsId,
+              calls,
+            }
+            if (callsId) {
+              this.metadata.lookup.types
+                .filter(
+                  ({ id, type }) => type.path.includes('Call') && id === callsId
+                )
+                .forEach(({ type }) => {
+                  type.def.variant.variants.forEach((variant) => {
+                    palletAndExtrinsics.calls.push(variant.name.toString())
+                  })
+                })
+            }
+            palletsAndExtrinsics.push(palletAndExtrinsics)
+          })
+        }
+        // console.log(
+        //   'palletsAndExtrinsics:',
+        //   JSON.stringify(palletsAndExtrinsics, null, 2)
+        // )
+        this.palletsAndExtrinsics = palletsAndExtrinsics
       },
     },
   },
