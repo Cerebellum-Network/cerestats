@@ -1,4 +1,4 @@
-FROM node:fermium
+FROM node:galium
 
 WORKDIR /usr/app/crawler
 
@@ -7,6 +7,6 @@ COPY ./yarn.lock /usr/app
 COPY ./backend /usr/app/crawler
 COPY ./db /usr/app/db
 
-RUN yarn 
+RUN yarn
 
 CMD ["yarn", "start"]

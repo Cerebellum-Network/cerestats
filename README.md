@@ -34,9 +34,9 @@ apt install docker-ce
 sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ```
-# node v14
+# node v16
 ```bash
-curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+curl -fsSL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
 bash nodesource_setup.sh
 apt install nodejs
 ```
