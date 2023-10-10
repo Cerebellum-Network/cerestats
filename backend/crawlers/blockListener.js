@@ -7,6 +7,7 @@ const {
   isNodeSynced,
   wait,
   shortHash,
+  processMetadata,
   processExtrinsics,
   processEvents,
   processLogs,
@@ -198,6 +199,24 @@ const crawler = async () => {
             loggerOptions,
           ),
         ]);
+
+        // Process Metadata
+        try {
+          const { specName } = runtimeVersion.toJSON();
+          const { specVersion } = runtimeVersion;
+          await processMetadata(
+            client,
+            api,
+            blockNumber,
+            blockHash.toString(),
+            specName.toString(),
+            specVersion.toNumber(),
+            timestamp,
+            loggerOptions,
+          );
+        } catch (e) {
+          console.log('Failed to store Metatdata', e);
+        }
 
         // Update finalized blocks
         await updateFinalized(client, finalizedBlock, loggerOptions);
