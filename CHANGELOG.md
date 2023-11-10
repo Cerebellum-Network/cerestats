@@ -3,6 +3,9 @@
 ## vNext
 ...
 
+## v0.35.0
+- [API] Add error handling for CereNetworkService initialization.
+
 ## v0.34.0
 - [FE] Update Twitter and Telegram links
 
