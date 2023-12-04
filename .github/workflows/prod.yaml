@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master-cere
+  workflow_dispatch:
 
 jobs:
   build_backend_cerestats_api:
