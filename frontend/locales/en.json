@@ -200,7 +200,12 @@
     "extrinsics": {
       "title": "Extrinsics",
       "head_title": "Cere Stats - Extrinsics",
-      "head_content": "{networkName} Extrinsics"
+      "head_content": "{networkName} Extrinsics",
+      "id": "ID",
+      "timestamp": "Date",
+      "hash": "Hash",
+      "extrinsic": "Extrinsic",
+      "success": "Status"
     },
     "transfers": {
       "title": "Transfers",

@@ -9,6 +9,7 @@ const {
   processExtrinsics,
   processEvents,
   processLogs,
+  processMetadata,
   getDisplayName,
   wait,
   logHarvestError,
@@ -100,6 +101,31 @@ const harvestBlock = async (api, client, blockNumber) => {
     // const isElection = Object.getOwnPropertyNames(chainElectionStatus.toJSON())[0] !== 'off';
     // ToDo fix with CBI-1451
     const isElection = false;
+
+    // Runtime upgrade
+    const runtimeUpgrade = blockEvents.find(
+      ({ event: { section, method } }) => section === 'system' && method === 'CodeUpdated',
+    );
+
+    if (runtimeUpgrade) {
+      const { specName } = runtimeVersion.toJSON();
+      const { specVersion } = runtimeVersion;
+
+      // TODO: enable again
+      // see: https://github.com/polkadot-js/api/issues/4596
+      // const metadata = await api.rpc.state.getMetadata(blockHash);
+
+      await processMetadata(
+        client,
+        api,
+        blockNumber,
+        blockHash.toString(),
+        specName.toString(),
+        specVersion.toNumber(),
+        timestamp,
+        loggerOptions,
+      );
+    }
 
     // Store block extrinsics (async)
     processExtrinsics(

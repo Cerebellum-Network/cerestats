@@ -1,4 +1,4 @@
-FROM node:fermium
+FROM node:galium
 
 WORKDIR /usr/app/api
 
@@ -9,6 +9,6 @@ COPY ./db /usr/app/db
 
 EXPOSE 8000
 
-RUN yarn 
+RUN yarn
 
 CMD ["yarn", "start"]
