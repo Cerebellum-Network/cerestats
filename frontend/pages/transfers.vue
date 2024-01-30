@@ -264,7 +264,7 @@ export default {
                   }
                 ]
               }
-              order_by: { block_number: desc, extrinsic_index: desc }
+              order_by: { block_number: desc }
             ) {
               block_number
               section
