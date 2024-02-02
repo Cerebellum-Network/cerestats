@@ -201,7 +201,7 @@ export default {
               limit: $perPage
               offset: $offset
               where: { block_number: { _eq: $blockNumber } }
-              order_by: { block_number: desc, extrinsic_index: desc }
+              order_by: { block_number: desc }
             ) {
               block_number
               extrinsic_index
