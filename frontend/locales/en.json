@@ -119,6 +119,19 @@
       "loading_data": "Loading data, it can take a long time. Be patient, please",
       "download_csv": "Download in CSV format"
     },
+    "ddc-nodes": {
+      "cluster_dashboard": "Cluster Dashboard",
+      "cluster_id": "Cluster ID",
+      "nodes": "Nodes",
+      "tier": "Tier",
+      "throughput": "Throughput",
+      "search_placeholder": "Search nodes by node ID",
+      "node_type": "Node Type",
+      "node_id": "Node ID",
+      "rewards": "Rewards (24H)",
+      "gets": "Successful Reads in the last Epoch",
+      "puts": "Successful Writes in the last Epoch"
+    },
     "account": {
       "head_title": "Cere Stats - Account {address}",
       "head_content": "{networkName} Account {address}",
