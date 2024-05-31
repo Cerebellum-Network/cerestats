@@ -5,7 +5,7 @@
         <b-row class="mb-2">
           <b-col cols="12">
             <h1>
-              {{ $t('pages.ddc-nodes.cluster_dashboard') }}
+              {{ $t('pages.cluster.cluster_dashboard') }}
               <small v-if="totalRows !== 1" class="ml-1" style="font-size: 1rem"
                 >[{{ formatNumber(totalRows) }}]</small
               >
@@ -18,9 +18,9 @@
               <div class="widget mb-4">
                 <div class="col-10">
                   <h5 class="widget-title mb-2">
-                    {{ $t('pages.ddc-nodes.cluster_id') }}
+                    {{ $t('pages.cluster.cluster_id') }}
                   </h5>
-                  <h5>1234</h5>
+                  <h5>{{ clusterId }}</h5>
                 </div>
               </div>
             </b-col>
@@ -28,9 +28,9 @@
               <div class="widget mb-4">
                 <div class="col-10">
                   <h5 class="widget-title mb-2">
-                    {{ $t('pages.ddc-nodes.nodes') }}
+                    {{ $t('pages.cluster.nodes') }}
                   </h5>
-                  <h5>1234</h5>
+                  <h5>{{ nodes.length }}</h5>
                 </div>
               </div>
             </b-col>
@@ -38,17 +38,7 @@
               <div class="widget mb-4">
                 <div class="col-10">
                   <h5 class="widget-title mb-2">
-                    {{ $t('pages.ddc-nodes.tier') }}
-                  </h5>
-                  <h5>1234</h5>
-                </div>
-              </div>
-            </b-col>
-            <b-col>
-              <div class="widget mb-4">
-                <div class="col-10">
-                  <h5 class="widget-title mb-2">
-                    {{ $t('pages.ddc-nodes.throughput') }}
+                    {{ $t('pages.cluster.throughput') }}
                   </h5>
                   <h5>1234</h5>
                 </div>
@@ -71,7 +61,7 @@
                   id="filterInput"
                   v-model="filter"
                   type="search"
-                  :placeholder="$t('pages.ddc-nodes.search_placeholder')"
+                  :placeholder="$t('pages.cluster.search_placeholder')"
                 />
               </b-input-group>
             </b-col>
@@ -270,31 +260,32 @@ export default {
       fields: [
         {
           key: 'node_id',
-          label: this.$t('pages.ddc-nodes.node_id'),
+          label: this.$t('pages.cluster.node_id'),
           sortable: true,
         },
         {
           key: 'node_type',
-          label: this.$t('pages.ddc-nodes.node_type'),
+          label: this.$t('pages.cluster.node_type'),
           sortable: true,
         },
         {
           key: 'node_provider_reward',
-          label: this.$t('pages.ddc-nodes.rewards'),
+          label: this.$t('pages.cluster.rewards'),
           sortable: true,
         },
         {
           key: 'gets',
-          label: this.$t('pages.ddc-nodes.gets'),
+          label: this.$t('pages.cluster.gets'),
           sortable: true,
         },
         {
           key: 'puts',
-          label: this.$t('pages.ddc-nodes.puts'),
+          label: this.$t('pages.cluster.puts'),
           sortable: true,
         },
       ],
       nodes: [],
+      clusterId: this.$route.params.id,
     }
   },
   head() {
@@ -323,11 +314,19 @@ export default {
     $subscribe: {
       node_stats: {
         query: gql`
-          query node_stats($nodeId: bytea, $perPage: Int!, $offset: Int!) {
+          query node_stats(
+            $clusterId: String
+            $nodeId: String
+            $perPage: Int!
+            $offset: Int!
+          ) {
             node_stats(
               limit: $perPage
               offset: $offset
-              where: { node_id: { _eq: $nodeId } }
+              where: {
+                node_id: { _eq: $nodeId }
+                cluster_id: { _eq: $clusterId }
+              }
               order_by: { node_provider_reward: desc }
             ) {
               node_id
@@ -339,14 +338,15 @@ export default {
           }
         `,
         variables() {
+          console.log('clusterId', this.clusterId)
           return {
+            clusterId: this.clusterId,
             nodeId: this.filter ? this.filter : undefined,
             perPage: this.perPage,
             offset: (this.currentPage - 1) * this.perPage,
           }
         },
         result({ data }) {
-          console.log('ddc nodes', data)
           this.nodes = data.node_stats
           if (this.filter) {
             this.totalRows = this.nodes.length

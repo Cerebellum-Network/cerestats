@@ -1,17 +1,61 @@
 <template>
   <div>
     <section>
-      <b-container class="page-accounts main py-5">
+      <b-container class="main py-5">
         <b-row class="mb-2">
           <b-col cols="12">
             <h1>
-              {{ $t('pages.accounts.active_accounts') }}
+              {{ $t('pages.cluster.cluster_dashboard') }}
               <small v-if="totalRows !== 1" class="ml-1" style="font-size: 1rem"
                 >[{{ formatNumber(totalRows) }}]</small
               >
             </h1>
           </b-col>
         </b-row>
+        <b-container class="main mb-5 p-0">
+          <b-row>
+            <b-col>
+              <div class="widget mb-4">
+                <div class="col-10">
+                  <h5 class="widget-title mb-2">
+                    {{ $t('pages.cluster.cluster_id') }}
+                  </h5>
+                  <h5>1234</h5>
+                </div>
+              </div>
+            </b-col>
+            <b-col>
+              <div class="widget mb-4">
+                <div class="col-10">
+                  <h5 class="widget-title mb-2">
+                    {{ $t('pages.cluster.nodes') }}
+                  </h5>
+                  <h5>1234</h5>
+                </div>
+              </div>
+            </b-col>
+            <b-col>
+              <div class="widget mb-4">
+                <div class="col-10">
+                  <h5 class="widget-title mb-2">
+                    {{ $t('pages.cluster.tier') }}
+                  </h5>
+                  <h5>1234</h5>
+                </div>
+              </div>
+            </b-col>
+            <b-col>
+              <div class="widget mb-4">
+                <div class="col-10">
+                  <h5 class="widget-title mb-2">
+                    {{ $t('pages.cluster.throughput') }}
+                  </h5>
+                  <h5>1234</h5>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
         <div v-if="loading" class="text-center py-4">
           <Loading />
         </div>
@@ -27,62 +71,18 @@
                   id="filterInput"
                   v-model="filter"
                   type="search"
-                  :placeholder="$t('pages.accounts.search_placeholder')"
+                  :placeholder="$t('pages.cluster.search_placeholder')"
                 />
               </b-input-group>
             </b-col>
           </b-row>
-          <!-- Mobile sorting -->
-          <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
-            <b-col lg="6" class="my-1">
-              <b-form-group
-                :label="$t('pages.accounts.sort')"
-                label-cols-sm="3"
-                label-align-sm="right"
-                label-size="sm"
-                label-for="sortBySelect"
-                class="mb-4"
-              >
-                <b-input-group size="sm">
-                  <b-form-select
-                    id="sortBySelect"
-                    v-model="sortBy"
-                    :options="sortOptions"
-                    class="w-75"
-                  >
-                    <template #first>
-                      <option value="">-- none --</option>
-                    </template>
-                  </b-form-select>
-                  <b-form-select
-                    v-model="sortDesc"
-                    size="sm"
-                    :disabled="!sortBy"
-                    class="w-25"
-                  >
-                    <option :value="false">Asc</option>
-                    <option :value="true">Desc</option>
-                  </b-form-select>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </div>
-          <JsonCSV
-            :data="accountsJSON"
-            class="download-csv mb-2"
-            name="subsocial_accounts.csv"
-          >
-            <font-awesome-icon icon="file-csv" />
-            {{ $t('pages.accounts.download_csv') }}
-          </JsonCSV>
-          <!-- Table with sorting and pagination-->
           <div>
             <b-table
               id="accounts-table"
               striped
               stacked="md"
               :fields="fields"
-              :items="parsedAccounts"
+              :items="nodes"
             >
               <template #cell(rank)="data">
                 <p class="text-right mb-0">#{{ data.item.rank }}</p>
@@ -99,7 +99,7 @@
                     :to="`/account/${data.item.account_id}`"
                     :title="$t('pages.accounts.account_details')"
                   >
-                    <h4>{{ shortAddress(data.item.account_id) }}</h4>
+                    <h4>{{ shortAddress(data.item.node_id) }}</h4>
                   </nuxt-link>
                   <p v-if="data.item.identity_display" class="mb-0">
                     {{ data.item.identity_display }}
@@ -113,7 +113,7 @@
                           }}</strong>
                         </td>
                         <td class="text-right">
-                          {{ formatAmount(data.item.free_balance) }}
+                          {{ formatAmount(data.item.node_type) }}
                         </td>
                       </tr>
                       <tr>
@@ -146,7 +146,7 @@
                     :to="`/account/${data.item.account_id}`"
                     :title="$t('pages.accounts.account_details')"
                   >
-                    {{ shortAddress(data.item.account_id) }}
+                    {{ shortAddress(data.item.node_id) }}
                   </nuxt-link>
                 </div>
               </template>
@@ -242,7 +242,6 @@
 </template>
 <script>
 import { gql } from 'graphql-tag'
-import JsonCSV from 'vue-json-csv'
 import Identicon from '@/components/Identicon.vue'
 import Loading from '@/components/Loading.vue'
 import commonMixin from '@/mixins/commonMixin.js'
@@ -252,7 +251,6 @@ export default {
   components: {
     Loading,
     Identicon,
-    JsonCSV,
   },
   mixins: [commonMixin],
   data() {
@@ -271,39 +269,33 @@ export default {
       agggregateRows: 1,
       fields: [
         {
-          key: 'rank',
-          label: this.$t('pages.accounts.rank'),
+          key: 'node_id',
+          label: this.$t('pages.cluster.node_id'),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`,
-        },
-        { key: 'account_id', label: 'Account', sortable: true },
-        {
-          key: 'free_balance',
-          label: this.$t('pages.accounts.free_balance'),
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`,
         },
         {
-          key: 'locked_balance',
-          label: this.$t('pages.accounts.locked_balance'),
+          key: 'node_type',
+          label: this.$t('pages.cluster.node_type'),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`,
         },
         {
-          key: 'available_balance',
-          label: this.$t('pages.accounts.available_balance'),
+          key: 'node_provider_reward',
+          label: this.$t('pages.cluster.rewards'),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`,
         },
         {
-          key: 'favorite',
-          label: '⭐',
+          key: 'gets',
+          label: this.$t('pages.cluster.gets'),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`,
+        },
+        {
+          key: 'puts',
+          label: this.$t('pages.cluster.puts'),
+          sortable: true,
         },
       ],
-      accounts: [],
-      favorites: [],
+      nodes: [],
+      clusterId: this.$route.params.id,
     }
   },
   head() {
@@ -322,90 +314,57 @@ export default {
       ],
     }
   },
-  computed: {
-    parsedAccounts() {
-      return this.accounts.map((account, index) => {
-        return {
-          rank: index + 1,
-          ...account,
-          favorite: this.isFavorite(account.account_id),
-        }
-      })
-    },
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter((f) => f.sortable)
-        .map((f) => {
-          return { text: f.label, value: f.key }
-        })
-    },
-    accountsJSON() {
-      return this.parsedAccounts
-    },
-  },
-  watch: {
-    favorites(val) {
-      this.$cookies.set('favorites', val, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-      })
-    },
-  },
-  created() {
-    // get favorites from cookie
-    if (this.$cookies.get('favorites')) {
-      this.favorites = this.$cookies.get('favorites')
-    }
-  },
   methods: {
     setPageSize(num) {
       localStorage.paginationOptions = num
       this.perPage = parseInt(num)
     },
-    toggleFavorite(accountId) {
-      if (this.favorites.includes(accountId)) {
-        this.favorites.splice(this.favorites.indexOf(accountId), 1)
-      } else {
-        this.favorites.push(accountId)
-      }
-      return true
-    },
-    isFavorite(accountId) {
-      return this.favorites.includes(accountId)
+  },
+  watch: {
+    $route() {
+      this.clusterId = this.$route.params.id
     },
   },
   apollo: {
     $subscribe: {
-      accounts: {
+      node_stats: {
         query: gql`
-          query account($accountId: String, $perPage: Int!, $offset: Int!) {
-            account(
+          query node_stats(
+            $clusterId: String
+            $nodeId: String
+            $perPage: Int!
+            $offset: Int!
+          ) {
+            node_stats(
               limit: $perPage
               offset: $offset
-              where: { account_id: { _eq: $accountId } }
-              order_by: { free_balance: desc }
+              where: {
+                node_id: { _eq: $nodeId }
+                cluster_id: { _eq: $clusterId }
+              }
+              order_by: { node_provider_reward: desc }
             ) {
-              account_id
-              identity_display
-              identity_display_parent
-              available_balance
-              free_balance
-              locked_balance
+              node_id
+              node_type
+              node_provider_reward
+              gets
+              puts
             }
           }
         `,
         variables() {
+          console.log(this.clusterId)
           return {
-            accountId: this.filter ? this.filter : undefined,
+            clusterId: this.clusterId,
+            nodeId: this.filter ? this.filter : undefined,
             perPage: this.perPage,
             offset: (this.currentPage - 1) * this.perPage,
           }
         },
         result({ data }) {
-          this.accounts = data.account
+          this.nodes = data.node_stats
           if (this.filter) {
-            this.totalRows = this.accounts.length
+            this.totalRows = this.nodes.length
           } else {
             this.totalRows = this.agggregateRows
           }
@@ -414,8 +373,8 @@ export default {
       },
       count: {
         query: gql`
-          subscription count {
-            account_aggregate {
+          query count {
+            node_stats_aggregate {
               aggregate {
                 count
               }
@@ -423,7 +382,7 @@ export default {
           }
         `,
         result({ data }) {
-          this.agggregateRows = data.account_aggregate.aggregate.count
+          this.agggregateRows = data.node_stats_aggregate.aggregate.count
           if (!this.filter) {
             this.totalRows = this.agggregateRows
           }
