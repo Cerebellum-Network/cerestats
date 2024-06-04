@@ -122,15 +122,20 @@
     "cluster": {
       "cluster_dashboard": "Cluster Dashboard",
       "cluster_id": "Cluster ID",
-      "nodes": "Nodes",
-      "tier": "Tier",
+      "providers": "Providers",
       "throughput": "Throughput",
-      "search_placeholder": "Search nodes by node ID",
       "node_type": "Node Type",
-      "node_id": "Node ID",
-      "rewards": "Rewards (24H)",
+      "node_provider_id": "Node Provider",
+      "rewards": "Rewards for the last Era",
       "gets": "Successful Reads in the last Era",
-      "puts": "Successful Writes in the last Era"
+      "puts": "Successful Writes in the last Era",
+      "historical_rewards": "Historical Rewards",
+      "block": "Block",
+      "event": "Event",
+      "event_index": "Event Index",
+      "rewarded_provider": "Rewarded Provider",
+      "reward_amount": "Rewards (CERE)",
+      "era": "Era"
     },
     "account": {
       "head_title": "Cere Stats - Account {address}",

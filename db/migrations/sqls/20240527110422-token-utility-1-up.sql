@@ -1,13 +1,13 @@
-CREATE TABLE IF NOT EXISTS cluster (
-    id BYTEA PRIMARY KEY
-);
-
-CREATE TABLE IF NOT EXISTS node_provider (
+CREATE TABLE cluster (
     id TEXT PRIMARY KEY
 );
 
-CREATE TABLE IF NOT EXISTS node (
-    id BYTEA PRIMARY KEY,
+CREATE TABLE node_provider (
+    id TEXT PRIMARY KEY
+);
+
+CREATE TABLE node(
+    id TEXT PRIMARY KEY,
     total_capacity BIGINT,
     uptime INTERVAL,
     throughput BIGINT,
@@ -15,21 +15,15 @@ CREATE TABLE IF NOT EXISTS node (
     tier SMALLINT
 );
 
-CREATE TABLE IF NOT EXISTS node_to_cluster (
+CREATE TABLE node_to_node_provider (
     id SERIAL PRIMARY KEY,
-    cluster_id BYTEA NOT NULL,
-    node_id BYTEA NOT NULL,
-    FOREIGN KEY (cluster_id) REFERENCES cluster(id),
+    node_provider_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    FOREIGN KEY (node_provider_id) REFERENCES node_provider(id),
     FOREIGN KEY (node_id) REFERENCES node(id)
 );
 
-CREATE TABLE IF NOT EXISTS node_to_node_provider (
-    id SERIAL PRIMARY KEY,
-    node_provider_id TEXT NOT NULL,
-    node_id BYTEA NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS node_provider_reward (
+CREATE TABLE node_provider_reward (
     id SERIAL PRIMARY KEY,
     node_provider_id TEXT NOT NULL,
     rewarded NUMERIC(39, 0),
@@ -43,3 +37,24 @@ CREATE TABLE IF NOT EXISTS node_provider_reward (
     explorer_link TEXT,
     FOREIGN KEY (node_provider_id) REFERENCES node_provider(id)
 );
+
+CREATE TABLE node_to_cluster (
+    id SERIAL PRIMARY KEY,
+    cluster_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    FOREIGN KEY (cluster_id) REFERENCES cluster(id),
+    FOREIGN KEY (node_id) REFERENCES node(id)
+);
+
+CREATE OR REPLACE VIEW node_provider_stats AS
+SELECT
+    node.id AS node_id,
+    node.node_type,
+    node_to_cluster.cluster_id,
+    nnp.node_provider_id
+FROM
+    node
+        JOIN
+    node_to_cluster ON node.id = node_to_cluster.node_id
+        JOIN
+    node_to_node_provider nnp on node.id = nnp.node_id;

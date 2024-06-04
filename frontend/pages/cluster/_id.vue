@@ -6,9 +6,6 @@
           <b-col cols="12">
             <h1>
               {{ $t('pages.cluster.cluster_dashboard') }}
-              <small v-if="totalRows !== 1" class="ml-1" style="font-size: 1rem"
-                >[{{ formatNumber(totalRows) }}]</small
-              >
             </h1>
           </b-col>
         </b-row>
@@ -20,7 +17,9 @@
                   <h5 class="widget-title mb-2">
                     {{ $t('pages.cluster.cluster_id') }}
                   </h5>
-                  <h5>1234</h5>
+                  <h5>
+                    {{ clusterId }}
+                  </h5>
                 </div>
               </div>
             </b-col>
@@ -28,19 +27,11 @@
               <div class="widget mb-4">
                 <div class="col-10">
                   <h5 class="widget-title mb-2">
-                    {{ $t('pages.cluster.nodes') }}
+                    {{ $t('pages.cluster.providers') }}
                   </h5>
-                  <h5>1234</h5>
-                </div>
-              </div>
-            </b-col>
-            <b-col>
-              <div class="widget mb-4">
-                <div class="col-10">
-                  <h5 class="widget-title mb-2">
-                    {{ $t('pages.cluster.tier') }}
+                  <h5>
+                    {{ providers.length }}
                   </h5>
-                  <h5>1234</h5>
                 </div>
               </div>
             </b-col>
@@ -50,7 +41,7 @@
                   <h5 class="widget-title mb-2">
                     {{ $t('pages.cluster.throughput') }}
                   </h5>
-                  <h5>1234</h5>
+                  <h5>{{ transferred_bytes }}</h5>
                 </div>
               </div>
             </b-col>
@@ -60,29 +51,13 @@
           <Loading />
         </div>
         <template v-else>
-          <!-- Filter -->
-          <b-row>
-            <b-col lg="12" class="mb-3">
-              <b-input-group size="xl" class="mb-2">
-                <b-input-group-prepend is-text>
-                  <font-awesome-icon icon="search" />
-                </b-input-group-prepend>
-                <b-form-input
-                  id="filterInput"
-                  v-model="filter"
-                  type="search"
-                  :placeholder="$t('pages.cluster.search_placeholder')"
-                />
-              </b-input-group>
-            </b-col>
-          </b-row>
           <div>
             <b-table
               id="accounts-table"
               striped
               stacked="md"
               :fields="fields"
-              :items="nodes"
+              :items="clusterStats"
             >
               <template #cell(rank)="data">
                 <p class="text-right mb-0">#{{ data.item.rank }}</p>
@@ -99,7 +74,7 @@
                     :to="`/account/${data.item.account_id}`"
                     :title="$t('pages.accounts.account_details')"
                   >
-                    <h4>{{ shortAddress(data.item.node_id) }}</h4>
+                    <h4>{{ shortAddress(data.item.node_provider_id) }}</h4>
                   </nuxt-link>
                   <p v-if="data.item.identity_display" class="mb-0">
                     {{ data.item.identity_display }}
@@ -190,54 +165,98 @@
               </template>
             </b-table>
           </div>
-          <!-- pagination -->
-          <div class="row">
-            <div class="col-6">
-              <!-- desktop -->
-              <div class="d-none d-sm-none d-md-none d-lg-block d-xl-block">
-                <b-button-group>
-                  <b-button
-                    v-for="(option, index) in paginationOptions"
-                    :key="index"
-                    :class="{ 'selected-per-page': perPage === option }"
-                    variant="outline-primary2"
-                    @click="setPageSize(option)"
-                  >
-                    {{ option }}
-                  </b-button>
-                </b-button-group>
-              </div>
-              <!-- mobile -->
-              <div class="d-block d-sm-block d-md-block d-lg-none d-xl-none">
-                <b-dropdown
-                  class="m-md-2"
-                  text="Page size"
-                  variant="outline-primary2"
-                >
-                  <b-dropdown-item
-                    v-for="(option, index) in paginationOptions"
-                    :key="index"
-                    @click="setPageSize(10)"
-                  >
-                    {{ option }}
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-            <div class="col-6">
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="totalRows"
-                :per-page="perPage"
-                aria-controls="my-table"
-                variant="dark"
-                align="right"
-              ></b-pagination>
-            </div>
-          </div>
         </template>
       </b-container>
     </section>
+    <div>
+      <section>
+        <b-container class="main py-5">
+          <b-row class="mb-2">
+            <b-col cols="12">
+              <h1>
+                {{ $t('pages.cluster.historical_rewards') }}
+              </h1>
+            </b-col>
+          </b-row>
+          <div class="last-extrinsics">
+            <div v-if="loading" class="text-center py-4">
+              <Loading />
+            </div>
+            <template v-else>
+              <div class="table-responsive">
+                <b-table striped hover :fields="rewardsFields" :items="rewards">
+                  <template #cell(block)="data">
+                    <p class="mb-0">{{ data.item.block_number }}</p>
+                  </template>
+                  <template #cell(event)="data">
+                    <p class="mb-0">
+                      {{ data.item.event_index }}
+                    </p>
+                  </template>
+                  <template #cell(provider)="data">
+                    <p class="mb-0">
+                      {{ data.item.node_provider_id }}
+                    </p>
+                  </template>
+                  <template #cell(reward)="data">
+                    <p class="mb-0">
+                      {{ data.item.rewarded }}
+                    </p>
+                  </template>
+                </b-table>
+              </div>
+              <!-- pagination -->
+              <div class="row">
+                <div class="col-6">
+                  <!-- desktop -->
+                  <div class="d-none d-sm-none d-md-none d-lg-block d-xl-block">
+                    <b-button-group>
+                      <b-button
+                        v-for="(option, index) in paginationOptions"
+                        :key="index"
+                        variant="outline-primary2"
+                        :class="{ 'selected-per-page': perPage === option }"
+                        @click="setPageSize(option)"
+                      >
+                        {{ option }}
+                      </b-button>
+                    </b-button-group>
+                  </div>
+                  <!-- mobile -->
+                  <div
+                    class="d-block d-sm-block d-md-block d-lg-none d-xl-none"
+                  >
+                    <b-dropdown
+                      class="m-md-2"
+                      text="Page size"
+                      variant="outline-primary2"
+                    >
+                      <b-dropdown-item
+                        v-for="(option, index) in paginationOptions"
+                        :key="index"
+                        @click="setPageSize(10)"
+                      >
+                        {{ option }}
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <b-pagination
+                    v-model="currentPage"
+                    :total-rows="totalRows"
+                    :per-page="perPage"
+                    aria-controls="my-table"
+                    variant="dark"
+                    align="right"
+                  ></b-pagination>
+                </div>
+              </div>
+            </template>
+          </div>
+        </b-container>
+      </section>
+    </div>
   </div>
 </template>
 <script>
@@ -269,8 +288,8 @@ export default {
       agggregateRows: 1,
       fields: [
         {
-          key: 'node_id',
-          label: this.$t('pages.cluster.node_id'),
+          key: 'node_provider_id',
+          label: this.$t('pages.cluster.node_provider_id'),
           sortable: true,
         },
         {
@@ -279,23 +298,49 @@ export default {
           sortable: true,
         },
         {
-          key: 'node_provider_reward',
+          key: 'rewarded',
           label: this.$t('pages.cluster.rewards'),
           sortable: true,
         },
         {
-          key: 'gets',
+          key: 'number_of_gets',
           label: this.$t('pages.cluster.gets'),
           sortable: true,
         },
         {
-          key: 'puts',
+          key: 'number_of_puts',
           label: this.$t('pages.cluster.puts'),
           sortable: true,
         },
       ],
-      nodes: [],
+      rewardsFields: [
+        {
+          key: 'block',
+          label: this.$t('pages.cluster.block'),
+          sortable: true,
+        },
+        {
+          key: 'event',
+          label: this.$t('pages.cluster.event_index'),
+          sortable: true,
+        },
+        {
+          key: 'provider',
+          label: this.$t('pages.cluster.rewarded_provider'),
+          sortable: true,
+        },
+        {
+          key: 'reward',
+          label: this.$t('pages.cluster.reward_amount'),
+          sortable: true,
+        },
+      ],
+      providers: [],
       clusterId: this.$route.params.id,
+      rewards: [],
+      providers_rewards: [],
+      transferred_bytes: 0,
+      clusterStats: [],
     }
   },
   head() {
@@ -314,78 +359,104 @@ export default {
       ],
     }
   },
-  methods: {
-    setPageSize(num) {
-      localStorage.paginationOptions = num
-      this.perPage = parseInt(num)
-    },
-  },
   watch: {
     $route() {
       this.clusterId = this.$route.params.id
     },
   },
+  methods: {
+    setPageSize(num) {
+      localStorage.paginationOptions = num
+      this.perPage = parseInt(num)
+    },
+    getLastEraStats() {
+      if (this.rewards === [] || this.providers === []) {
+        return
+      }
+
+      this.clusterStats = commonMixin.methods.mergeArraysByProp(
+        this.rewards,
+        this.providers,
+        'node_provider_id'
+      )
+
+      this.loading = false
+    },
+  },
   apollo: {
     $subscribe: {
-      node_stats: {
+      stats: {
         query: gql`
-          query node_stats(
-            $clusterId: String
-            $nodeId: String
-            $perPage: Int!
-            $offset: Int!
-          ) {
-            node_stats(
-              limit: $perPage
-              offset: $offset
-              where: {
-                node_id: { _eq: $nodeId }
-                cluster_id: { _eq: $clusterId }
-              }
-              order_by: { node_provider_reward: desc }
-            ) {
-              node_id
+          query node_provider_stats($clusterId: String) {
+            node_provider_stats(where: { cluster_id: { _eq: $clusterId } }) {
+              node_provider_id
               node_type
-              node_provider_reward
-              gets
-              puts
             }
           }
         `,
         variables() {
-          console.log(this.clusterId)
           return {
             clusterId: this.clusterId,
-            nodeId: this.filter ? this.filter : undefined,
-            perPage: this.perPage,
-            offset: (this.currentPage - 1) * this.perPage,
           }
         },
         result({ data }) {
-          this.nodes = data.node_stats
-          if (this.filter) {
-            this.totalRows = this.nodes.length
-          } else {
-            this.totalRows = this.agggregateRows
-          }
+          this.providers = data.node_provider_stats
+          this.getLastEraStats()
           this.loading = false
         },
       },
-      count: {
+      rewards: {
         query: gql`
-          query count {
-            node_stats_aggregate {
-              aggregate {
-                count
-              }
+          query events {
+            event(where: { method: { _eq: "ProviderRewarded" } }) {
+              block_number
+              event_index
+              data
             }
           }
         `,
         result({ data }) {
-          this.agggregateRows = data.node_stats_aggregate.aggregate.count
-          if (!this.filter) {
-            this.totalRows = this.agggregateRows
-          }
+          const rewards = data.event.map((record) => {
+            return {
+              ...record,
+              data: JSON.parse(record.data),
+            }
+          })
+
+          const clusterRewards = rewards.filter((reward) => {
+            return reward.data[0] === this.clusterId
+          })
+
+          this.rewards = clusterRewards.map((reward) => {
+            return {
+              clusterId: reward.data[0],
+              era: reward.data[1],
+              batch_index: reward.data[2],
+              stored_bytes: reward.data[3],
+              transferred_bytes: reward.data[4],
+              number_of_puts: reward.data[5],
+              number_of_gets: reward.data[6],
+              node_provider_id: reward.data[7],
+              rewarded: reward.data[8],
+              expected_to_reward: reward.data[9],
+              block_number: reward.block_number,
+              event_index: reward.event_index,
+            }
+          })
+
+          this.rewards = commonMixin.methods.filterByUniqueProviderLastEra(
+            this.rewards
+          )
+
+          this.transferred_bytes = this.rewards.reduce(
+            (accumulator, reward) => {
+              return accumulator + reward.transferred_bytes
+            },
+            0
+          )
+
+          this.getLastEraStats()
+          this.loading = false
         },
       },
     },
