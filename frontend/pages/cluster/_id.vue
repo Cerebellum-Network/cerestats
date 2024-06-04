@@ -59,110 +59,6 @@
               :fields="fields"
               :items="clusterStats"
             >
-              <template #cell(rank)="data">
-                <p class="text-right mb-0">#{{ data.item.rank }}</p>
-              </template>
-              <template #cell(account_id)="data">
-                <div
-                  class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
-                >
-                  <p class="mb-2">
-                    {{ $t('pages.accounts.rank') }} #{{ data.item.rank }}
-                  </p>
-                  <Identicon :address="data.item.account_id" :size="40" />
-                  <nuxt-link
-                    :to="`/account/${data.item.account_id}`"
-                    :title="$t('pages.accounts.account_details')"
-                  >
-                    <h4>{{ shortAddress(data.item.node_provider_id) }}</h4>
-                  </nuxt-link>
-                  <p v-if="data.item.identity_display" class="mb-0">
-                    {{ data.item.identity_display }}
-                  </p>
-                  <table class="table table-striped mt-4">
-                    <tbody>
-                      <tr>
-                        <td class="text-left">
-                          <strong>{{
-                            $t('pages.accounts.free_balance')
-                          }}</strong>
-                        </td>
-                        <td class="text-right">
-                          {{ formatAmount(data.item.node_type) }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-left">
-                          <strong>{{
-                            $t('pages.accounts.available_balance')
-                          }}</strong>
-                        </td>
-                        <td class="text-right">
-                          {{ formatAmount(data.item.available_balance) }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-left">
-                          <strong>{{
-                            $t('pages.accounts.locked_balance')
-                          }}</strong>
-                        </td>
-                        <td class="text-right">
-                          {{ formatAmount(data.item.locked_balance) }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                  <Identicon :address="data.item.account_id" :size="20" />
-                  <nuxt-link
-                    v-b-tooltip.hover
-                    :to="`/account/${data.item.account_id}`"
-                    :title="$t('pages.accounts.account_details')"
-                  >
-                    {{ shortAddress(data.item.node_id) }}
-                  </nuxt-link>
-                </div>
-              </template>
-              <template #cell(free_balance)="data">
-                <p class="text-right mb-0">
-                  {{ formatAmount(data.item.free_balance) }}
-                </p>
-              </template>
-              <template #cell(locked_balance)="data">
-                <p class="text-right mb-0">
-                  {{ formatAmount(data.item.locked_balance) }}
-                </p>
-              </template>
-              <template #cell(available_balance)="data">
-                <p class="text-right mb-0">
-                  {{ formatAmount(data.item.available_balance) }}
-                </p>
-              </template>
-              <template #cell(favorite)="data">
-                <p class="text-center mb-0">
-                  <a
-                    class="favorite"
-                    @click="toggleFavorite(data.item.account_id)"
-                  >
-                    <font-awesome-icon
-                      v-if="data.item.favorite"
-                      v-b-tooltip.hover
-                      icon="star"
-                      style="color: #f1bd23; cursor: pointer"
-                      :title="$t('pages.accounts.remove_from_favorites')"
-                    />
-                    <font-awesome-icon
-                      v-else
-                      v-b-tooltip.hover
-                      icon="star"
-                      style="color: #e6dfdf; cursor: pointer"
-                      :title="$t('pages.accounts.add_to_favorites')"
-                    />
-                  </a>
-                </p>
-              </template>
             </b-table>
           </div>
         </template>
@@ -261,7 +157,6 @@
 </template>
 <script>
 import { gql } from 'graphql-tag'
-import Identicon from '@/components/Identicon.vue'
 import Loading from '@/components/Loading.vue'
 import commonMixin from '@/mixins/commonMixin.js'
 import { network, paginationOptions } from '@/frontend.config.js'
@@ -269,7 +164,6 @@ import { network, paginationOptions } from '@/frontend.config.js'
 export default {
   components: {
     Loading,
-    Identicon,
   },
   mixins: [commonMixin],
   data() {
@@ -327,6 +221,11 @@ export default {
         {
           key: 'provider',
           label: this.$t('pages.cluster.rewarded_provider'),
+          sortable: true,
+        },
+        {
+          key: 'era',
+          label: this.$t('pages.cluster.era'),
           sortable: true,
         },
         {
