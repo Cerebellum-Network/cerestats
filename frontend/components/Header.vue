@@ -37,6 +37,11 @@
               {{ $t('layout.default.events') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item-dropdown text="DDC">
+            <b-dropdown-item :to="`/cluster/${clusterId}`">
+              {{ $t('layout.default.clusters') }}
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item right to="/accounts">{{
             $t('layout.default.accounts')
           }}</b-nav-item>
@@ -50,11 +55,13 @@
 </template>
 
 <script>
+import { gql } from 'graphql-tag'
 import { network } from '@/frontend.config.js'
 export default {
   data() {
     return {
       network,
+      clusterId: null,
     }
   },
   computed: {
@@ -73,6 +80,22 @@ export default {
         this.$store.dispatch('fiat/update')
       }, 60000)
     }
+  },
+  apollo: {
+    $subscribe: {
+      cluster: {
+        query: gql`
+          query cluster {
+            cluster(limit: 1) {
+              id
+            }
+          }
+        `,
+        result({ data }) {
+          this.clusterId = data.cluster[0].id
+        },
+      },
+    },
   },
 }
 </script>

@@ -91,7 +91,8 @@
       "events": "Events",
       "validator": "Validator",
       "how_to_stake": "How to stake",
-      "economics": "Economics"
+      "economics": "Economics",
+      "clusters": "Clusters"
     },
     "error": {
       "page_not_found": "Page not found!",
