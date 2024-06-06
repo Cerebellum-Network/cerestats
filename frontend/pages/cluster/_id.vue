@@ -83,7 +83,7 @@
                           <strong>{{ $t('pages.cluster.rewards') }}</strong>
                         </td>
                         <td class="text-right">
-                          {{ data.item.rewarded }}
+                          {{ formatAmount(data.item.rewarded, 6) }}
                         </td>
                       </tr>
                       <tr>
@@ -122,7 +122,9 @@
                 </div>
               </template>
               <template #cell(rewarded)="data">
-                <p class="text-right mb-0">{{ data.item.rewarded }}</p>
+                <p class="text-right mb-0">
+                  {{ formatAmount(data.item.rewarded, 6) }}
+                </p>
               </template>
               <template #cell(number_of_gets)="data">
                 <p class="text-right mb-0">{{ data.item.number_of_gets }}</p>
@@ -179,13 +181,13 @@
                               <strong>{{ $t('pages.cluster.block') }}</strong>
                             </td>
                             <td class="text-right">
-                              <a
-                                :href="`https://explorer.cere.network/?rpc=wss%3A%2F%2Farchive.devnet.cere.network%2Fws#/explorer/query/${data.item.block_number}`"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <nuxt-link
+                                v-b-tooltip.hover.bottom
+                                :to="`/block?blockNumber=${data.item.block_number}`"
+                                title="Check block information"
                               >
-                                {{ data.item.block_number }}
-                              </a>
+                                #{{ formatNumber(data.item.block_number, 6) }}
+                              </nuxt-link>
                             </td>
                           </tr>
                           <tr>
@@ -211,7 +213,7 @@
                               }}</strong>
                             </td>
                             <td class="text-right">
-                              {{ formatAmount(data.item.rewarded) }}
+                              {{ formatAmount(data.item.rewarded, 6) }}
                             </td>
                           </tr>
                         </tbody>
@@ -234,13 +236,13 @@
                   </template>
                   <template #cell(block)="data">
                     <div class="text-right mb-0">
-                      <a
-                        :href="`https://explorer.cere.network/?rpc=wss%3A%2F%2Farchive.devnet.cere.network%2Fws#/explorer/query/${data.item.block_number}`"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <nuxt-link
+                        v-b-tooltip.hover.bottom
+                        :to="`/block?blockNumber=${data.item.block_number}`"
+                        title="Check block information"
                       >
-                        {{ data.item.block_number }}
-                      </a>
+                        #{{ formatNumber(data.item.block_number, 6) }}
+                      </nuxt-link>
                     </div>
                   </template>
                   <template #cell(event)="data">
@@ -255,7 +257,7 @@
                   </template>
                   <template #cell(reward)="data">
                     <p class="text-right mb-0">
-                      {{ formatAmount(data.item.rewarded) }}
+                      {{ formatAmount(data.item.rewarded, 6) }}
                     </p>
                   </template>
                 </b-table>

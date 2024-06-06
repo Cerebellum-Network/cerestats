@@ -39,7 +39,7 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="DDC">
             <b-dropdown-item :to="`/cluster/${clusterId}`">
-              {{ $t('layout.default.clusters') }}
+              {{ $t('layout.default.dragon_one') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item right to="/accounts">{{
