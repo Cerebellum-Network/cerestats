@@ -124,7 +124,7 @@
       "cluster_dashboard": "Cluster Dashboard",
       "cluster_id": "Cluster ID",
       "providers": "Providers",
-      "throughput": "Throughput",
+      "throughput": "Throughput (bytes)",
       "node_type": "Node Type",
       "node_provider_id": "Node Provider",
       "rewards": "Rewards for the last Era",
