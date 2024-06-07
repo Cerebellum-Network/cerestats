@@ -471,7 +471,7 @@ export default {
       rewards: {
         query: gql`
           query events {
-            event(where: { method: { _eq: "ProviderRewarded" } }) {
+            event(where: { method: { _eq: "ProviderRewarded" } }, limit: 20) {
               block_number
               event_index
               data
