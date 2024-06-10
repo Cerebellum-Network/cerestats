@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js'
-// import { gql } from 'graphql-tag'
+import { gql } from 'graphql-tag'
 import { BToast } from 'bootstrap-vue'
 import { network } from '@/frontend.config.js'
 
