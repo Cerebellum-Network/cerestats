@@ -36,7 +36,7 @@
                     {{ $t('pages.cluster.providers') }}
                   </h5>
                   <h5>
-                    {{ providers.length }}
+                    {{ providersNumber }}
                   </h5>
                 </div>
               </div>
@@ -400,6 +400,7 @@ export default {
         },
       ],
       providers: [],
+      providersNumber: 0,
       clusterId: this.$route.params.id,
       rewards: [],
       providers_rewards: [],
@@ -464,6 +465,7 @@ export default {
         },
         result({ data }) {
           this.providers = data.node_provider_stats
+          this.providersNumber = this.providers.length
           this.getLastEraStats()
           this.loading = false
         },

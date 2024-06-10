@@ -61,7 +61,8 @@ export default {
   data() {
     return {
       network,
-      clusterId: null,
+      // Hardcoded for now
+      clusterId: '0x7f82864e4f097e63d04cc279e4d8d2eb45a42ffa',
     }
   },
   computed: {

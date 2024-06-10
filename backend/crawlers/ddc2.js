@@ -108,7 +108,7 @@ const actualizeDdcNodes = async (api, dbClient) => {
       mode = EXCLUDED.mode
   ;`;
 
-  const persistClusterQuery = `
+  const persistNodeToClusterQuery = `
     INSERT INTO node_to_cluster (
       cluster_id,
       node_id
@@ -170,7 +170,7 @@ const actualizeDdcNodes = async (api, dbClient) => {
     await dbParamQuery(dbClient, persistNodeQuery, nodeData, loggerOptions);
 
     // eslint-disable-next-line no-await-in-loop
-    await dbParamQuery(dbClient, persistClusterQuery, nodeClusterData, loggerOptions);
+    await dbParamQuery(dbClient, persistNodeToClusterQuery, nodeClusterData, loggerOptions);
 
     // eslint-disable-next-line no-await-in-loop
     await dbParamQuery(dbClient, persistNodeToProviderQuery, nodeToProviderData, loggerOptions);
