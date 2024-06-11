@@ -73,5 +73,14 @@ module.exports = {
           parseInt(process.env.DDC_POLLING_TIME_MS, 10)
           || 2 * 60 * 1000, // 2 minutes
     },
+    {
+      name: 'ddc2',
+      enabled: true,
+      crawler: './crawlers/ddc2.js',
+      startDelay: 0,
+      pollingTime:
+          parseInt(process.env.DDC_POLLING_TIME_MS, 10)
+          || 2 * 60 * 1000, // 2 minutes
+    },
   ],
 };
