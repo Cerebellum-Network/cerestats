@@ -13,33 +13,33 @@ module.exports = {
     port: parseInt(process.env.POSTGRES_PORT, 10) || 5432,
   },
   logLevel: process.env.LOG_LEVEL || 'info', // Use 'debug' to see DEBUG level messages
-  spawnTimeoutMs: 0,
+  spawnTimeoutMs: parseInt(process.env.SPAWN_TIMEOUT_MS, 10) || 5000,
   crawlers: [
     {
       name: 'blockListener',
-      enabled: false,
+      enabled: !process.env.BLOCK_LISTENER_DISABLE,
       crawler: './crawlers/blockListener.js',
       apiCustomTypes: process.env.API_CUSTOM_TYPES || '',
     },
     {
       name: 'blockHarvester',
-      enabled: false,
+      enabled: !process.env.BLOCK_HARVESTER_DISABLE,
       crawler: './crawlers/blockHarvester.js',
       apiCustomTypes: process.env.API_CUSTOM_TYPES || '',
-      startDelay: 0,
-      mode: 'chunks',
-      chunkSize: 1,
+      startDelay: parseInt(process.env.BLOCK_HARVESTER_START_DELAY_MS, 10) || 10 * 1000,
+      mode: process.env.BLOCK_HARVESTER_MODE || 'chunks',
+      chunkSize: parseInt(process.env.BLOCK_HARVESTER_CHUNK_SIZE, 10) || 10,
       statsPrecision: parseInt(process.env.BLOCK_HARVESTER_STATS_PRECISION, 10) || 2,
       pollingTime:
         parseInt(process.env.BLOCK_LISTENER_POLLING_TIME_MS, 10)
-        || 1 * 60 * 1000,
+        || 60 * 60 * 1000,
     },
     {
       name: 'ranking',
-      enabled: false,
+      enabled: !process.env.RANKING_DISABLE,
       crawler: './crawlers/ranking.js',
       apiCustomTypes: process.env.API_CUSTOM_TYPES || '',
-      startDelay: 0,
+      startDelay: parseInt(process.env.RANKING_START_DELAY_MS, 10) || 15 * 60 * 1000,
       pollingTime:
         parseInt(process.env.RANKING_POLLING_TIME_MS, 10)
         || 5 * 60 * 1000,
@@ -52,10 +52,10 @@ module.exports = {
     },
     {
       name: 'activeAccounts',
-      enabled: false,
+      enabled: !process.env.ACTIVE_ACCOUNTS_DISABLE,
       crawler: './crawlers/activeAccounts.js',
       apiCustomTypes: process.env.API_CUSTOM_TYPES || '',
-      startDelay: 0,
+      startDelay: parseInt(process.env.ACTIVE_ACCOUNTS_START_DELAY_MS, 10) || 60 * 1000,
       chunkSize: parseInt(process.env.ACTIVE_ACCOUNTS_CHUNK_SIZE, 10) || 100,
       pollingTime:
         parseInt(process.env.ACTIVE_ACCOUNTS_POLLING_TIME_MS, 10)
@@ -63,7 +63,7 @@ module.exports = {
     },
     {
       name: 'ddc',
-      enabled: false,
+      enabled: !process.env.DDC_DISABLE,
       crawler: './crawlers/ddc.js',
       contractRpc: process.env.DDC_CONTRACT_RPC || 'wss://rpc.testnet.cere.network/ws',
       contractName: process.env.DDC_CONTRACT_NAME || 'ddc_bucket',
@@ -74,12 +74,12 @@ module.exports = {
     },
     {
       name: 'ddc2',
-      enabled: true,
+      enabled: !process.env.DDC2_DISABLE,
       crawler: './crawlers/ddc2.js',
       startDelay: 0,
       pollingTime:
-          parseInt(process.env.DDC_POLLING_TIME_MS, 10)
-          || 1 * 60 * 1000, // 2 minutes
+          parseInt(process.env.DDC2_POLLING_TIME_MS, 10)
+          || 2 * 60 * 1000, // 2 minutes
     },
   ],
 };
