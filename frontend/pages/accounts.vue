@@ -89,10 +89,7 @@
               </template>
               <template #cell(account_id)="data">
                 <div
-                  class="
-                    d-block d-sm-block d-md-none d-lg-none d-xl-none
-                    text-center
-                  "
+                  class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
                   <p class="mb-2">
                     {{ $t('pages.accounts.rank') }} #{{ data.item.rank }}

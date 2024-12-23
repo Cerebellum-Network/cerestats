@@ -122,5 +122,40 @@ export default {
       const date = moment.unix(timestamp)
       return moment(date).fromNow()
     },
+    filterByUniqueProviderLastEra: (data) => {
+      const seenProviders = {}
+      const result = []
+
+      for (let i = data.length - 1; i >= 0; i--) {
+        const element = data[i]
+        const providerId = element.node_provider_id
+
+        if (
+          !Object.hasOwn(seenProviders, 'providerId') ||
+          element.era > seenProviders[providerId].era
+        ) {
+          seenProviders[providerId] = element
+          result.push(element)
+        }
+      }
+      return result.reverse()
+    },
+    mergeArraysByProp: (arr1, arr2, prop) => {
+      const map = new Map()
+
+      arr1.forEach((obj) => {
+        map.set(obj[prop], { ...obj })
+      })
+
+      arr2.forEach((obj) => {
+        if (map.has(obj[prop])) {
+          map.set(obj[prop], { ...map.get(obj[prop]), ...obj })
+        } else {
+          map.set(obj[prop], { ...obj })
+        }
+      })
+
+      return Array.from(map.values())
+    },
   },
 }

@@ -264,6 +264,40 @@ h6 {
   }
 }
 
+// cluster page
+#cluster-table th {
+  text-align: center;
+}
+#rewards-table th {
+  text-align: center;
+}
+.page-cluster .identicon {
+  display: inline-block;
+}
+.page-cluster td div {
+  padding: 0 !important;
+}
+.mw240 {
+  min-width: 240px;
+}
+@media (max-width: 767.98px) {
+  .page-cluster
+  .table.b-table.b-table-stacked-md
+  > tbody
+  > tr
+  > [data-label]::before {
+    display: none;
+  }
+  .page-cluster
+  .table.b-table.b-table-stacked-md
+  > tbody
+  > tr
+  > [data-label]
+  > div {
+    width: 100%;
+  }
+}
+
 // block page
 .block-table tr td:first-child {
   width: 30%;

@@ -91,7 +91,8 @@
       "events": "Events",
       "validator": "Validator",
       "how_to_stake": "How to stake",
-      "economics": "Economics"
+      "economics": "Economics",
+      "dragon_one": "Dragon 1"
     },
     "error": {
       "page_not_found": "Page not found!",
@@ -118,6 +119,24 @@
       "head_content": "{networkName} Accounts",
       "loading_data": "Loading data, it can take a long time. Be patient, please",
       "download_csv": "Download in CSV format"
+    },
+    "cluster": {
+      "cluster_dashboard": "Cluster Dashboard",
+      "cluster_id": "Cluster ID",
+      "providers": "Providers",
+      "throughput": "Throughput (bytes)",
+      "node_type": "Node Type",
+      "node_provider_id": "Node Provider",
+      "rewards": "Rewards for the last Era",
+      "gets": "Successful Reads in the last Era",
+      "puts": "Successful Writes in the last Era",
+      "historical_rewards": "Historical Rewards",
+      "block": "Block",
+      "event": "Event",
+      "event_index": "Event Index",
+      "rewarded_provider": "Rewarded Provider",
+      "reward_amount": "Rewards (CERE)",
+      "era": "Era"
     },
     "account": {
       "head_title": "Cere Stats - Account {address}",

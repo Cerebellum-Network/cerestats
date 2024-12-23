@@ -65,12 +65,20 @@ module.exports = {
       name: 'ddc',
       enabled: !process.env.DDC_DISABLE,
       crawler: './crawlers/ddc.js',
-      // TODO update default to Mainnet once DDC Mainnet deployed. Ticket: https://cerenetwork.atlassian.net/browse/CBI-2050
       contractRpc: process.env.DDC_CONTRACT_RPC || 'wss://rpc.testnet.cere.network/ws',
       contractName: process.env.DDC_CONTRACT_NAME || 'ddc_bucket',
       contractAddress: process.env.DDC_CONTRACT_ADDRESS || '5DTZfAcmZctJodfa4W88BW5QXVBxT4v7UEax91HZCArTih6U',
       pollingTime:
           parseInt(process.env.DDC_POLLING_TIME_MS, 10)
+          || 2 * 60 * 1000, // 2 minutes
+    },
+    {
+      name: 'ddc2',
+      enabled: !process.env.DDC2_DISABLE,
+      crawler: './crawlers/ddc2.js',
+      startDelay: 0,
+      pollingTime:
+          parseInt(process.env.DDC2_POLLING_TIME_MS, 10)
           || 2 * 60 * 1000, // 2 minutes
     },
   ],
