@@ -32,7 +32,7 @@ jobs:
     uses: Cerebellum-Network/reusable-workflows/.github/workflows/deploy-to-cloudfront.yaml@master
     with:
       build_container: 'node:16-buster-slim'
-      install_packages_command: 'apt update; apt install python3 -y; cp -rf frontend/frontend.config-cere-dev.js frontend/frontend.config.js; yarn install'
+      install_packages_command: 'apt update; apt install python3 make libpq-dev g++ -y; cp -rf frontend/frontend.config-cere-dev.js frontend/frontend.config.js; yarn install'
       build_command: 'yarn workspace frontend generate'
       path_to_static_files_to_upload: 'frontend/dist'
       aws_account_id: ${{ vars.STG_NETWORK_AWS_ACCOUNT_ID }}
