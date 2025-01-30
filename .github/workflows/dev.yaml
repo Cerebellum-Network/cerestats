@@ -31,7 +31,7 @@ jobs:
   build_and_deploy_frontend:
     uses: Cerebellum-Network/reusable-workflows/.github/workflows/deploy-to-cloudfront.yaml@master
     with:
-      build_container: 'node:14-buster-slim'
+      build_container: 'node:16-buster-slim'
       install_packages_command: 'cp -rf frontend/frontend.config-cere-dev.js frontend/frontend.config.js; yarn install'
       build_command: 'yarn workspace frontend generate'
       path_to_static_files_to_upload: 'frontend/dist'
