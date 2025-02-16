@@ -29,17 +29,11 @@ jobs:
     secrets: inherit
 
   build_and_deploy_frontend:
-    uses: Cerebellum-Network/reusable-workflows/.github/workflows/build-and-upload-static.yaml@1.0.0
+    uses: Cerebellum-Network/reusable-workflows/.github/workflows/deploy-to-cloudfront.yaml@master
     with:
-      runs-on: '["self-hosted", "cere-network-large"]'
       build_container: 'node:14-buster-slim'
-      deploy_container: 'ubuntu:20.04'
-      install_packages_command: 'cp -rf frontend/frontend.config-cere-prd.js frontend/frontend.config.js; yarn install'
+      install_packages_command: 'apt update; apt install python3 make libpq-dev g++ -y; cp -rf frontend/frontend.config-cere-prd.js frontend/frontend.config.js; yarn install'
       build_command: 'yarn workspace frontend generate'
       path_to_static_files_to_upload: 'frontend/dist'
-    secrets:
-      NETWORK_AWS_ACCESS_KEY_ID: ${{ secrets.PRD_NETWORK_AWS_ACCESS_KEY_ID }}
-      NETWORK_AWS_SECRET_ACCESS_KEY: ${{ secrets.PRD_NETWORK_AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME_PRD }}
-      CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID_PRD }}
+      aws_account_id: ${{ vars.PRD_NETWORK_AWS_ACCOUNT_ID }}
+      s3_bucket_name: "stats.cere.network"
